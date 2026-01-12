@@ -220,7 +220,7 @@ r_dynamic 0";
         finally
         {
             btnBoost.Enabled = true;
-            btnBoost.Text = "  APPLY ULTIMATE PERFORMANCE";
+            btnBoost.Text = "  APPLY PERFORMANCE CFG";
         }
     }
 }

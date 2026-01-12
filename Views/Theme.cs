@@ -23,6 +23,9 @@ namespace FpsBooster.Views
         public static string IconRocket = "\uE99A";
         public static string IconFlash = "\uE945";
         public static string IconGame = "\uE7BE"; // Game Controller
+        
+        public static string AppVersion = "v1.0.0";
+        public static string Developer = "developed by Raul W. minimalist";
     }
 
     public class ModernButton : Button
@@ -34,7 +37,7 @@ namespace FpsBooster.Views
             BackColor = Theme.Accent;
             ForeColor = Color.White;
             Cursor = Cursors.Hand;
-            Font = new Font("Segoe UI Semibold", 10F);
+            Font = new Font("Segoe UI Semibold", 9.5F);
         }
     }
 
@@ -50,10 +53,10 @@ namespace FpsBooster.Views
             BackColor = Color.Transparent;
             ForeColor = Theme.TextDim;
             Cursor = Cursors.Hand;
-            Font = new Font("Segoe UI Semibold", 11F);
+            Font = new Font("Segoe UI Semibold", 10F);
             TextAlign = ContentAlignment.MiddleLeft;
             ImageAlign = ContentAlignment.MiddleLeft;
-            Height = 50;
+            Height = 42;
             Dock = DockStyle.Top;
             Padding = new Padding(20, 0, 0, 0);
         }

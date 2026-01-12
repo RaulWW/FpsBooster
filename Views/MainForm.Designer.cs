@@ -34,6 +34,8 @@ partial class MainForm
         // Panels for views
         this.panelBoost = new Panel();
         this.panelCS2 = new Panel();
+        this.footer = new Panel();
+        this.lblFooter = new Label();
         
         // Navigation buttons
         this.btnMenuBoost = new MenuButton();
@@ -67,10 +69,10 @@ partial class MainForm
         
         // Sidebar Content
         this.lblIcon.Text = Theme.IconRocket;
-        this.lblIcon.Font = new Font("Segoe MDL2 Assets", 48F);
+        this.lblIcon.Font = new Font("Segoe MDL2 Assets", 32F);
         this.lblIcon.ForeColor = Theme.Accent;
         this.lblIcon.Dock = DockStyle.Top;
-        this.lblIcon.Height = 150;
+        this.lblIcon.Height = 100;
         this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
         this.btnMenuCS2.Text = "   CONFIG CS2";
@@ -85,6 +87,18 @@ partial class MainForm
         this.sidebar.Controls.Add(this.btnMenuCS2);
         this.sidebar.Controls.Add(this.btnMenuBoost);
         this.sidebar.Controls.Add(this.lblIcon);
+        this.sidebar.Controls.Add(this.footer);
+
+        // Footer Setup
+        this.footer.Dock = DockStyle.Bottom;
+        this.footer.Height = 40;
+        this.footer.Controls.Add(this.lblFooter);
+        
+        this.lblFooter.Dock = DockStyle.Fill;
+        this.lblFooter.ForeColor = Theme.TextDim;
+        this.lblFooter.Font = new Font("Segoe UI", 8F);
+        this.lblFooter.Text = $"{Theme.Developer} | {Theme.AppVersion}";
+        this.lblFooter.TextAlign = ContentAlignment.MiddleCenter;
 
         // Main Content Setup
         this.mainContent.Dock = DockStyle.Fill;
@@ -95,7 +109,7 @@ partial class MainForm
         this.panelBoost.Padding = new Padding(40);
         
         this.lblTitle.Text = "ULTIMATE BOOST";
-        this.lblTitle.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+        this.lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         this.lblTitle.AutoSize = true;
         this.lblTitle.Location = new Point(40, 40);
         this.lblTitle.ForeColor = Color.White;
@@ -106,8 +120,8 @@ partial class MainForm
         
         this.btnBoost.Text = "APPLY PERFORMANCE CFG";
         this.btnBoost.Location = new Point(45, 150);
-        this.btnBoost.Size = new Size(320, 55);
-        this.btnBoost.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+        this.btnBoost.Size = new Size(280, 45);
+        this.btnBoost.Font = new Font("Segoe UI Semibold", 10F);
         
         this.rtbLog.Location = new Point(45, 230);
         this.rtbLog.Size = new Size(720, 360);
@@ -128,7 +142,7 @@ partial class MainForm
         this.panelCS2.Visible = false;
 
         this.lblCS2Title.Text = "CONFIG CS2";
-        this.lblCS2Title.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+        this.lblCS2Title.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         this.lblCS2Title.AutoSize = true;
         this.lblCS2Title.Location = new Point(40, 40);
         this.lblCS2Title.ForeColor = Color.White;
@@ -148,7 +162,7 @@ partial class MainForm
 
         this.btnSaveCS2.Text = "  SAVE AUTOEXEC.CFG";
         this.btnSaveCS2.Location = new Point(45, 550);
-        this.btnSaveCS2.Size = new Size(250, 45);
+        this.btnSaveCS2.Size = new Size(220, 40);
         
         this.panelCS2.Controls.Add(this.btnSaveCS2);
         this.panelCS2.Controls.Add(this.rtbCS2Config);
@@ -163,6 +177,8 @@ partial class MainForm
     }
 
     private Panel sidebar;
+    private Panel footer;
+    private Label lblFooter;
     private Panel mainContent;
     private Panel panelBoost;
     private Panel panelCS2;
