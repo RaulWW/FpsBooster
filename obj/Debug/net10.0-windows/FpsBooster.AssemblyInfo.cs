@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FpsBooster")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d79cceab669889adc56f4948f18e7ea55c596990")]
 [assembly: System.Reflection.AssemblyProductAttribute("FpsBooster")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FpsBooster")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
