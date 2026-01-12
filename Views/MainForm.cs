@@ -162,10 +162,10 @@ r_dynamic 0";
         try
         {
             // Ensure directory exists (might not on all machines, but user provided this specific path)
-            string directory = Path.GetDirectoryName(path);
-            if (!Directory.Exists(directory))
+            string? directory = Path.GetDirectoryName(path);
+            if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
             {
-                MessageBox.Show($"Directory not found: {directory}\nDefaulting to local save (autoexec.cfg)", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Directory not found or invalid: {directory}\nDefaulting to local save (autoexec.cfg)", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 path = "autoexec.cfg";
             }
             

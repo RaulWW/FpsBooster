@@ -43,7 +43,10 @@ namespace FpsBooster.Views
 
     public class MenuButton : Button
     {
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public bool IsActive { get; set; } = false;
+
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public string Icon { get; set; } = "";
 
         public MenuButton()
