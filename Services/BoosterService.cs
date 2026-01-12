@@ -205,13 +205,11 @@ namespace FpsBooster.Services
             await _psService.ExecuteCommandAsync(oneDriveScript);
 
             // 10. Deep Disk Cleanup
-            OnProgressUpdate?.Invoke(98);
-            OnLogMessage?.Invoke("Finalizando com limpeza profunda de componentes...");
-            await _psService.ExecuteCommandAsync("cleanmgr.exe /d C: /VERYLOWDISK");
-            await _psService.ExecuteCommandAsync("Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase");
+            // OnProgressUpdate?.Invoke(98);
+            // OnLogMessage?.Invoke("Finalizando com limpeza de disco...");
+            // await _psService.ExecuteCommandAsync("cleanmgr.exe /d C: /VERYLOWDISK");
             
             OnProgressUpdate?.Invoke(100);
             OnLogMessage?.Invoke("SISTEMA OTIMIZADO AO MÁXIMO! Reinicie para aplicar todos os ajustes.");
         }
     }
-}

@@ -6,14 +6,15 @@ namespace FpsBooster.Views
 {
     public static class Theme
     {
-        public static Color Background = Color.FromArgb(20, 20, 20); // Deep Black/Gray
-        public static Color Sidebar = Color.FromArgb(30, 30, 30);    // Slightly Lighter Gray
-        public static Color Surface = Color.FromArgb(40, 40, 40);
-        public static Color Accent = Color.FromArgb(255, 102, 0);    // Faceit Orange
-        public static Color AccentHover = Color.FromArgb(255, 133, 51);
-        public static Color Text = Color.FromArgb(255, 255, 255);
-        public static Color TextDim = Color.FromArgb(180, 180, 180);
-        public static Color Success = Color.FromArgb(0, 255, 100);
+        public static Color Background = Color.FromArgb(12, 12, 18);     // Deep Dark Blue-Black
+        public static Color Sidebar = Color.FromArgb(18, 18, 25);        // Rich Dark Sidebar
+        public static Color Surface = Color.FromArgb(25, 25, 35);        // Elevated Surface
+        public static Color Accent = Color.FromArgb(255, 85, 0);         // Vibrant Electric Orange
+        public static Color AccentHover = Color.FromArgb(255, 120, 40);  // Bright Orange Hover
+        public static Color AccentGlow = Color.FromArgb(255, 60, 0);     // Deep Orange Glow
+        public static Color Text = Color.FromArgb(250, 250, 255);        // Pure White with slight blue
+        public static Color TextDim = Color.FromArgb(160, 165, 180);     // Cool Gray
+        public static Color Success = Color.FromArgb(0, 255, 100);       // Neon Green
 
         // Segoe MDL2 Assets Icons
         public static string IconPower = "\uE7E8"; // Lightning
@@ -24,40 +25,15 @@ namespace FpsBooster.Views
         public static string IconFlash = "\uE945";
         public static string IconGame = "\uE7BE"; // Game Controller
         
-        public static string AppVersion = "v1.0.0";
-        public static string Developer = "developed by Raul W. minimalist";
+        public static string AppVersion = "v1.2.0 ELITE";
+        public static string Developer = "⚡ Developed by Raul W. | Premium Edition";
     }
 
     public class ModernButton : Button
     {
         public ModernButton()
         {
-            FlatStyle = FlatStyle.Flat;
-            FlatAppearance.BorderSize = 0;
-            BackColor = Theme.Accent;
-            ForeColor = Color.White;
-            Cursor = Cursors.Hand;
-            Font = new Font("Segoe UI Semibold", 9.5F);
-        }
-    }
-
-    public class MenuButton : Button
-    {
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public bool IsActive { get; set; } = false;
-
-        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
-        public string Icon { get; set; } = "";
-
-        public MenuButton()
-        {
-            FlatStyle = FlatStyle.Flat;
-            FlatAppearance.BorderSize = 0;
-            BackColor = Color.Transparent;
-            ForeColor = Theme.TextDim;
-            Cursor = Cursors.Hand;
-            Font = new Font("Segoe UI Semibold", 10F);
-            TextAlign = ContentAlignment.MiddleLeft;
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv            TextAlign = ContentAlignment.MiddleLeft;
             ImageAlign = ContentAlignment.MiddleLeft;
             Height = 42;
             Dock = DockStyle.Top;

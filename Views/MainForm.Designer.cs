@@ -59,7 +59,7 @@ partial class MainForm
         this.ForeColor = Theme.Text;
         this.Size = new Size(1100, 700);
         this.StartPosition = FormStartPosition.CenterScreen;
-        this.Text = "FPS BOOSTER - PREMIUM ELITE";
+        this.Text = "⚡ ULTRA FPS BOOSTER | Gaming Performance Suite";
         this.AutoScaleMode = AutoScaleMode.Dpi;
 
         // Sidebar Setup
