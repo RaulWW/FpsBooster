@@ -1,0 +1,16 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.sln.dotSettings.user
+*.userprefs
+*.dbmdl
+*.jfm
+bin/
+obj/
+/bin
+/obj
+*.log
+.vscode/
+.idea/
