@@ -22,6 +22,7 @@ namespace FpsBooster.Views
         public static string IconCheck = "\uE73E";
         public static string IconRocket = "\uE99A";
         public static string IconFlash = "\uE945";
+        public static string IconGame = "\uE7BE"; // Game Controller
     }
 
     public class ModernButton : Button
@@ -34,6 +35,44 @@ namespace FpsBooster.Views
             ForeColor = Color.White;
             Cursor = Cursors.Hand;
             Font = new Font("Segoe UI Semibold", 10F);
+        }
+    }
+
+    public class MenuButton : Button
+    {
+        public bool IsActive { get; set; } = false;
+        public string Icon { get; set; } = "";
+
+        public MenuButton()
+        {
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            BackColor = Color.Transparent;
+            ForeColor = Theme.TextDim;
+            Cursor = Cursors.Hand;
+            Font = new Font("Segoe UI Semibold", 11F);
+            TextAlign = ContentAlignment.MiddleLeft;
+            ImageAlign = ContentAlignment.MiddleLeft;
+            Height = 50;
+            Dock = DockStyle.Top;
+            Padding = new Padding(20, 0, 0, 0);
+        }
+
+        protected override void OnPaint(PaintEventArgs pevent)
+        {
+            base.OnPaint(pevent);
+            if (IsActive)
+            {
+                using (var brush = new SolidBrush(Theme.Accent))
+                {
+                    pevent.Graphics.FillRectangle(brush, 0, 10, 4, Height - 20);
+                }
+                ForeColor = Theme.Text;
+            }
+            else
+            {
+                ForeColor = Theme.TextDim;
+            }
         }
     }
 

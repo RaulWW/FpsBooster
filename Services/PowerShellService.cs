@@ -6,15 +6,16 @@ namespace FpsBooster.Services
 {
     public class PowerShellService
     {
-        public event Action<string> OnOutputReceived;
-        public event Action<string> OnErrorReceived;
+        public event Action<string>? OnOutputReceived;
+        public event Action<string>? OnErrorReceived;
 
         public async Task<int> ExecuteCommandAsync(string script)
         {
             var processInfo = new ProcessStartInfo
             {
                 FileName = "powershell.exe",
-                Arguments = $"-NoProfile -ExecutionPolicy Bypass -Command \"[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; {script}\"",
+                Arguments = "-NoProfile -ExecutionPolicy Bypass -Command -",
+                RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 StandardOutputEncoding = System.Text.Encoding.UTF8,
@@ -40,6 +41,15 @@ namespace FpsBooster.Services
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
+
+                using (var sw = process.StandardInput)
+                {
+                    if (sw.BaseStream.CanWrite)
+                    {
+                        await sw.WriteLineAsync("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;");
+                        await sw.WriteLineAsync(script);
+                    }
+                }
 
                 await process.WaitForExitAsync();
                 return process.ExitCode;

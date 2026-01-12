@@ -7,8 +7,8 @@ namespace FpsBooster.Services
     {
         private readonly PowerShellService _psService;
 
-        public event Action<string> OnLogMessage;
-        public event Action<int> OnProgressUpdate;
+        public event Action<string>? OnLogMessage;
+        public event Action<int>? OnProgressUpdate;
 
         public BoosterService()
         {
@@ -41,8 +41,12 @@ namespace FpsBooster.Services
             await _psService.ExecuteCommandAsync("powercfg.exe /hibernate off");
             string cleanupScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
-                Get-ChildItem -Path 'C:\Windows\Temp' *.* -Recurse | Remove-Item -Force -Recurse
-                Get-ChildItem -Path $env:TEMP *.* -Recurse | Remove-Item -Force -Recurse
+                Write-Host 'Limpando Windows Temp...'
+                Get-ChildItem -Path 'C:\Windows\Temp' -Recurse | Remove-Item -Force -Recurse
+                Write-Host 'Limpando User Temp...'
+                Get-ChildItem -Path $env:TEMP -Recurse | Remove-Item -Force -Recurse
+                Write-Host 'Limpando Prefetch...'
+                Get-ChildItem -Path 'C:\Windows\Prefetch' -Recurse | Remove-Item -Force -Recurse
             ";
             await _psService.ExecuteCommandAsync(cleanupScript);
 
@@ -52,7 +56,7 @@ namespace FpsBooster.Services
             string bcdRegistryScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 # BCD & Legacy Policy
-                bcdedit /set `{current`} bootmenupolicy Legacy | Out-Null
+                bcdedit /set '{current}' bootmenupolicy Legacy | Out-Null
                 
                 # Storage Sense
                 Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy' -Name '01' -Value 0 -Type Dword -Force
@@ -77,11 +81,11 @@ namespace FpsBooster.Services
                 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control' -Name 'SvcHostSplitThresholdInKB' -Type DWord -Value $ram -Force
 
                 # Network/Diag Logs
-                $autoLoggerDir = ""$env:PROGRAMDATA\Microsoft\Diagnosis\ETLLogs\AutoLogger""
-                if (Test-Path ""$autoLoggerDir\AutoLogger-Diagtrack-Listener.etl"") {
-                    Remove-Item ""$autoLoggerDir\AutoLogger-Diagtrack-Listener.etl"" -Force
+                $autoLoggerDir = Join-Path $env:PROGRAMDATA 'Microsoft\Diagnosis\ETLLogs\AutoLogger'
+                if (Test-Path $autoLoggerDir) {
+                    Get-ChildItem -Path $autoLoggerDir -Filter '*.etl' | Remove-Item -Force
+                    icacls $autoLoggerDir /deny SYSTEM:`(OI`)`(CI`)F | Out-Null
                 }
-                icacls $autoLoggerDir /deny SYSTEM:`(OI`)`(CI`)F | Out-Null
 
                 # Defender Sample Submission
                 Set-MpPreference -SubmitSamplesConsent 2
@@ -178,7 +182,9 @@ namespace FpsBooster.Services
                 # Cleanup Leftovers
                 Remove-Item -Recurse -Force ""$env:localappdata\Microsoft\OneDrive""
                 Remove-Item -Recurse -Force ""$env:programdata\Microsoft OneDrive""
-                reg delete 'HKEY_CURRENT_USER\Software\Microsoft\OneDrive' -f
+                if (Test-Path 'HKCU:\Software\Microsoft\OneDrive') {
+                    Remove-Item -Path 'HKCU:\Software\Microsoft\OneDrive' -Recurse -Force
+                }
 
                 # Explorer Sidebar
                 Set-ItemProperty -Path 'HKCR:\CLSID\{018D5C66-4533-4307-9B53-224DE2ED1FE6}' -Name 'System.IsPinnedToNameSpaceTree' -Value 0
