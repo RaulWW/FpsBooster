@@ -213,3 +213,4 @@ namespace FpsBooster.Services
             OnLogMessage?.Invoke("SISTEMA OTIMIZADO AO MÁXIMO! Reinicie para aplicar todos os ajustes.");
         }
     }
+}
