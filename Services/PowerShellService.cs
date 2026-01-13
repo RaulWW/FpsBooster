@@ -18,6 +18,7 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                StandardInputEncoding = System.Text.Encoding.UTF8,
                 StandardOutputEncoding = System.Text.Encoding.UTF8,
                 StandardErrorEncoding = System.Text.Encoding.UTF8,
                 UseShellExecute = false,
@@ -46,6 +47,7 @@ namespace FpsBooster.Services
                 {
                     if (sw.BaseStream.CanWrite)
                     {
+                        await sw.WriteLineAsync("[Console]::InputEncoding = [System.Text.Encoding]::UTF8;");
                         await sw.WriteLineAsync("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;");
                         await sw.WriteLineAsync(script);
                     }

@@ -161,7 +161,7 @@ namespace FpsBooster.Services
             // 8. Advanced Tweaks (Copilot & FSO)
             OnProgressUpdate?.Invoke(85);
             OnLogMessage?.Invoke("Otimizando Copilot e Fullscreen (FSO)...");
-            await _psService.ExecuteCommandAsync("dism /online /remove-package /package-name:Microsoft.Windows.Copilot /ErrorAction SilentlyContinue");
+            await _psService.ExecuteCommandAsync("try { dism /online /remove-package /package-name:Microsoft.Windows.Copilot /NoRestart } catch { }");
             await _psService.ExecuteCommandAsync("Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_DXGIHonorFSEWindowsCompatible' -Value 1 -Type DWord -Force");
 
             // 9. OneDrive Removal & Shell Fix
