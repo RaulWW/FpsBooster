@@ -11,6 +11,8 @@ namespace FpsBooster.Views.Controls
         [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
         public string Icon { get; set; } = "";
 
+        private bool _isHovered;
+
         public MenuButton()
         {
             FlatStyle = FlatStyle.Flat;
@@ -23,10 +25,21 @@ namespace FpsBooster.Views.Controls
             Cursor = Cursors.Hand;
             TextAlign = ContentAlignment.MiddleLeft;
             Padding = new Padding(50, 0, 0, 0); // Leave space for icon
+
+            MouseEnter += (s, e) => { _isHovered = true; Invalidate(); };
+            MouseLeave += (s, e) => { _isHovered = false; Invalidate(); };
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
+            if (_isHovered && !IsActive)
+            {
+                using (var brush = new SolidBrush(Color.FromArgb(40, 40, 50)))
+                {
+                    pevent.Graphics.FillRectangle(brush, ClientRectangle);
+                }
+            }
+
             base.OnPaint(pevent);
             
             if (IsActive)
@@ -39,7 +52,7 @@ namespace FpsBooster.Views.Controls
             }
             else
             {
-                ForeColor = Theme.TextDim;
+                ForeColor = _isHovered ? Color.White : Theme.TextDim;
             }
 
             if (!string.IsNullOrEmpty(Icon))

@@ -79,7 +79,7 @@ partial class MainForm
         this.panelDocs = new Panel();
         this.btnMenuDocs = new MenuButton();
         this.lblDocsTitle = new Label();
-        this.lblDocsContent = new Label();
+        this.rtbDocsContent = new RichTextBox();
         
         // Form Configuration
         this.FormBorderStyle = FormBorderStyle.None;
@@ -137,8 +137,7 @@ partial class MainForm
         this.lblIcon.Text = Theme.IconRocket;
         this.lblIcon.Font = new Font("Segoe MDL2 Assets", 32F);
         this.lblIcon.ForeColor = Theme.Accent;
-        this.lblIcon.Dock = DockStyle.Top;
-        this.lblIcon.Height = 100;
+        this.lblIcon.Padding = new Padding(0, 25, 0, 0); // Added margin from top
         this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
         this.btnMenuNetwork.Text = "   NETWORK TEST";
@@ -325,27 +324,37 @@ partial class MainForm
         this.lblDocsTitle.Location = new Point(40, 40);
         this.lblDocsTitle.ForeColor = Color.White;
 
-        this.lblDocsContent.Text = @"1 - Ativa power plan maximo, O que é?
-> Força o processador e o sistema a trabalharem em Desempenho Máximo, removendo limitações de energia.
+        this.rtbDocsContent.Text = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA
 
-2 - Limpeza silent completa, o que é?
-> Executa a limpeza de pastas temporárias (Windows Temp, User Temp e Prefetch), liberando espaço e removendo arquivos inúteis.
+1. Plano de Desempenho Máximo (Ultimate Performance)
+   - O que faz: Ativa o esquema de energia 'Desempenho Máximo' via Powercfg.
+   - Benefícios: Desativa o core parking, mantém o clock do processador alto e reduz a latência de troca de estado de energia (C-States).
 
-3 - Ajustes de Registro e BCD, o que é?
-> Desativa a política de telemetria, otimiza o bcdedit para menor latência e remove objetos 3D desnecessários do Explorer.
+2. Limpeza Profunda do Sistema
+   - O que faz: Remove arquivos das pastas %TEMP%, Prefetch e Windows/Temp.
+   - Benefícios: Reduz o stutter causado por buscas em diretórios superlotados e libera espaço no sistema para o arquivo de paginação (pagefile).
 
-4 - Otimização de Serviços e Memória, o que é?
-> Melhora a gestão de processos svchost, desativa telemetria de rede e otimiza o Defender para não consumir recursos em excesso.
+3. Otimizações de Registro & BCD
+   - O que faz: Ajusta o timer de precisão do Windows (HPET), desativa 'dynamic tick' e otimiza o registro para prioridade de jogos.
+   - Benefícios: Garante que os frames sejam processados com o menor atraso possível entre o hardware e o software.
 
-5 - Bloqueio Adobe e Telemetria, o que é?
-> Bloqueia conexões de telemetria via arquivo HOSTS e interrompe serviços de fundo que consomem CPU desnecessariamente.";
+4. Gerenciamento de Serviços (svchost)
+   - O que faz: Isola serviços essenciais em processos próprios e desativa serviços de telemetria e coleta de dados (DiagTrack).
+   - Benefícios: Evita que picos de uso de CPU por serviços secundários causem queda de frames (FPS Drops).
 
-        this.lblDocsContent.Font = new Font(Theme.MainFont, 11F);
-        this.lblDocsContent.ForeColor = Theme.TextDim;
-        this.lblDocsContent.Location = new Point(45, 120);
-        this.lblDocsContent.Size = new Size(720, 450);
+5. Bloqueio de Telemetria & Adobe
+   - O que faz: Bloqueia IPs de rastreamento no arquivo HOSTS e encerra processos de fundo 'Adobe Genuine Service'.
+   - Benefícios: Libera largura de banda da rede e ciclos de CPU que seriam usados para monitoramento em segundo plano.";
+
+        this.rtbDocsContent.ReadOnly = true;
+        this.rtbDocsContent.BackColor = Theme.Background;
+        this.rtbDocsContent.ForeColor = Theme.Text;
+        this.rtbDocsContent.BorderStyle = BorderStyle.None;
+        this.rtbDocsContent.Font = new Font(Theme.MainFont, 11F);
+        this.rtbDocsContent.Location = new Point(45, 120);
+        this.rtbDocsContent.Size = new Size(720, 450);
         
-        this.panelDocs.Controls.Add(this.lblDocsContent);
+        this.panelDocs.Controls.Add(this.rtbDocsContent);
         this.panelDocs.Controls.Add(this.lblDocsTitle);
 
         this.mainContent.Controls.Add(this.panelBoost);
@@ -402,7 +411,7 @@ partial class MainForm
     private Panel panelDocs;
     private MenuButton btnMenuDocs;
     private Label lblDocsTitle;
-    private Label lblDocsContent;
+    private RichTextBox rtbDocsContent;
 
     #endregion
 }
