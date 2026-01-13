@@ -90,16 +90,16 @@ partial class MainForm
         this.StartPosition = FormStartPosition.CenterScreen;
         this.Text = "⚡ ULTRA FPS BOOSTER | Gaming Performance Suite";
         this.AutoScaleMode = AutoScaleMode.Dpi;
-
+  
         // Title Bar Setup
         this.panelTitleBar.Dock = DockStyle.Top;
-        this.panelTitleBar.Height = 32;
+        this.panelTitleBar.Height = 40;
         this.panelTitleBar.BackColor = Theme.Sidebar;
 
         this.btnClose.Text = Theme.IconClose;
         this.btnClose.Font = new Font("Segoe MDL2 Assets", 10F);
         this.btnClose.ForeColor = Color.White;
-        this.btnClose.Size = new Size(45, 32);
+        this.btnClose.Size = new Size(45, 40);
         this.btnClose.TextAlign = ContentAlignment.MiddleCenter;
         this.btnClose.Dock = DockStyle.Right;
         this.btnClose.Cursor = Cursors.Hand;
@@ -109,7 +109,7 @@ partial class MainForm
         this.btnMinimize.Text = Theme.IconMinimize;
         this.btnMinimize.Font = new Font("Segoe MDL2 Assets", 10F);
         this.btnMinimize.ForeColor = Color.White;
-        this.btnMinimize.Size = new Size(45, 32);
+        this.btnMinimize.Size = new Size(45, 40); // Match new height
         this.btnMinimize.TextAlign = ContentAlignment.MiddleCenter;
         this.btnMinimize.Dock = DockStyle.Right;
         this.btnMinimize.Cursor = Cursors.Hand;
@@ -122,6 +122,7 @@ partial class MainForm
         this.lblAppTitle.Dock = DockStyle.Left;
         this.lblAppTitle.TextAlign = ContentAlignment.MiddleLeft;
         this.lblAppTitle.AutoSize = true;
+        this.lblAppTitle.Padding = new Padding(15, 0, 0, 0); // Increased left padding
 
         this.panelTitleBar.Controls.Add(this.lblAppTitle);
         this.panelTitleBar.Controls.Add(this.btnMinimize);
@@ -139,8 +140,8 @@ partial class MainForm
         this.lblIcon.Font = new Font("Segoe MDL2 Assets", 32F);
         this.lblIcon.ForeColor = Theme.Accent;
         this.lblIcon.Dock = DockStyle.Top;
-        this.lblIcon.Height = 150; // Larger height for better spacing
-        this.lblIcon.Padding = new Padding(0, 50, 0, 0); // Clear top margin
+        this.lblIcon.Height = 120; // Optimized height
+        this.lblIcon.Padding = new Padding(0, 30, 0, 10); // Better top and bottom spacing
         this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
         this.btnMenuNetwork.Text = "   NETWORK TEST";
@@ -253,62 +254,66 @@ partial class MainForm
         this.panelNetwork.Visible = false;
 
         this.lblNetworkTitle.Text = "NETWORK DIAGNOSTICS";
-        this.lblNetworkTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+        this.lblNetworkTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
         this.lblNetworkTitle.AutoSize = true;
-        this.lblNetworkTitle.Location = new Point(40, 40);
+        this.lblNetworkTitle.Location = new Point(40, 30);
         this.lblNetworkTitle.ForeColor = Color.White;
 
         this.lblNetworkInfo.Text = "Enter an IP or Hostname to test your connection quality.";
         this.lblNetworkInfo.ForeColor = Theme.TextDim;
-        this.lblNetworkInfo.Location = new Point(45, 100);
+        this.lblNetworkInfo.Font = new Font("Segoe UI", 10F);
+        this.lblNetworkInfo.Location = new Point(45, 75);
         this.lblNetworkInfo.AutoSize = true;
 
-        this.txtTargetIp.Location = new Point(45, 130);
-        this.txtTargetIp.Size = new Size(300, 30);
-        this.txtTargetIp.BackColor = Color.FromArgb(30, 30, 40);
+        this.txtTargetIp.Location = new Point(45, 110);
+        this.txtTargetIp.Size = new Size(300, 28);
+        this.txtTargetIp.BackColor = Theme.BgCard;
         this.txtTargetIp.ForeColor = Theme.Text;
         this.txtTargetIp.BorderStyle = BorderStyle.FixedSingle;
         this.txtTargetIp.Text = "8.8.8.8";
-        this.txtTargetIp.Font = new Font("Segoe UI", 12F);
+        this.txtTargetIp.Font = new Font("Segoe UI", 10F);
 
         this.btnStartNetworkTest.Text = "START DIAGNOSTICS";
-        this.btnStartNetworkTest.Location = new Point(360, 130);
-        this.btnStartNetworkTest.Size = new Size(180, 32);
+        this.btnStartNetworkTest.Location = new Point(360, 110);
+        this.btnStartNetworkTest.Size = new Size(180, 28);
+        this.btnStartNetworkTest.Font = new Font("Segoe UI Semibold", 9F);
 
-        this.btnLoadFaceit.Text = "FACEIT IP";
-        this.btnLoadFaceit.Location = new Point(550, 130);
-        this.btnLoadFaceit.Size = new Size(100, 32);
-        this.btnLoadFaceit.BackColor = Color.FromArgb(40, 40, 50);
+        this.btnLoadFaceit.Text = "🔶 FACEIT";
+        this.btnLoadFaceit.Location = new Point(550, 110);
+        this.btnLoadFaceit.Size = new Size(100, 28);
+        this.btnLoadFaceit.BackColor = Color.FromArgb(255, 85, 0);
+        this.btnLoadFaceit.Font = new Font("Segoe UI Semibold", 9F);
 
         this.btnLoadGC.Text = "GC IP";
-        this.btnLoadGC.Location = new Point(660, 130);
-        this.btnLoadGC.Size = new Size(100, 32);
-        this.btnLoadGC.BackColor = Color.FromArgb(40, 40, 50);
+        this.btnLoadGC.Location = new Point(660, 110);
+        this.btnLoadGC.Size = new Size(100, 28);
+        this.btnLoadGC.BackColor = Theme.BgCard;
+        this.btnLoadGC.Font = new Font("Segoe UI Semibold", 9F);
 
         this.lblPingResult.Text = "PING: -- ms";
-        this.lblPingResult.Font = new Font("Segoe UI Semibold", 14F);
-        this.lblPingResult.ForeColor = Theme.Accent;
-        this.lblPingResult.Location = new Point(45, 180);
+        this.lblPingResult.Font = new Font("Segoe UI Semibold", 11F);
+        this.lblPingResult.ForeColor = Theme.AccentGreen;
+        this.lblPingResult.Location = new Point(45, 160);
         this.lblPingResult.AutoSize = true;
 
         this.lblJitterResult.Text = "JITTER: -- ms";
-        this.lblJitterResult.Font = new Font("Segoe UI Semibold", 14F);
-        this.lblJitterResult.ForeColor = Color.Cyan;
-        this.lblJitterResult.Location = new Point(220, 180);
+        this.lblJitterResult.Font = new Font("Segoe UI Semibold", 11F);
+        this.lblJitterResult.ForeColor = Theme.AccentBlue;
+        this.lblJitterResult.Location = new Point(220, 160);
         this.lblJitterResult.AutoSize = true;
 
         this.lblLossResult.Text = "LOSS: -- %";
-        this.lblLossResult.Font = new Font("Segoe UI Semibold", 14F);
-        this.lblLossResult.ForeColor = Color.Red;
-        this.lblLossResult.Location = new Point(400, 180);
+        this.lblLossResult.Font = new Font("Segoe UI Semibold", 11F);
+        this.lblLossResult.ForeColor = Theme.AccentAmber;
+        this.lblLossResult.Location = new Point(400, 160);
         this.lblLossResult.AutoSize = true;
 
-        this.rtbNetworkLog.Location = new Point(45, 230);
-        this.rtbNetworkLog.Size = new Size(720, 300);
-        this.rtbNetworkLog.BackColor = Color.FromArgb(15, 15, 15);
+        this.rtbNetworkLog.Location = new Point(45, 200);
+        this.rtbNetworkLog.Size = new Size(720, 330);
+        this.rtbNetworkLog.BackColor = Theme.BgCard;
         this.rtbNetworkLog.ForeColor = Theme.TextDim;
         this.rtbNetworkLog.BorderStyle = BorderStyle.None;
-        this.rtbNetworkLog.Font = new Font("Consolas", 10F);
+        this.rtbNetworkLog.Font = new Font("Consolas", 9F);
         this.rtbNetworkLog.ReadOnly = true;
 
         this.panelNetwork.Controls.Add(this.btnLoadFaceit);

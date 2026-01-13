@@ -34,7 +34,8 @@ namespace FpsBooster.Views.Controls
         {
             if (_isHovered && !IsActive)
             {
-                using (var brush = new SolidBrush(Color.FromArgb(40, 40, 50)))
+                // Use a darker, semi-transparent color for better contrast
+                using (var brush = new SolidBrush(Color.FromArgb(40, 255, 255, 255)))
                 {
                     pevent.Graphics.FillRectangle(brush, ClientRectangle);
                 }
