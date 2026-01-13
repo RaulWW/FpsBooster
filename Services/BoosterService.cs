@@ -5,17 +5,17 @@ namespace FpsBooster.Services
 {
     public class BoosterService
     {
-        private readonly PowerShellService _psService;
-
-        public event Action<string>? OnLogMessage;
-        public event Action<int>? OnProgressUpdate;
-
-        public BoosterService()
-        {
-            _psService = new PowerShellService();
-            _psService.OnOutputReceived += (msg) => OnLogMessage?.Invoke(msg);
-            _psService.OnErrorReceived += (msg) => OnLogMessage?.Invoke($"[ERROR] {msg}");
-        }
+        private readonly IPowerShellService _psService;
+ 
+         public event Action<string>? OnLogMessage;
+         public event Action<int>? OnProgressUpdate;
+ 
+         public BoosterService(IPowerShellService? psService = null)
+         {
+             _psService = psService ?? new PowerShellService();
+             _psService.OnOutputReceived += (msg) => OnLogMessage?.Invoke(msg);
+             _psService.OnErrorReceived += (msg) => OnLogMessage?.Invoke($"[ERROR] {msg}");
+         }
 
         public async Task ApplyUltimatePerformanceAsync()
         {
@@ -29,6 +29,13 @@ namespace FpsBooster.Services
                 $ultimateGuid = 'e9a42b02-d5df-448d-aa00-03f14749eb61'
                 $exists = powercfg /list | Select-String $ultimateGuid
                 if (-not $exists) {
+                    $highPerf = powercfg /list | Select-String 'Extreme' | Select-Object -First 1
+                    if ($highPerf) {
+                         $highPerfGuid = [regex]::Match($highPerf, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}').Value
+                         powercfg -setactive $highPerfGuid
+                         Write-Host ""Usando Plano de Energia existente: $highPerfGuid""
+                         return
+                    }
                     powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
                 }
                 powercfg -setactive $ultimateGuid
@@ -161,7 +168,22 @@ namespace FpsBooster.Services
             // 8. Advanced Tweaks (Copilot & FSO)
             OnProgressUpdate?.Invoke(85);
             OnLogMessage?.Invoke("Otimizando Copilot e Fullscreen (FSO)...");
-            await _psService.ExecuteCommandAsync("try { dism /online /remove-package /package-name:Microsoft.Windows.Copilot /NoRestart } catch { }");
+            string copilotFix = @"
+                $ErrorActionPreference = 'SilentlyContinue'
+                $package = Get-AppxPackage -AllUsers -Name 'Microsoft.Windows.Copilot'
+                if ($package) {
+                    Remove-AppxPackage -Package $package.PackageFullName -AllUsers
+                    Write-Host 'Copilot removido via Appx'
+                } else {
+                    $dismPkg = dism /online /get-packages | Select-String 'Microsoft-Windows-UserExperience-Desktop'
+                    if ($dismPkg) {
+                         $pkgName = ($dismPkg -split ': ')[1]
+                         dism /online /remove-package /PackageName:$pkgName /NoRestart
+                         Write-Host 'Copilot/Experience removido via DISM'
+                    }
+                }
+            ";
+            await _psService.ExecuteCommandAsync(copilotFix);
             await _psService.ExecuteCommandAsync("Set-ItemProperty -Path 'HKCU:\\System\\GameConfigStore' -Name 'GameDVR_DXGIHonorFSEWindowsCompatible' -Value 1 -Type DWord -Force");
 
             // 9. OneDrive Removal & Shell Fix

@@ -1,10 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace FpsBooster.Services
 {
-    public class PowerShellService
+    public class PowerShellService : IPowerShellService
     {
         public event Action<string>? OnOutputReceived;
         public event Action<string>? OnErrorReceived;
@@ -18,9 +19,9 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                StandardInputEncoding = System.Text.Encoding.UTF8,
-                StandardOutputEncoding = System.Text.Encoding.UTF8,
-                StandardErrorEncoding = System.Text.Encoding.UTF8,
+                StandardInputEncoding = new UTF8Encoding(false),
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false),
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };

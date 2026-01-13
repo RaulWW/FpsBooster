@@ -7,5 +7,11 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <Compile Remove="FpsBooster.Tests\**" />
+    <EmbeddedResource Remove="FpsBooster.Tests\**" />
+    <None Remove="FpsBooster.Tests\**" />
+  </ItemGroup>
 
 </Project>
