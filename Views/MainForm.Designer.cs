@@ -137,7 +137,9 @@ partial class MainForm
         this.lblIcon.Text = Theme.IconRocket;
         this.lblIcon.Font = new Font("Segoe MDL2 Assets", 32F);
         this.lblIcon.ForeColor = Theme.Accent;
-        this.lblIcon.Padding = new Padding(0, 25, 0, 0); // Added margin from top
+        this.lblIcon.Dock = DockStyle.Top;
+        this.lblIcon.Height = 130; // Increased height
+        this.lblIcon.Padding = new Padding(0, 40, 0, 0); // Pushing the icon down
         this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
         this.btnMenuNetwork.Text = "   NETWORK TEST";

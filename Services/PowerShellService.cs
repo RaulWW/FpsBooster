@@ -19,9 +19,9 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                StandardInputEncoding = Encoding.UTF8,
-                StandardOutputEncoding = Encoding.UTF8,
-                StandardErrorEncoding = Encoding.UTF8,
+                StandardInputEncoding = new UTF8Encoding(false),
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false),
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
@@ -48,8 +48,7 @@ namespace FpsBooster.Services
                 {
                     if (sw.BaseStream.CanWrite)
                     {
-                        await sw.WriteLineAsync("[Console]::InputEncoding = [System.Text.Encoding]::UTF8;");
-                        await sw.WriteLineAsync("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;");
+                        // chcp 65001 is not needed if the stream encoding is handled correctly without BOM
                         await sw.WriteLineAsync(script);
                     }
                 }
