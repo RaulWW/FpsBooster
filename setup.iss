@@ -4,7 +4,7 @@
 [Setup]
 ; App Metadata
 AppName=FPS Booster
-AppVersion=1.0.0.0
+AppVersion=1.2.0
 AppPublisher=RaulW
 AppCopyright=Copyright (C) 2026 RaulW
 AppPublisherURL=https://github.com/RaulW/FpsBooster

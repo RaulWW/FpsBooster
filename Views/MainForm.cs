@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using FpsBooster.Services;
 
 namespace FpsBooster.Views;
@@ -28,6 +29,12 @@ public partial class MainForm : Form
             LoadCS2Config();
         };
         btnMenuNetwork.Click += (s, e) => SwitchTab(panelNetwork, btnMenuNetwork);
+        btnMenuDocs.Click += (s, e) => SwitchTab(panelDocs, btnMenuDocs);
+
+        // Title Bar
+        btnClose.Click += (s, e) => Application.Exit();
+        btnMinimize.Click += (s, e) => this.WindowState = FormWindowState.Minimized;
+        panelTitleBar.MouseDown += TitleBar_MouseDown;
 
         // Button clicks
         btnBoost.Click += async (s, e) => await RunBoost();
@@ -44,12 +51,29 @@ public partial class MainForm : Form
         panelBoost.Visible = (activePanel == panelBoost);
         panelCS2.Visible = (activePanel == panelCS2);
         panelNetwork.Visible = (activePanel == panelNetwork);
+        panelDocs.Visible = (activePanel == panelDocs);
         
         btnMenuBoost.IsActive = (activeButton == btnMenuBoost);
         btnMenuCS2.IsActive = (activeButton == btnMenuCS2);
         btnMenuNetwork.IsActive = (activeButton == btnMenuNetwork);
+        btnMenuDocs.IsActive = (activeButton == btnMenuDocs);
         
         sidebar.Invalidate(); // Redraw sidebar for activity indicator
+    }
+
+    // Window Dragging
+    [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
+    private extern static void ReleaseCapture();
+    [DllImport("user32.DLL", EntryPoint = "SendMessage")]
+    private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
+
+    private void TitleBar_MouseDown(object? sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            ReleaseCapture();
+            SendMessage(Handle, 0x112, 0xf012, 0);
+        }
     }
 
     private void LoadCS2Config()
@@ -198,9 +222,34 @@ r_dynamic 0";
         }
 
         string timestamp = DateTime.Now.ToString("HH:mm:ss");
-        rtbLog.AppendText($"[{timestamp}] {message}{Environment.NewLine}");
+        string fullMessage = $"[{timestamp}] {message}{Environment.NewLine}";
+        
+        int start = rtbLog.TextLength;
+        rtbLog.AppendText(fullMessage);
+        int end = rtbLog.TextLength;
+
+        // Apply colors to tags
+        HighlightLogTags(start, fullMessage);
+
         rtbLog.SelectionStart = rtbLog.Text.Length;
         rtbLog.ScrollToCaret();
+    }
+
+    private void HighlightLogTags(int startOffset, string text)
+    {
+        string[] tags = { "[INFO]", "[WARNING]", "[ERROR]", "SUCCESS", "FATAL" };
+        foreach (var tag in tags)
+        {
+            int index = text.IndexOf(tag);
+            while (index != -1)
+            {
+                rtbLog.Select(startOffset + index, tag.Length);
+                rtbLog.SelectionColor = Theme.Success; // As requested, tags in green
+                rtbLog.SelectionFont = new Font(rtbLog.Font, FontStyle.Bold);
+                index = text.IndexOf(tag, index + tag.Length);
+            }
+        }
+        rtbLog.SelectionColor = Theme.TextDim; // Reset
     }
 
     private void UpdateProgress(int value)

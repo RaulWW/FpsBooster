@@ -20,11 +20,11 @@ namespace FpsBooster.Services
         public async Task ApplyUltimatePerformanceAsync()
         {
             OnProgressUpdate?.Invoke(5);
-            OnLogMessage?.Invoke("Iniciando otimização EXTREMA do sistema...");
+            OnLogMessage?.Invoke("[INFO] Iniciando otimização EXTREMA do sistema...");
             
             // 1. Ultimate Performance Power Plan
             OnProgressUpdate?.Invoke(15);
-            OnLogMessage?.Invoke("Configurando Plano de Energia: Desempenho Máximo...");
+            OnLogMessage?.Invoke("[INFO] Configurando Plano de Energia: Desempenho Máximo...");
             string powerPlanScript = @"
                 $ultimateGuid = 'e9a42b02-d5df-448d-aa00-03f14749eb61'
                 $exists = powercfg /list | Select-String $ultimateGuid
@@ -44,7 +44,7 @@ namespace FpsBooster.Services
 
             // 2. Performance & Cleanup
             OnProgressUpdate?.Invoke(30);
-            OnLogMessage?.Invoke("Desativando Hibernação e limpando arquivos temporários...");
+            OnLogMessage?.Invoke("[INFO] Desativando Hibernação e limpando arquivos temporários...");
             await _psService.ExecuteCommandAsync("powercfg.exe /hibernate off");
             string cleanupScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
@@ -59,7 +59,7 @@ namespace FpsBooster.Services
 
             // 3. Registry & BCD Tweaks
             OnProgressUpdate?.Invoke(50);
-            OnLogMessage?.Invoke("Aplicando bcdedit e ajustes de registro...");
+            OnLogMessage?.Invoke("[INFO] Aplicando bcdedit e ajustes de registro...");
             string bcdRegistryScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 # BCD & Legacy Policy
@@ -80,7 +80,7 @@ namespace FpsBooster.Services
 
             // 4. System Services & Memory
             OnProgressUpdate?.Invoke(70);
-            OnLogMessage?.Invoke("Otimizando processos svchost e telemetria...");
+            OnLogMessage?.Invoke("[INFO] Otimizando processos svchost e telemetria...");
             string memoryServicesScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 # Group svchost.exe processes
@@ -106,7 +106,7 @@ namespace FpsBooster.Services
 
             // 5. Special TaskMgr Preferences (Conditional)
             OnProgressUpdate?.Invoke(90);
-            OnLogMessage?.Invoke("Afinando preferências do Gerenciador de Tarefas...");
+            OnLogMessage?.Invoke("[INFO] Afinando preferências do Gerenciador de Tarefas...");
             string taskMgrScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 if ((get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -Name CurrentBuild).CurrentBuild -lt 22557) {
@@ -124,7 +124,7 @@ namespace FpsBooster.Services
 
             // 6. Adobe Performance & Update Block
             OnProgressUpdate?.Invoke(85);
-            OnLogMessage?.Invoke("Otimizando serviços Adobe e desativando atualizações...");
+            OnLogMessage?.Invoke("[INFO] Otimizando serviços Adobe e desativando atualizações...");
             string adobeScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 # Stop Adobe Desktop Service
@@ -147,7 +147,7 @@ namespace FpsBooster.Services
 
             // 7. Adobe Network Block (Hosts)
             OnProgressUpdate?.Invoke(90);
-            OnLogMessage?.Invoke("Aplicando bloqueio de telemetria Adobe via HOSTS...");
+            OnLogMessage?.Invoke("[INFO] Aplicando bloqueio de telemetria Adobe via HOSTS...");
             string hostsScript = @"
                 $remoteHostsUrl = 'https://raw.githubusercontent.com/Ruddernation-Designs/Adobe-URL-Block-List/master/hosts'
                 $localHostsPath = 'C:\Windows\System32\drivers\etc\hosts'
@@ -167,7 +167,7 @@ namespace FpsBooster.Services
 
             // 8. Advanced Tweaks (Copilot & FSO)
             OnProgressUpdate?.Invoke(85);
-            OnLogMessage?.Invoke("Otimizando Copilot e Fullscreen (FSO)...");
+            OnLogMessage?.Invoke("[INFO] Otimizando Copilot e Fullscreen (FSO)...");
             string copilotFix = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 $package = Get-AppxPackage -AllUsers -Name 'Microsoft.Windows.Copilot'
@@ -188,7 +188,7 @@ namespace FpsBooster.Services
 
             // 9. OneDrive Removal & Shell Fix
             OnProgressUpdate?.Invoke(90);
-            OnLogMessage?.Invoke("Removendo OneDrive e restaurando pastas do sistema...");
+            OnLogMessage?.Invoke("[INFO] Removendo OneDrive e restaurando pastas do sistema...");
             string oneDriveScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 $OneDrivePath = $env:OneDrive
@@ -232,7 +232,7 @@ namespace FpsBooster.Services
             // await _psService.ExecuteCommandAsync("cleanmgr.exe /d C: /VERYLOWDISK");
             
             OnProgressUpdate?.Invoke(100);
-            OnLogMessage?.Invoke("SISTEMA OTIMIZADO AO MÁXIMO! Reinicie para aplicar todos os ajustes.");
+            OnLogMessage?.Invoke("[INFO] SISTEMA OTIMIZADO AO MÁXIMO! Reinicie para aplicar todos os ajustes.");
         }
     }
 }

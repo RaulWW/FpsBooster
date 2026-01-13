@@ -67,13 +67,64 @@ partial class MainForm
         this.lblLossResult = new Label();
         this.rtbNetworkLog = new RichTextBox();
         
+        // Custom Title Bar
+        this.panelTitleBar = new Panel();
+        this.btnClose = new Label();
+        this.btnMinimize = new Label();
+        this.lblAppTitle = new Label();
+
+        // Documentation Tab
+        this.panelDocs = new Panel();
+        this.btnMenuDocs = new MenuButton();
+        this.lblDocsTitle = new Label();
+        this.lblDocsContent = new Label();
+        
         // Form Configuration
+        this.FormBorderStyle = FormBorderStyle.None;
         this.BackColor = Theme.Background;
         this.ForeColor = Theme.Text;
         this.Size = new Size(1100, 700);
         this.StartPosition = FormStartPosition.CenterScreen;
         this.Text = "⚡ ULTRA FPS BOOSTER | Gaming Performance Suite";
         this.AutoScaleMode = AutoScaleMode.Dpi;
+
+        // Title Bar Setup
+        this.panelTitleBar.Dock = DockStyle.Top;
+        this.panelTitleBar.Height = 32;
+        this.panelTitleBar.BackColor = Theme.Sidebar;
+
+        this.btnClose.Text = Theme.IconClose;
+        this.btnClose.Font = new Font("Segoe MDL2 Assets", 10F);
+        this.btnClose.ForeColor = Color.White;
+        this.btnClose.Size = new Size(45, 32);
+        this.btnClose.TextAlign = ContentAlignment.MiddleCenter;
+        this.btnClose.Dock = DockStyle.Right;
+        this.btnClose.Cursor = Cursors.Hand;
+        this.btnClose.MouseEnter += (s, e) => btnClose.BackColor = Color.Red;
+        this.btnClose.MouseLeave += (s, e) => btnClose.BackColor = Color.Transparent;
+
+        this.btnMinimize.Text = Theme.IconMinimize;
+        this.btnMinimize.Font = new Font("Segoe MDL2 Assets", 10F);
+        this.btnMinimize.ForeColor = Color.White;
+        this.btnMinimize.Size = new Size(45, 32);
+        this.btnMinimize.TextAlign = ContentAlignment.MiddleCenter;
+        this.btnMinimize.Dock = DockStyle.Right;
+        this.btnMinimize.Cursor = Cursors.Hand;
+        this.btnMinimize.MouseEnter += (s, e) => btnMinimize.BackColor = Color.FromArgb(60, 60, 60);
+        this.btnMinimize.MouseLeave += (s, e) => btnMinimize.BackColor = Color.Transparent;
+
+        this.lblAppTitle.Text = "  ⚡ ULTRA FPS BOOSTER";
+        this.lblAppTitle.Font = new Font(Theme.MainFont, 9F, FontStyle.Bold);
+        this.lblAppTitle.ForeColor = Theme.TextDim;
+        this.lblAppTitle.Dock = DockStyle.Left;
+        this.lblAppTitle.TextAlign = ContentAlignment.MiddleLeft;
+        this.lblAppTitle.AutoSize = true;
+
+        this.panelTitleBar.Controls.Add(this.lblAppTitle);
+        this.panelTitleBar.Controls.Add(this.btnMinimize);
+        this.panelTitleBar.Controls.Add(this.btnClose);
+
+        this.Controls.Add(this.panelTitleBar);
 
         // Sidebar Setup
         this.sidebar.Dock = DockStyle.Left;
@@ -101,8 +152,13 @@ partial class MainForm
         this.btnMenuBoost.Icon = Theme.IconRocket;
         this.btnMenuBoost.Dock = DockStyle.Top;
 
+        this.btnMenuDocs.Text = "   DOCUMENTAÇÃO";
+        this.btnMenuDocs.Icon = Theme.IconDocs;
+        this.btnMenuDocs.Dock = DockStyle.Top;
+
         this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
+        this.sidebar.Controls.Add(this.btnMenuDocs);
         this.sidebar.Controls.Add(this.btnMenuBoost);
         this.sidebar.Controls.Add(this.lblIcon);
         this.sidebar.Controls.Add(this.footer);
@@ -256,9 +312,44 @@ partial class MainForm
         this.panelNetwork.Controls.Add(this.lblNetworkInfo);
         this.panelNetwork.Controls.Add(this.lblNetworkTitle);
 
+        // Panel Docs Setup
+        this.panelDocs.Dock = DockStyle.Fill;
+        this.panelDocs.Padding = new Padding(40);
+        this.panelDocs.Visible = false;
+
+        this.lblDocsTitle.Text = "DOCUMENTAÇÃO";
+        this.lblDocsTitle.Font = new Font(Theme.MainFont, 22F, FontStyle.Bold);
+        this.lblDocsTitle.AutoSize = true;
+        this.lblDocsTitle.Location = new Point(40, 40);
+        this.lblDocsTitle.ForeColor = Color.White;
+
+        this.lblDocsContent.Text = @"1 - Ativa power plan maximo, O que é?
+> Força o processador e o sistema a trabalharem em Desempenho Máximo, removendo limitações de energia.
+
+2 - Limpeza silent completa, o que é?
+> Executa a limpeza de pastas temporárias (Windows Temp, User Temp e Prefetch), liberando espaço e removendo arquivos inúteis.
+
+3 - Ajustes de Registro e BCD, o que é?
+> Desativa a política de telemetria, otimiza o bcdedit para menor latência e remove objetos 3D desnecessários do Explorer.
+
+4 - Otimização de Serviços e Memória, o que é?
+> Melhora a gestão de processos svchost, desativa telemetria de rede e otimiza o Defender para não consumir recursos em excesso.
+
+5 - Bloqueio Adobe e Telemetria, o que é?
+> Bloqueia conexões de telemetria via arquivo HOSTS e interrompe serviços de fundo que consomem CPU desnecessariamente.";
+
+        this.lblDocsContent.Font = new Font(Theme.MainFont, 11F);
+        this.lblDocsContent.ForeColor = Theme.TextDim;
+        this.lblDocsContent.Location = new Point(45, 120);
+        this.lblDocsContent.Size = new Size(720, 450);
+        
+        this.panelDocs.Controls.Add(this.lblDocsContent);
+        this.panelDocs.Controls.Add(this.lblDocsTitle);
+
         this.mainContent.Controls.Add(this.panelBoost);
         this.mainContent.Controls.Add(this.panelCS2);
         this.mainContent.Controls.Add(this.panelNetwork);
+        this.mainContent.Controls.Add(this.panelDocs);
         
         this.Controls.Add(this.mainContent);
         this.Controls.Add(this.sidebar);
@@ -298,6 +389,18 @@ partial class MainForm
     private Label lblJitterResult;
     private Label lblLossResult;
     private RichTextBox rtbNetworkLog;
+
+    // Custom Title Bar Controls
+    private Panel panelTitleBar;
+    private Label btnClose;
+    private Label btnMinimize;
+    private Label lblAppTitle;
+
+    // Docs Controls
+    private Panel panelDocs;
+    private MenuButton btnMenuDocs;
+    private Label lblDocsTitle;
+    private Label lblDocsContent;
 
     #endregion
 }

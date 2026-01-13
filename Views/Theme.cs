@@ -15,6 +15,8 @@ namespace FpsBooster.Views
         public static Color Text = Color.FromArgb(250, 250, 255);        // Pure White with slight blue
         public static Color TextDim = Color.FromArgb(160, 165, 180);     // Cool Gray
         public static Color Success = Color.FromArgb(0, 255, 100);       // Neon Green
+        public static Color Warning = Color.FromArgb(255, 200, 0);       // Warning Gold
+        public static Color Error = Color.FromArgb(255, 80, 80);         // Error Red
 
         // Segoe MDL2 Assets Icons
         public static string IconPower = "\uE7E8"; // Lightning
@@ -23,8 +25,14 @@ namespace FpsBooster.Views
         public static string IconCheck = "\uE73E";
         public static string IconRocket = "\uE99A";
         public static string IconFlash = "\uE945";
-        public static string IconGame = "\uE7BE"; // Game Controller
+        public static string IconGame = "\uE7BE";    // Game Controller
         public static string IconNetwork = "\uE12B"; // Globe
+        public static string IconDocs = "\uE8A5";    // Documentation/Book
+        public static string IconClose = "\uE8BB";   // Chrome Close
+        public static string IconMinimize = "\uE921"; // Chrome Minimize
+
+        public static string MainFont = "Roboto";
+        public static string FallbackFont = "Segoe UI";
         
         public static string AppVersion = "v1.2.0 ELITE";
         public static string Developer = "⚡ Developed by Raul W. | Premium Edition";
@@ -38,7 +46,8 @@ namespace FpsBooster.Views
             FlatAppearance.BorderSize = 0;
             BackColor = Theme.Accent;
             ForeColor = Color.White;
-            Font = new Font("Segoe UI Semibold", 10F);
+            Font = new Font(Theme.MainFont, 10F, FontStyle.Bold);
+            if (Font.Name != Theme.MainFont) Font = new Font(Theme.FallbackFont, 10F, FontStyle.Bold);
             Cursor = Cursors.Hand;
         }
 
@@ -63,7 +72,8 @@ namespace FpsBooster.Views
             FlatAppearance.BorderSize = 0;
             BackColor = Color.Transparent;
             ForeColor = Theme.TextDim;
-            Font = new Font("Segoe UI Semibold", 10F);
+            Font = new Font(Theme.MainFont, 10F, FontStyle.Bold);
+            if (Font.Name != Theme.MainFont) Font = new Font(Theme.FallbackFont, 10F, FontStyle.Bold);
             Height = 50;
             Cursor = Cursors.Hand;
             TextAlign = ContentAlignment.MiddleLeft;
@@ -135,7 +145,8 @@ namespace FpsBooster.Views
         public ModernLabel()
         {
             ForeColor = Theme.Text;
-            Font = new Font("Segoe UI", 10F);
+            Font = new Font(Theme.MainFont, 10F);
+            if (Font.Name != Theme.MainFont) Font = new Font(Theme.FallbackFont, 10F);
         }
     }
 }
