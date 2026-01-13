@@ -38,7 +38,7 @@ partial class MainForm
         this.panelCS2 = new Panel();
         this.panelNetwork = new Panel();
         this.footer = new Panel();
-        this.lblFooter = new Label();
+        this.lblLinkFooter = new LinkLabel();
         
         // Navigation buttons
         this.btnMenuBoost = new MenuButton();
@@ -122,7 +122,7 @@ partial class MainForm
         this.lblAppTitle.Dock = DockStyle.Left;
         this.lblAppTitle.TextAlign = ContentAlignment.MiddleLeft;
         this.lblAppTitle.AutoSize = true;
-        this.lblAppTitle.Padding = new Padding(15, 0, 0, 0); // Increased left padding
+        this.lblAppTitle.Padding = new Padding(30, 15, 0, 0);
 
         this.panelTitleBar.Controls.Add(this.lblAppTitle);
         this.panelTitleBar.Controls.Add(this.btnMinimize);
@@ -171,13 +171,25 @@ partial class MainForm
         // Footer Setup
         this.footer.Dock = DockStyle.Bottom;
         this.footer.Height = 40;
-        this.footer.Controls.Add(this.lblFooter);
+        this.footer.Controls.Add(this.lblLinkFooter);
         
-        this.lblFooter.Dock = DockStyle.Fill;
-        this.lblFooter.ForeColor = Theme.TextDim;
-        this.lblFooter.Font = new Font("Segoe UI", 8F);
-        this.lblFooter.Text = $"{Theme.Developer} | {Theme.AppVersion}";
-        this.lblFooter.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblLinkFooter.Dock = DockStyle.Fill;
+        this.lblLinkFooter.ForeColor = Theme.TextDim;
+        this.lblLinkFooter.LinkColor = Theme.TextDim;
+        this.lblLinkFooter.ActiveLinkColor = Theme.Accent;
+        this.lblLinkFooter.VisitedLinkColor = Theme.TextDim;
+        this.lblLinkFooter.LinkBehavior = LinkBehavior.HoverUnderline;
+        this.lblLinkFooter.Font = new Font("Segoe UI", 8F);
+        this.lblLinkFooter.Text = $"{Theme.Developer} | {Theme.AppVersion}";
+        this.lblLinkFooter.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblLinkFooter.LinkClicked += (s, e) => {
+            try {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
+                    FileName = "https://github.com/RaulW",
+                    UseShellExecute = true
+                });
+            } catch { }
+        };
 
         // Main Content Setup
         this.mainContent.Dock = DockStyle.Fill;
@@ -192,6 +204,7 @@ partial class MainForm
         this.lblTitle.AutoSize = true;
         this.lblTitle.Location = new Point(40, 40);
         this.lblTitle.ForeColor = Color.White;
+        this.lblTitle.Padding = new Padding(0, 15, 0, 0);
         
         this.progressBar.Location = new Point(45, 120);
         this.progressBar.Width = 720;
@@ -225,6 +238,7 @@ partial class MainForm
         this.lblCS2Title.AutoSize = true;
         this.lblCS2Title.Location = new Point(40, 40);
         this.lblCS2Title.ForeColor = Color.White;
+        this.lblCS2Title.Padding = new Padding(0, 15, 0, 0);
 
         this.lblCS2Info.Text = "Edit your autoexec.cfg below. Syntax highlighting applies to commands.";
         this.lblCS2Info.ForeColor = Theme.TextDim;
@@ -253,6 +267,7 @@ partial class MainForm
         this.panelNetwork.Padding = new Padding(40);
         this.panelNetwork.Visible = false;
 
+        // Panel Network Controls
         this.lblNetworkTitle.Text = "NETWORK DIAGNOSTICS";
         this.lblNetworkTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
         this.lblNetworkTitle.AutoSize = true;
@@ -273,22 +288,24 @@ partial class MainForm
         this.txtTargetIp.Text = "8.8.8.8";
         this.txtTargetIp.Font = new Font("Segoe UI", 10F);
 
-        this.btnStartNetworkTest.Text = "START DIAGNOSTICS";
+        this.btnStartNetworkTest.Text = "  START TEST";
         this.btnStartNetworkTest.Location = new Point(360, 110);
-        this.btnStartNetworkTest.Size = new Size(180, 28);
+        this.btnStartNetworkTest.Size = new Size(160, 28);
         this.btnStartNetworkTest.Font = new Font("Segoe UI Semibold", 9F);
 
-        this.btnLoadFaceit.Text = "🔶 FACEIT";
-        this.btnLoadFaceit.Location = new Point(550, 110);
-        this.btnLoadFaceit.Size = new Size(100, 28);
+        this.btnLoadFaceit.Text = "  FACEIT";
+        this.btnLoadFaceit.Location = new Point(530, 110);
+        this.btnLoadFaceit.Size = new Size(110, 28);
         this.btnLoadFaceit.BackColor = Color.FromArgb(255, 85, 0);
         this.btnLoadFaceit.Font = new Font("Segoe UI Semibold", 9F);
+        try { this.btnLoadFaceit.ButtonIcon = Image.FromFile("faceit_logo.png"); } catch { }
 
-        this.btnLoadGC.Text = "GC IP";
-        this.btnLoadGC.Location = new Point(660, 110);
-        this.btnLoadGC.Size = new Size(100, 28);
+        this.btnLoadGC.Text = "  GC IP";
+        this.btnLoadGC.Location = new Point(650, 110);
+        this.btnLoadGC.Size = new Size(110, 28);
         this.btnLoadGC.BackColor = Theme.BgCard;
         this.btnLoadGC.Font = new Font("Segoe UI Semibold", 9F);
+        try { this.btnLoadGC.ButtonIcon = Image.FromFile("gc_logo.png"); } catch { }
 
         this.lblPingResult.Text = "PING: -- ms";
         this.lblPingResult.Font = new Font("Segoe UI Semibold", 11F);
@@ -316,16 +333,17 @@ partial class MainForm
         this.rtbNetworkLog.Font = new Font("Consolas", 9F);
         this.rtbNetworkLog.ReadOnly = true;
 
+        this.panelNetwork.Controls.Clear();
+        this.panelNetwork.Controls.Add(this.lblNetworkTitle);
+        this.panelNetwork.Controls.Add(this.lblNetworkInfo);
+        this.panelNetwork.Controls.Add(this.txtTargetIp);
+        this.panelNetwork.Controls.Add(this.btnStartNetworkTest);
         this.panelNetwork.Controls.Add(this.btnLoadFaceit);
         this.panelNetwork.Controls.Add(this.btnLoadGC);
-        this.panelNetwork.Controls.Add(this.rtbNetworkLog);
-        this.panelNetwork.Controls.Add(this.lblLossResult);
-        this.panelNetwork.Controls.Add(this.lblJitterResult);
         this.panelNetwork.Controls.Add(this.lblPingResult);
-        this.panelNetwork.Controls.Add(this.btnStartNetworkTest);
-        this.panelNetwork.Controls.Add(this.txtTargetIp);
-        this.panelNetwork.Controls.Add(this.lblNetworkInfo);
-        this.panelNetwork.Controls.Add(this.lblNetworkTitle);
+        this.panelNetwork.Controls.Add(this.lblJitterResult);
+        this.panelNetwork.Controls.Add(this.lblLossResult);
+        this.panelNetwork.Controls.Add(this.rtbNetworkLog);
 
         // Panel Docs Setup
         this.panelDocs.Dock = DockStyle.Fill;
@@ -337,6 +355,7 @@ partial class MainForm
         this.lblDocsTitle.AutoSize = true;
         this.lblDocsTitle.Location = new Point(40, 40);
         this.lblDocsTitle.ForeColor = Color.White;
+        this.lblDocsTitle.Padding = new Padding(0, 15, 0, 0);
 
         this.rtbDocsContent.Text = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA
 
@@ -382,7 +401,7 @@ partial class MainForm
 
     private Panel sidebar;
     private Panel footer;
-    private Label lblFooter;
+    private LinkLabel lblLinkFooter;
     private Panel mainContent;
     private Panel panelBoost;
     private Panel panelCS2;
