@@ -5,6 +5,8 @@ namespace FpsBooster.Views;
 public partial class MainForm : Form
 {
     private readonly BoosterService _boosterService;
+    private readonly NetworkService _networkService;
+    private CancellationTokenSource? _networkCts;
 
     public MainForm()
     {
@@ -15,16 +17,23 @@ public partial class MainForm : Form
         _boosterService.OnLogMessage += AddLog;
         _boosterService.OnProgressUpdate += UpdateProgress;
 
+        _networkService = new NetworkService();
+        _networkService.OnResultReceived += UpdateNetworkResults;
+        _networkService.OnLogReceived += AddNetworkLog;
+
         // Navigation
         btnMenuBoost.Click += (s, e) => SwitchTab(panelBoost, btnMenuBoost);
         btnMenuCS2.Click += (s, e) => {
             SwitchTab(panelCS2, btnMenuCS2);
             LoadCS2Config();
         };
+        btnMenuNetwork.Click += (s, e) => SwitchTab(panelNetwork, btnMenuNetwork);
 
         // Button clicks
         btnBoost.Click += async (s, e) => await RunBoost();
         btnSaveCS2.Click += (s, e) => SaveCS2Config();
+        btnStartNetworkTest.Click += async (s, e) => await ToggleNetworkTest();
+        btnLoadFaceit.Click += (s, e) => txtTargetIp.Text = "169.150.220.9:20070";
 
         // Syntax highlighting logic
         rtbCS2Config.TextChanged += (s, e) => ApplyCS2SyntaxHighlighting();
@@ -34,9 +43,11 @@ public partial class MainForm : Form
     {
         panelBoost.Visible = (activePanel == panelBoost);
         panelCS2.Visible = (activePanel == panelCS2);
+        panelNetwork.Visible = (activePanel == panelNetwork);
         
         btnMenuBoost.IsActive = (activeButton == btnMenuBoost);
         btnMenuCS2.IsActive = (activeButton == btnMenuCS2);
+        btnMenuNetwork.IsActive = (activeButton == btnMenuNetwork);
         
         sidebar.Invalidate(); // Redraw sidebar for activity indicator
     }
@@ -222,5 +233,79 @@ r_dynamic 0";
             btnBoost.Enabled = true;
             btnBoost.Text = "  APPLY PERFORMANCE CFG";
         }
+    }
+
+    private async Task ToggleNetworkTest()
+    {
+        if (_networkCts != null)
+        {
+            _networkCts.Cancel();
+            _networkCts = null;
+            btnStartNetworkTest.Text = "START DIAGNOSTICS";
+            btnStartNetworkTest.BackColor = Theme.Accent;
+            txtTargetIp.Enabled = true;
+            return;
+        }
+
+        string host = txtTargetIp.Text.Trim();
+        if (string.IsNullOrEmpty(host)) return;
+
+        _networkCts = new CancellationTokenSource();
+        btnStartNetworkTest.Text = "STOP DIAGNOSTICS";
+        btnStartNetworkTest.BackColor = Color.FromArgb(200, 50, 50); // Red-ish
+        txtTargetIp.Enabled = false;
+        rtbNetworkLog.Clear();
+
+        try
+        {
+            await _networkService.RunTestAsync(host, _networkCts.Token);
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception ex)
+        {
+            AddNetworkLog($"Error: {ex.Message}");
+        }
+        finally
+        {
+            if (_networkCts != null)
+            {
+                _networkCts.Dispose();
+                _networkCts = null;
+            }
+            btnStartNetworkTest.Text = "START DIAGNOSTICS";
+            btnStartNetworkTest.BackColor = Theme.Accent;
+            txtTargetIp.Enabled = true;
+        }
+    }
+
+    private void UpdateNetworkResults(NetworkResult result)
+    {
+        if (this.InvokeRequired)
+        {
+            this.Invoke(new Action(() => UpdateNetworkResults(result)));
+            return;
+        }
+
+        lblPingResult.Text = $"PING: {result.Ping} ms";
+        lblJitterResult.Text = $"JITTER: {result.Jitter:F1} ms";
+        lblLossResult.Text = $"LOSS: {result.PacketLoss:F1} %";
+        
+        // Dynamic colors based on quality
+        lblPingResult.ForeColor = result.Ping < 50 ? Theme.Success : (result.Ping < 100 ? Color.Yellow : Color.Red);
+        lblJitterResult.ForeColor = result.Jitter < 5 ? Theme.Success : (result.Jitter < 15 ? Color.Yellow : Color.Red);
+        lblLossResult.ForeColor = result.PacketLoss == 0 ? Theme.Success : Color.Red;
+    }
+
+    private void AddNetworkLog(string message)
+    {
+        if (rtbNetworkLog.InvokeRequired)
+        {
+            rtbNetworkLog.Invoke(new Action(() => AddNetworkLog(message)));
+            return;
+        }
+
+        rtbNetworkLog.AppendText($"{message}{Environment.NewLine}");
+        rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
+        rtbNetworkLog.ScrollToCaret();
     }
 }

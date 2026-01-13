@@ -34,12 +34,14 @@ partial class MainForm
         // Panels for views
         this.panelBoost = new Panel();
         this.panelCS2 = new Panel();
+        this.panelNetwork = new Panel();
         this.footer = new Panel();
         this.lblFooter = new Label();
         
         // Navigation buttons
         this.btnMenuBoost = new MenuButton();
         this.btnMenuCS2 = new MenuButton();
+        this.btnMenuNetwork = new MenuButton();
         
         // Boost tab controls
         this.lblTitle = new Label();
@@ -53,6 +55,17 @@ partial class MainForm
         this.rtbCS2Config = new RichTextBox();
         this.btnSaveCS2 = new ModernButton();
         this.lblCS2Info = new Label();
+        
+        // Network tab controls
+        this.lblNetworkTitle = new Label();
+        this.lblNetworkInfo = new Label();
+        this.txtTargetIp = new TextBox();
+        this.btnStartNetworkTest = new ModernButton();
+        this.btnLoadFaceit = new ModernButton();
+        this.lblPingResult = new Label();
+        this.lblJitterResult = new Label();
+        this.lblLossResult = new Label();
+        this.rtbNetworkLog = new RichTextBox();
         
         // Form Configuration
         this.BackColor = Theme.Background;
@@ -75,6 +88,10 @@ partial class MainForm
         this.lblIcon.Height = 100;
         this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
+        this.btnMenuNetwork.Text = "   NETWORK TEST";
+        this.btnMenuNetwork.Icon = Theme.IconNetwork;
+        this.btnMenuNetwork.Dock = DockStyle.Top;
+        
         this.btnMenuCS2.Text = "   CONFIG CS2";
         this.btnMenuCS2.Icon = Theme.IconGame;
         this.btnMenuCS2.Dock = DockStyle.Top;
@@ -84,6 +101,7 @@ partial class MainForm
         this.btnMenuBoost.Icon = Theme.IconRocket;
         this.btnMenuBoost.Dock = DockStyle.Top;
 
+        this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
         this.sidebar.Controls.Add(this.btnMenuBoost);
         this.sidebar.Controls.Add(this.lblIcon);
@@ -169,8 +187,78 @@ partial class MainForm
         this.panelCS2.Controls.Add(this.lblCS2Info);
         this.panelCS2.Controls.Add(this.lblCS2Title);
 
+        // Panel Network Setup
+        this.panelNetwork.Dock = DockStyle.Fill;
+        this.panelNetwork.Padding = new Padding(40);
+        this.panelNetwork.Visible = false;
+
+        this.lblNetworkTitle.Text = "NETWORK DIAGNOSTICS";
+        this.lblNetworkTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
+        this.lblNetworkTitle.AutoSize = true;
+        this.lblNetworkTitle.Location = new Point(40, 40);
+        this.lblNetworkTitle.ForeColor = Color.White;
+
+        this.lblNetworkInfo.Text = "Enter an IP or Hostname to test your connection quality.";
+        this.lblNetworkInfo.ForeColor = Theme.TextDim;
+        this.lblNetworkInfo.Location = new Point(45, 100);
+        this.lblNetworkInfo.AutoSize = true;
+
+        this.txtTargetIp.Location = new Point(45, 130);
+        this.txtTargetIp.Size = new Size(300, 30);
+        this.txtTargetIp.BackColor = Color.FromArgb(30, 30, 40);
+        this.txtTargetIp.ForeColor = Theme.Text;
+        this.txtTargetIp.BorderStyle = BorderStyle.FixedSingle;
+        this.txtTargetIp.Text = "8.8.8.8";
+        this.txtTargetIp.Font = new Font("Segoe UI", 12F);
+
+        this.btnStartNetworkTest.Text = "START DIAGNOSTICS";
+        this.btnStartNetworkTest.Location = new Point(360, 130);
+        this.btnStartNetworkTest.Size = new Size(180, 32);
+
+        this.btnLoadFaceit.Text = "FACEIT IP";
+        this.btnLoadFaceit.Location = new Point(550, 130);
+        this.btnLoadFaceit.Size = new Size(100, 32);
+        this.btnLoadFaceit.BackColor = Color.FromArgb(40, 40, 50);
+
+        this.lblPingResult.Text = "PING: -- ms";
+        this.lblPingResult.Font = new Font("Segoe UI Semibold", 14F);
+        this.lblPingResult.ForeColor = Theme.Accent;
+        this.lblPingResult.Location = new Point(45, 180);
+        this.lblPingResult.AutoSize = true;
+
+        this.lblJitterResult.Text = "JITTER: -- ms";
+        this.lblJitterResult.Font = new Font("Segoe UI Semibold", 14F);
+        this.lblJitterResult.ForeColor = Color.Cyan;
+        this.lblJitterResult.Location = new Point(220, 180);
+        this.lblJitterResult.AutoSize = true;
+
+        this.lblLossResult.Text = "LOSS: -- %";
+        this.lblLossResult.Font = new Font("Segoe UI Semibold", 14F);
+        this.lblLossResult.ForeColor = Color.Red;
+        this.lblLossResult.Location = new Point(400, 180);
+        this.lblLossResult.AutoSize = true;
+
+        this.rtbNetworkLog.Location = new Point(45, 230);
+        this.rtbNetworkLog.Size = new Size(720, 300);
+        this.rtbNetworkLog.BackColor = Color.FromArgb(15, 15, 15);
+        this.rtbNetworkLog.ForeColor = Theme.TextDim;
+        this.rtbNetworkLog.BorderStyle = BorderStyle.None;
+        this.rtbNetworkLog.Font = new Font("Consolas", 10F);
+        this.rtbNetworkLog.ReadOnly = true;
+
+        this.panelNetwork.Controls.Add(this.btnLoadFaceit);
+        this.panelNetwork.Controls.Add(this.rtbNetworkLog);
+        this.panelNetwork.Controls.Add(this.lblLossResult);
+        this.panelNetwork.Controls.Add(this.lblJitterResult);
+        this.panelNetwork.Controls.Add(this.lblPingResult);
+        this.panelNetwork.Controls.Add(this.btnStartNetworkTest);
+        this.panelNetwork.Controls.Add(this.txtTargetIp);
+        this.panelNetwork.Controls.Add(this.lblNetworkInfo);
+        this.panelNetwork.Controls.Add(this.lblNetworkTitle);
+
         this.mainContent.Controls.Add(this.panelBoost);
         this.mainContent.Controls.Add(this.panelCS2);
+        this.mainContent.Controls.Add(this.panelNetwork);
         
         this.Controls.Add(this.mainContent);
         this.Controls.Add(this.sidebar);
@@ -182,8 +270,10 @@ partial class MainForm
     private Panel mainContent;
     private Panel panelBoost;
     private Panel panelCS2;
+    private Panel panelNetwork;
     private MenuButton btnMenuBoost;
     private MenuButton btnMenuCS2;
+    private MenuButton btnMenuNetwork;
     private Label lblTitle;
     private Label lblIcon;
     private ModernButton btnBoost;
@@ -195,6 +285,19 @@ partial class MainForm
     private Label lblCS2Info;
     private RichTextBox rtbCS2Config;
     private ModernButton btnSaveCS2;
+    private ModernButton btnLoadFaceit;
+
+    // Network Controls
+
+    // Network Controls
+    private Label lblNetworkTitle;
+    private Label lblNetworkInfo;
+    private TextBox txtTargetIp;
+    private ModernButton btnStartNetworkTest;
+    private Label lblPingResult;
+    private Label lblJitterResult;
+    private Label lblLossResult;
+    private RichTextBox rtbNetworkLog;
 
     #endregion
 }

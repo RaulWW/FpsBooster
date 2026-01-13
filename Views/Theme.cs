@@ -24,6 +24,7 @@ namespace FpsBooster.Views
         public static string IconRocket = "\uE99A";
         public static string IconFlash = "\uE945";
         public static string IconGame = "\uE7BE"; // Game Controller
+        public static string IconNetwork = "\uE12B"; // Globe
         
         public static string AppVersion = "v1.2.0 ELITE";
         public static string Developer = "⚡ Developed by Raul W. | Premium Edition";
