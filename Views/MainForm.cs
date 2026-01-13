@@ -1,5 +1,8 @@
 using System.Runtime.InteropServices;
 using FpsBooster.Services;
+using FpsBooster.Services.Network;
+using FpsBooster.Views.Controls;
+using FpsBooster.Views.Helpers;
 
 namespace FpsBooster.Views;
 
@@ -12,17 +15,33 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
-        _boosterService = new BoosterService();
         
-        // Wire up events
+        _boosterService = new BoosterService();
+        _networkService = new NetworkService();
+
+        InitializeEvents();
+        InitializeNavigation();
+        InitializeCustomTitleBar();
+    }
+
+    private void InitializeEvents()
+    {
         _boosterService.OnLogMessage += AddLog;
         _boosterService.OnProgressUpdate += UpdateProgress;
 
-        _networkService = new NetworkService();
-        _networkService.OnResultReceived += UpdateNetworkResults;
-        _networkService.OnLogReceived += AddNetworkLog;
+        _networkService.ResultProcessed += UpdateNetworkResults;
+        _networkService.LogCaptured += AddNetworkLog;
 
-        // Navigation
+        btnBoost.Click += async (s, e) => await RunBoost();
+        btnSaveCS2.Click += (s, e) => SaveCS2Config();
+        btnStartNetworkTest.Click += async (s, e) => await ToggleNetworkTest();
+        btnLoadFaceit.Click += (s, e) => txtTargetIp.Text = "169.150.220.9:20070";
+
+        rtbCS2Config.TextChanged += (s, e) => RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
+    }
+
+    private void InitializeNavigation()
+    {
         btnMenuBoost.Click += (s, e) => SwitchTab(panelBoost, btnMenuBoost);
         btnMenuCS2.Click += (s, e) => {
             SwitchTab(panelCS2, btnMenuCS2);
@@ -30,20 +49,13 @@ public partial class MainForm : Form
         };
         btnMenuNetwork.Click += (s, e) => SwitchTab(panelNetwork, btnMenuNetwork);
         btnMenuDocs.Click += (s, e) => SwitchTab(panelDocs, btnMenuDocs);
+    }
 
-        // Title Bar
+    private void InitializeCustomTitleBar()
+    {
         btnClose.Click += (s, e) => Application.Exit();
         btnMinimize.Click += (s, e) => this.WindowState = FormWindowState.Minimized;
         panelTitleBar.MouseDown += TitleBar_MouseDown;
-
-        // Button clicks
-        btnBoost.Click += async (s, e) => await RunBoost();
-        btnSaveCS2.Click += (s, e) => SaveCS2Config();
-        btnStartNetworkTest.Click += async (s, e) => await ToggleNetworkTest();
-        btnLoadFaceit.Click += (s, e) => txtTargetIp.Text = "169.150.220.9:20070";
-
-        // Syntax highlighting logic
-        rtbCS2Config.TextChanged += (s, e) => ApplyCS2SyntaxHighlighting();
     }
 
     private void SwitchTab(Panel activePanel, MenuButton activeButton)
@@ -80,7 +92,14 @@ public partial class MainForm : Form
     {
         if (string.IsNullOrEmpty(rtbCS2Config.Text))
         {
-            rtbCS2Config.Text = @"// +mat_disable_fancy_blending 1 +exec autoexec.cfg -refresh 240
+            rtbCS2Config.Text = GetDefaultCs2Config();
+            RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
+        }
+    }
+
+    private string GetDefaultCs2Config()
+    {
+        return @"// +mat_disable_fancy_blending 1 +exec autoexec.cfg -refresh 240
 // C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg
 
 bind ""KP_0"" ""buy deagle""
@@ -135,61 +154,9 @@ viewmodel_offset_y ""1.5""
 viewmodel_offset_z ""-1.500000""
 viewmodel_presetpos ""0""
 r_dynamic 0";
-            ApplyCS2SyntaxHighlighting();
-        }
     }
 
-    private void ApplyCS2SyntaxHighlighting()
-    {
-        int selectionStart = rtbCS2Config.SelectionStart;
-        int selectionLength = rtbCS2Config.SelectionLength;
-        
-        // Disable drawing to avoid flicker
-        rtbCS2Config.SuspendLayout();
-        
-        // Reset color
-        rtbCS2Config.SelectAll();
-        rtbCS2Config.SelectionColor = Theme.Text;
-
-        string[] lines = rtbCS2Config.Lines;
-        int currentPos = 0;
-        
-        foreach (string line in lines)
-        {
-            if (string.IsNullOrWhiteSpace(line)) 
-            {
-                currentPos += line.Length + 1;
-                continue;
-            }
-
-            if (line.StartsWith("//"))
-            {
-                rtbCS2Config.Select(currentPos, line.Length);
-                rtbCS2Config.SelectionColor = Color.Gray;
-            }
-            else
-            {
-                // Highlight the command (first word)
-                int firstSpace = line.IndexOf(' ');
-                if (firstSpace > 0)
-                {
-                    rtbCS2Config.Select(currentPos, firstSpace);
-                    rtbCS2Config.SelectionColor = Color.LightBlue;
-                }
-                else
-                {
-                    rtbCS2Config.Select(currentPos, line.Length);
-                    rtbCS2Config.SelectionColor = Color.LightBlue;
-                }
-            }
-            currentPos += line.Length + 1;
-        }
-
-        // Restore selection
-        rtbCS2Config.Select(selectionStart, selectionLength);
-        rtbCS2Config.SelectionColor = Theme.Text;
-        rtbCS2Config.ResumeLayout();
-    }
+    // Syntax highlighting logic removed as it's now in RichTextEditorHelper
 
     private void SaveCS2Config()
     {
@@ -226,31 +193,14 @@ r_dynamic 0";
         
         int start = rtbLog.TextLength;
         rtbLog.AppendText(fullMessage);
-        int end = rtbLog.TextLength;
 
-        // Apply colors to tags
-        HighlightLogTags(start, fullMessage);
+        RichTextEditorHelper.HighlightLogTags(rtbLog, start, fullMessage, Theme.Success);
 
         rtbLog.SelectionStart = rtbLog.Text.Length;
         rtbLog.ScrollToCaret();
     }
 
-    private void HighlightLogTags(int startOffset, string text)
-    {
-        string[] tags = { "[INFO]", "[WARNING]", "[ERROR]", "SUCCESS", "FATAL" };
-        foreach (var tag in tags)
-        {
-            int index = text.IndexOf(tag);
-            while (index != -1)
-            {
-                rtbLog.Select(startOffset + index, tag.Length);
-                rtbLog.SelectionColor = Theme.Success; // As requested, tags in green
-                rtbLog.SelectionFont = new Font(rtbLog.Font, FontStyle.Bold);
-                index = text.IndexOf(tag, index + tag.Length);
-            }
-        }
-        rtbLog.SelectionColor = Theme.TextDim; // Reset
-    }
+    // HighlightLogTags removed as it's now in RichTextEditorHelper
 
     private void UpdateProgress(int value)
     {
@@ -327,7 +277,7 @@ r_dynamic 0";
         }
     }
 
-    private void UpdateNetworkResults(NetworkResult result)
+    private void UpdateNetworkResults(NetworkDiagnosticResult result)
     {
         if (this.InvokeRequired)
         {

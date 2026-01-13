@@ -1,4 +1,6 @@
-﻿namespace FpsBooster.Views;
+﻿using FpsBooster.Views.Controls;
+
+namespace FpsBooster.Views;
 
 partial class MainForm
 {
