@@ -36,6 +36,7 @@ public partial class MainForm : Form
         btnSaveCS2.Click += (s, e) => SaveCS2Config();
         btnStartNetworkTest.Click += async (s, e) => await ToggleNetworkTest();
         btnLoadFaceit.Click += (s, e) => txtTargetIp.Text = "169.150.220.9:20070";
+        btnLoadGC.Click += (s, e) => txtTargetIp.Text = "203.159.80.100:27027";
 
         rtbCS2Config.TextChanged += (s, e) => RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
     }

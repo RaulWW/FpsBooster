@@ -64,6 +64,7 @@ partial class MainForm
         this.txtTargetIp = new TextBox();
         this.btnStartNetworkTest = new ModernButton();
         this.btnLoadFaceit = new ModernButton();
+        this.btnLoadGC = new ModernButton();
         this.lblPingResult = new Label();
         this.lblJitterResult = new Label();
         this.lblLossResult = new Label();
@@ -279,6 +280,11 @@ partial class MainForm
         this.btnLoadFaceit.Size = new Size(100, 32);
         this.btnLoadFaceit.BackColor = Color.FromArgb(40, 40, 50);
 
+        this.btnLoadGC.Text = "GC IP";
+        this.btnLoadGC.Location = new Point(660, 130);
+        this.btnLoadGC.Size = new Size(100, 32);
+        this.btnLoadGC.BackColor = Color.FromArgb(40, 40, 50);
+
         this.lblPingResult.Text = "PING: -- ms";
         this.lblPingResult.Font = new Font("Segoe UI Semibold", 14F);
         this.lblPingResult.ForeColor = Theme.Accent;
@@ -306,6 +312,7 @@ partial class MainForm
         this.rtbNetworkLog.ReadOnly = true;
 
         this.panelNetwork.Controls.Add(this.btnLoadFaceit);
+        this.panelNetwork.Controls.Add(this.btnLoadGC);
         this.panelNetwork.Controls.Add(this.rtbNetworkLog);
         this.panelNetwork.Controls.Add(this.lblLossResult);
         this.panelNetwork.Controls.Add(this.lblJitterResult);
@@ -390,6 +397,7 @@ partial class MainForm
     private RichTextBox rtbCS2Config;
     private ModernButton btnSaveCS2;
     private ModernButton btnLoadFaceit;
+    private ModernButton btnLoadGC;
 
     // Network Controls
 
