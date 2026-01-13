@@ -33,16 +33,46 @@ namespace FpsBooster.Views
     {
         public ModernButton()
         {
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv            TextAlign = ContentAlignment.MiddleLeft;
-            ImageAlign = ContentAlignment.MiddleLeft;
-            Height = 42;
-            Dock = DockStyle.Top;
-            Padding = new Padding(20, 0, 0, 0);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            BackColor = Theme.Accent;
+            ForeColor = Color.White;
+            Font = new Font("Segoe UI Semibold", 10F);
+            Cursor = Cursors.Hand;
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
             base.OnPaint(pevent);
+            // ModernButton doesn't need IsActive logic for now, just stylized
+        }
+    }
+
+    public class MenuButton : Button
+    {
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public bool IsActive { get; set; }
+
+        [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        public string Icon { get; set; } = "";
+
+        public MenuButton()
+        {
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            BackColor = Color.Transparent;
+            ForeColor = Theme.TextDim;
+            Font = new Font("Segoe UI Semibold", 10F);
+            Height = 50;
+            Cursor = Cursors.Hand;
+            TextAlign = ContentAlignment.MiddleLeft;
+            Padding = new Padding(50, 0, 0, 0); // Leave space for icon
+        }
+
+        protected override void OnPaint(PaintEventArgs pevent)
+        {
+            base.OnPaint(pevent);
+            
             if (IsActive)
             {
                 using (var brush = new SolidBrush(Theme.Accent))
@@ -54,6 +84,16 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv      
             else
             {
                 ForeColor = Theme.TextDim;
+            }
+
+            if (!string.IsNullOrEmpty(Icon))
+            {
+                using (var font = new Font("Segoe MDL2 Assets", 14F))
+                using (var brush = new SolidBrush(ForeColor))
+                {
+                    // Draw icon
+                    pevent.Graphics.DrawString(Icon, font, brush, 15, (Height - 18) / 2);
+                }
             }
         }
     }
