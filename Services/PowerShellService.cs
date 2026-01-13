@@ -19,9 +19,9 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                StandardInputEncoding = new UTF8Encoding(false),
-                StandardOutputEncoding = new UTF8Encoding(false),
-                StandardErrorEncoding = new UTF8Encoding(false),
+                StandardInputEncoding = Encoding.Default,
+                StandardOutputEncoding = Encoding.Default,
+                StandardErrorEncoding = Encoding.Default,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
