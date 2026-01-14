@@ -444,6 +444,14 @@ partial class MainForm
 
         this.panelDownloads.Controls.Add(this.btnInstallFeatures);
         this.panelDownloads.Controls.Add(this.chkDotNet);
+        
+        this.btnInstallVisualCpp = new ModernButton();
+        this.btnInstallVisualCpp.Text = "  INSTALL VISUAL C++ RUNTIMES";
+        this.btnInstallVisualCpp.Location = new Point(300, 200);
+        this.btnInstallVisualCpp.Size = new Size(240, 40);
+        this.btnInstallVisualCpp.Font = new Font("Segoe UI Semibold", 10F);
+        this.panelDownloads.Controls.Add(this.btnInstallVisualCpp);
+
         this.panelDownloads.Controls.Add(this.lblDownloadsInfo);
         this.panelDownloads.Controls.Add(this.lblDownloadsTitle);
 
@@ -512,6 +520,7 @@ partial class MainForm
     private Label lblDownloadsInfo;
     private CheckBox chkDotNet;
     private ModernButton btnInstallFeatures;
+    private ModernButton btnInstallVisualCpp;
 
 
     #endregion

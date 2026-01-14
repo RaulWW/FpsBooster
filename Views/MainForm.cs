@@ -53,6 +53,7 @@ public partial class MainForm : Form
         btnMenuDocs.Click += (s, e) => SwitchTab(panelDocs, btnMenuDocs);
         
         btnInstallFeatures.Click += async (s, e) => await InstallSelectedFeatures();
+        btnInstallVisualCpp.Click += async (s, e) => await InstallVisualCppRedistributables();
     }
 
     private void InitializeCustomTitleBar()
@@ -334,7 +335,40 @@ r_dynamic 0";
         {
             btnInstallFeatures.Enabled = true;
             btnInstallFeatures.Text = "  INSTALL SELECTED";
+
         }
+    }
+
+    private async Task InstallVisualCppRedistributables()
+    {
+        btnInstallVisualCpp.Enabled = false;
+        string originalText = btnInstallVisualCpp.Text;
+        string originalInfo = lblDownloadsInfo.Text;
+
+        try
+        {
+            var progress = new Progress<string>(status => {
+                lblDownloadsInfo.Text = status;
+                // Optional: Force refresh to ensure text updates immediately
+                lblDownloadsInfo.Refresh();
+            });
+
+            var installer = new WindowsFeaturesInstaller();
+            await installer.InstallVisualCppRuntimesAsync(progress);
+
+            MessageBox.Show("Visual C++ Runtimes installation process finished.\nIf the console window is closed, it's done.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error installing Visual C++ Runtimes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            btnInstallVisualCpp.Enabled = true;
+            btnInstallVisualCpp.Text = originalText;
+            lblDownloadsInfo.Text = originalInfo;
+        }
+    }
     }
 
     private void AddNetworkLog(string message)
