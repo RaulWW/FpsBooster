@@ -9,7 +9,8 @@ $IssPath = "c:\Users\Raul\Desktop\Github\FpsBooster\setup.iss"
 if ($Version -ne "") {
     Write-Host "Updating version to $Version in setup.iss..." -ForegroundColor Cyan
     (Get-Content $IssPath) -replace 'AppVersion=.*', "AppVersion=$Version" | Set-Content $IssPath
-} else {
+}
+else {
     # Extract version from file if not provided
     $VersionLine = Get-Content $IssPath | Select-String "AppVersion="
     $Version = $VersionLine.ToString().Split('=')[1].Trim()
@@ -27,8 +28,10 @@ if ($LastExitCode -ne 0) {
 }
 
 # 3. Inno Setup Compilation
+# 3. Inno Setup Compilation
 Write-Host "Compiling Installer..." -ForegroundColor Gray
-& $IsccPath $IssPath
+$InstallerName = "FBooster_v$Version"
+& $IsccPath "/F$InstallerName" $IssPath
 
 if ($LastExitCode -ne 0) {
     Write-Error "Installer compilation failed!"
@@ -47,4 +50,4 @@ git push origin main
 git push origin --tags -f
 
 Write-Host "`nSuccessfully released v$Version!" -ForegroundColor Green
-Write-Host "Remember to manually upload FPS_Booster_Setup.exe to GitHub if you don't have GH CLI installed." -ForegroundColor Magenta
+Write-Host "Remember to manually upload $InstallerName.exe to GitHub if you don't have GH CLI installed." -ForegroundColor Magenta
