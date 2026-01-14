@@ -18,13 +18,14 @@ OutputBaseFilename=Setup_FBoosterV2
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+ArchitecturesInstallIn64BitMode=x64
 
 ; Execution Level (Required for system tweaks)
 PrivilegesRequired=admin
 
 ; Icon Configuration
 SetupIconFile=c:\Users\Raul\Desktop\Github\FpsBooster\imgs\IcoLogo512px.ico
-UninstallDisplayIcon={app}\FpsBooster.exe
+UninstallDisplayIcon={app}\FBooster.exe
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -35,17 +36,17 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 ; The main executable (Self-contained, includes all dependencies)
-Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FpsBooster.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FBooster.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Optional PDB if you wants to include it (usually not needed for end-users)
-; Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FpsBooster.pdb"; DestDir: "{app}"; Flags: ignoreversion
+; Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FBooster.pdb"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\FPS Booster"; Filename: "{app}\FpsBooster.exe"
-Name: "{autodesktop}\FPS Booster"; Filename: "{app}\FpsBooster.exe"; Tasks: desktopicon
+Name: "{group}\FPS Booster"; Filename: "{app}\FBooster.exe"
+Name: "{autodesktop}\FPS Booster"; Filename: "{app}\FBooster.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\FpsBooster.exe"; Description: "{cm:LaunchProgram,FPS Booster}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\FBooster.exe"; Description: "{cm:LaunchProgram,FPS Booster}"; Flags: nowait postinstall skipifsilent
 
 [Code]
 procedure InitializeWizard;
