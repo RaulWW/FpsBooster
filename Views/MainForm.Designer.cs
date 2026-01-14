@@ -1,4 +1,5 @@
 ﻿using FpsBooster.Views.Controls;
+using FpsBooster.Views.Factories;
 
 namespace FpsBooster.Views;
 
@@ -30,69 +31,32 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        this.sidebar = new Panel();
-        this.mainContent = new Panel();
+
+
         
         // Panels for views
-        this.panelBoost = new Panel();
-        this.panelCS2 = new Panel();
-        this.panelNetwork = new Panel();
-        this.footer = new Panel();
+
+
+
+
         this.lblLinkFooter = new LinkLabel();
         
-        // Navigation buttons
-        this.btnMenuBoost = new MenuButton();
-        this.btnMenuCS2 = new MenuButton();
-        this.btnMenuNetwork = new MenuButton();
-        this.btnMenuDownloads = new MenuButton();
+
         
         // Boost tab controls
-        this.lblTitle = new Label();
-        this.btnBoost = new ModernButton();
-        this.progressBar = new ModernProgressBar();
-        this.rtbLog = new RichTextBox();
-        this.lblIcon = new Label();
+
         
         // CS2 tab controls
-        this.lblCS2Title = new Label();
-        this.rtbCS2Config = new RichTextBox();
-        this.btnSaveCS2 = new ModernButton();
-        this.lblCS2Info = new Label();
+
         
         // Network tab controls
-        this.lblNetworkTitle = new Label();
-        this.lblNetworkInfo = new Label();
-        this.txtTargetIp = new TextBox();
-        this.btnStartNetworkTest = new ModernButton();
-        this.btnLoadFaceit = new ModernButton();
-        this.btnLoadGC = new ModernButton();
-        this.lblPingResult = new Label();
-        this.lblJitterResult = new Label();
-        this.lblLossResult = new Label();
-        this.rtbNetworkLog = new RichTextBox();
-        
-        // Custom Title Bar
-        this.panelTitleBar = new Panel();
-        this.btnClose = new Label();
-        this.btnMinimize = new Label();
-        this.lblAppTitle = new Label();
 
-        // Documentation Tab
-        this.panelDocs = new Panel();
-        this.btnMenuDocs = new MenuButton();
-        this.lblDocsTitle = new Label();
-        // Documentation Tab
-        this.panelDocs = new Panel();
-        this.btnMenuDocs = new MenuButton();
-        this.lblDocsTitle = new Label();
-        this.rtbDocsContent = new RichTextBox();
+        
+
+
 
         // Downloads Tab
-        this.panelDownloads = new Panel();
-        this.lblDownloadsTitle = new Label();
-        this.lblDownloadsInfo = new Label();
-        this.chkDotNet = new CheckBox();
-        this.btnInstallFeatures = new ModernButton();
+
         
         // Form Configuration
         this.FormBorderStyle = FormBorderStyle.None;
@@ -104,36 +68,23 @@ partial class MainForm
         this.AutoScaleMode = AutoScaleMode.Dpi;
   
         // Title Bar Setup
-        this.panelTitleBar.Dock = DockStyle.Top;
+        this.panelTitleBar = UIBuilder.CreatePanel(DockStyle.Top, Theme.Sidebar);
         this.panelTitleBar.Height = 40;
-        this.panelTitleBar.BackColor = Theme.Sidebar;
 
-        this.btnClose.Text = Theme.IconClose;
-        this.btnClose.Font = new Font("Segoe MDL2 Assets", 10F);
-        this.btnClose.ForeColor = Color.White;
+        this.btnClose = UIBuilder.CreateIconLabel(Theme.IconClose, 10, Color.White, DockStyle.Right);
         this.btnClose.Size = new Size(45, 40);
-        this.btnClose.TextAlign = ContentAlignment.MiddleCenter;
-        this.btnClose.Dock = DockStyle.Right;
         this.btnClose.Cursor = Cursors.Hand;
         this.btnClose.MouseEnter += (s, e) => btnClose.BackColor = Color.Red;
         this.btnClose.MouseLeave += (s, e) => btnClose.BackColor = Color.Transparent;
 
-        this.btnMinimize.Text = Theme.IconMinimize;
-        this.btnMinimize.Font = new Font("Segoe MDL2 Assets", 10F);
-        this.btnMinimize.ForeColor = Color.White;
-        this.btnMinimize.Size = new Size(45, 40); // Match new height
-        this.btnMinimize.TextAlign = ContentAlignment.MiddleCenter;
-        this.btnMinimize.Dock = DockStyle.Right;
+        this.btnMinimize = UIBuilder.CreateIconLabel(Theme.IconMinimize, 10, Color.White, DockStyle.Right);
+        this.btnMinimize.Size = new Size(45, 40);
         this.btnMinimize.Cursor = Cursors.Hand;
         this.btnMinimize.MouseEnter += (s, e) => btnMinimize.BackColor = Color.FromArgb(60, 60, 60);
         this.btnMinimize.MouseLeave += (s, e) => btnMinimize.BackColor = Color.Transparent;
 
-        this.lblAppTitle.Text = "  ⚡ ULTRA FPS BOOSTER";
-        this.lblAppTitle.Font = new Font(Theme.MainFont, 9F, FontStyle.Bold);
-        this.lblAppTitle.ForeColor = Theme.TextDim;
+        this.lblAppTitle = UIBuilder.CreateLabel("  ⚡ ULTRA FPS BOOSTER", new Font(Theme.MainFont, 9F, FontStyle.Bold), Theme.TextDim, null, true, ContentAlignment.MiddleLeft);
         this.lblAppTitle.Dock = DockStyle.Left;
-        this.lblAppTitle.TextAlign = ContentAlignment.MiddleLeft;
-        this.lblAppTitle.AutoSize = true;
         this.lblAppTitle.Padding = new Padding(30, 15, 0, 0);
 
         this.panelTitleBar.Controls.Add(this.lblAppTitle);
@@ -143,42 +94,27 @@ partial class MainForm
         this.Controls.Add(this.panelTitleBar);
 
         // Sidebar Setup
-        this.sidebar.Dock = DockStyle.Left;
+        this.sidebar = UIBuilder.CreatePanel(DockStyle.Left, Theme.Sidebar);
         this.sidebar.Width = 240;
-        this.sidebar.BackColor = Theme.Sidebar;
+        
+        // Main Content Setup
+        this.mainContent = UIBuilder.CreatePanel(DockStyle.Fill, Theme.Background);
         
         // Sidebar Content
-        this.lblIcon.Text = Theme.IconRocket;
-        this.lblIcon.Font = new Font("Segoe MDL2 Assets", 32F);
-        this.lblIcon.ForeColor = Theme.Accent;
-        this.lblIcon.Dock = DockStyle.Top;
+        this.lblIcon = UIBuilder.CreateIconLabel(Theme.IconRocket, 32, Theme.Accent, DockStyle.Top);
         this.lblIcon.Height = 120; // Optimized height
         this.lblIcon.Padding = new Padding(0, 30, 0, 10); // Better top and bottom spacing
-        this.lblIcon.TextAlign = ContentAlignment.MiddleCenter;
         
-        this.btnMenuNetwork.Text = "   NETWORK TEST";
-        this.btnMenuNetwork.Icon = Theme.IconNetwork;
-        this.btnMenuNetwork.Dock = DockStyle.Top;
+        this.btnMenuNetwork = UIBuilder.CreateMenuButton("   NETWORK TEST", Theme.IconNetwork);
+        this.btnMenuCS2 = UIBuilder.CreateMenuButton("   CONFIG CS2", Theme.IconGame);
         
-        this.btnMenuCS2.Text = "   CONFIG CS2";
-        this.btnMenuCS2.Icon = Theme.IconGame;
-        this.btnMenuCS2.Dock = DockStyle.Top;
-        
-        this.btnMenuBoost.Text = "   ULTIMATE BOOST";
+        this.btnMenuBoost = UIBuilder.CreateMenuButton("   ULTIMATE BOOST", Theme.IconRocket);
         this.btnMenuBoost.IsActive = true;
-        this.btnMenuBoost.Icon = Theme.IconRocket;
-        this.btnMenuBoost.Dock = DockStyle.Top;
 
-        this.btnMenuDocs.Text = "   DOCUMENTAÇÃO";
-        this.btnMenuDocs.Icon = Theme.IconDocs;
-        this.btnMenuDocs.Text = "   DOCUMENTAÇÃO";
-        this.btnMenuDocs.Icon = Theme.IconDocs;
-        this.btnMenuDocs.Dock = DockStyle.Top;
+        this.btnMenuDocs = UIBuilder.CreateMenuButton("   DOCUMENTAÇÃO", Theme.IconDocs);
 
-        this.btnMenuDownloads.Text = "   DOWNLOADS";
-        this.btnMenuDownloads.Icon = Theme.IconSettings; // Using Settings icon or similar if available, else default
-        try { this.btnMenuDownloads.Icon = ""; } catch {} // Segoe MDL2 Assets 'Download' icon or similar
-        this.btnMenuDownloads.Dock = DockStyle.Top;
+        this.btnMenuDownloads = UIBuilder.CreateMenuButton("   DOWNLOADS", Theme.IconSettings);
+        try { this.btnMenuDownloads.Icon = ""; } catch {}
 
         this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
@@ -192,10 +128,11 @@ partial class MainForm
         this.sidebar.Controls.Add(this.footer);
 
         // Footer Setup
-        this.footer.Dock = DockStyle.Bottom;
+        this.footer = UIBuilder.CreatePanel(DockStyle.Bottom);
         this.footer.Height = 40;
         this.footer.Controls.Add(this.lblLinkFooter);
         
+        this.lblLinkFooter = new LinkLabel();
         this.lblLinkFooter.Dock = DockStyle.Fill;
         this.lblLinkFooter.ForeColor = Theme.TextDim;
         this.lblLinkFooter.LinkColor = Theme.TextDim;
@@ -219,32 +156,16 @@ partial class MainForm
         this.mainContent.BackColor = Theme.Background;
 
         // Panel Boost Setup
-        this.panelBoost.Dock = DockStyle.Fill;
-        this.panelBoost.Padding = new Padding(40);
+        this.panelBoost = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40));
         
-        this.lblTitle.Text = "ULTIMATE BOOST";
-        this.lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-        this.lblTitle.AutoSize = true;
-        this.lblTitle.Location = new Point(40, 40);
-        this.lblTitle.ForeColor = Color.White;
+        this.lblTitle = UIBuilder.CreateLabel("ULTIMATE BOOST", new Font("Segoe UI", 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblTitle.Padding = new Padding(0, 15, 0, 0);
         
-        this.progressBar.Location = new Point(45, 120);
-        this.progressBar.Width = 720;
-        this.progressBar.Height = 8;
+        this.progressBar = UIBuilder.CreateProgressBar(new Point(45, 120), 720);
         
-        this.btnBoost.Text = "APPLY PERFORMANCE CFG";
-        this.btnBoost.Location = new Point(45, 150);
-        this.btnBoost.Size = new Size(280, 45);
-        this.btnBoost.Font = new Font("Segoe UI Semibold", 10F);
+        this.btnBoost = UIBuilder.CreateButton("APPLY PERFORMANCE CFG", new Point(45, 150), new Size(280, 45));
         
-        this.rtbLog.Location = new Point(45, 230);
-        this.rtbLog.Size = new Size(720, 360);
-        this.rtbLog.BackColor = Color.FromArgb(15, 15, 15);
-        this.rtbLog.ForeColor = Theme.TextDim;
-        this.rtbLog.BorderStyle = BorderStyle.None;
-        this.rtbLog.Font = new Font("Consolas", 10F);
-        this.rtbLog.ReadOnly = true;
+        this.rtbLog = UIBuilder.CreateRichTextBox(new Point(45, 230), new Size(720, 360));
         
         this.panelBoost.Controls.Add(this.rtbLog);
         this.panelBoost.Controls.Add(this.btnBoost);
@@ -252,33 +173,17 @@ partial class MainForm
         this.panelBoost.Controls.Add(this.lblTitle);
 
         // Panel CS2 Setup
-        this.panelCS2.Dock = DockStyle.Fill;
-        this.panelCS2.Padding = new Padding(40);
-        this.panelCS2.Visible = false;
+        this.panelCS2 = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40), false);
 
-        this.lblCS2Title.Text = "CONFIG CS2";
-        this.lblCS2Title.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-        this.lblCS2Title.AutoSize = true;
-        this.lblCS2Title.Location = new Point(40, 40);
-        this.lblCS2Title.ForeColor = Color.White;
+        this.lblCS2Title = UIBuilder.CreateLabel("CONFIG CS2", new Font("Segoe UI", 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblCS2Title.Padding = new Padding(0, 15, 0, 0);
 
-        this.lblCS2Info.Text = "Edit your autoexec.cfg below. Syntax highlighting applies to commands.";
-        this.lblCS2Info.ForeColor = Theme.TextDim;
-        this.lblCS2Info.Location = new Point(45, 100);
-        this.lblCS2Info.AutoSize = true;
+        this.lblCS2Info = UIBuilder.CreateLabel("Edit your autoexec.cfg below. Syntax highlighting applies to commands.", new Font("Segoe UI", 10F), Theme.TextDim, new Point(45, 100), true);
 
-        this.rtbCS2Config.Location = new Point(45, 130);
-        this.rtbCS2Config.Size = new Size(720, 400);
-        this.rtbCS2Config.BackColor = Color.FromArgb(15, 15, 15);
-        this.rtbCS2Config.ForeColor = Theme.Text;
-        this.rtbCS2Config.BorderStyle = BorderStyle.None;
-        this.rtbCS2Config.Font = new Font("Consolas", 11F);
+        this.rtbCS2Config = UIBuilder.CreateRichTextBox(new Point(45, 130), new Size(720, 400), null, Theme.Text, new Font("Consolas", 11F), false);
         this.rtbCS2Config.AcceptsTab = true;
 
-        this.btnSaveCS2.Text = "  SAVE AUTOEXEC.CFG";
-        this.btnSaveCS2.Location = new Point(45, 550);
-        this.btnSaveCS2.Size = new Size(220, 40);
+        this.btnSaveCS2 = UIBuilder.CreateButton("  SAVE AUTOEXEC.CFG", new Point(45, 550), new Size(220, 40));
         
         this.panelCS2.Controls.Add(this.btnSaveCS2);
         this.panelCS2.Controls.Add(this.rtbCS2Config);
@@ -286,75 +191,36 @@ partial class MainForm
         this.panelCS2.Controls.Add(this.lblCS2Title);
 
         // Panel Network Setup
-        this.panelNetwork.Dock = DockStyle.Fill;
-        this.panelNetwork.Visible = false;
+        this.panelNetwork = UIBuilder.CreatePanel(DockStyle.Fill, null, null, false);
 
         // Panel Network Control
-        this.lblNetworkTitle.Text = "NETWORK DIAGNOSTICS";
-        this.lblNetworkTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-        this.lblNetworkTitle.AutoSize = true;
-        this.lblNetworkTitle.Location = new Point(40, 40);
-        this.lblNetworkTitle.ForeColor = Color.White;
+        this.lblNetworkTitle = UIBuilder.CreateLabel("NETWORK DIAGNOSTICS", new Font("Segoe UI", 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblNetworkTitle.Padding = new Padding(0, 15, 0, 0);
 
-        this.lblNetworkInfo.Text = "Enter an IP or Hostname to test your connection quality.";
-        this.lblNetworkInfo.ForeColor = Theme.TextDim;
-        this.lblNetworkInfo.Font = new Font("Segoe UI", 10F);
-        this.lblNetworkInfo.Location = new Point(45, 75);
-        this.lblNetworkInfo.AutoSize = true;
+        this.lblNetworkInfo = UIBuilder.CreateLabel("Enter an IP or Hostname to test your connection quality.", new Font("Segoe UI", 10F), Theme.TextDim, new Point(45, 75));
 
-        this.txtTargetIp.Location = new Point(45, 110);
-        this.txtTargetIp.Size = new Size(300, 28);
-        this.txtTargetIp.BackColor = Theme.BgCard;
-        this.txtTargetIp.ForeColor = Theme.Text;
-        this.txtTargetIp.BorderStyle = BorderStyle.FixedSingle;
-        this.txtTargetIp.Text = "8.8.8.8";
-        this.txtTargetIp.Font = new Font("Segoe UI", 10F);
+        this.txtTargetIp = UIBuilder.CreateTextBox("8.8.8.8", new Point(45, 110), new Size(300, 28));
 
-        this.btnStartNetworkTest.Text = "  START TEST";
-        this.btnStartNetworkTest.Location = new Point(360, 110);
-        this.btnStartNetworkTest.Size = new Size(160, 28);
+        this.btnStartNetworkTest = UIBuilder.CreateButton("  START TEST", new Point(360, 110), new Size(160, 28));
         this.btnStartNetworkTest.Font = new Font("Segoe UI Semibold", 9F);
 
-        this.btnLoadFaceit.Text = "  FACEIT";
-        this.btnLoadFaceit.Location = new Point(530, 110);
-        this.btnLoadFaceit.Size = new Size(110, 28);
+        this.btnLoadFaceit = UIBuilder.CreateButton("  FACEIT", new Point(530, 110), new Size(110, 28));
         this.btnLoadFaceit.BackColor = Color.FromArgb(255, 85, 0);
         this.btnLoadFaceit.Font = new Font("Segoe UI Semibold", 9F);
         try { this.btnLoadFaceit.ButtonIcon = Image.FromFile("faceit_logo.png"); } catch { }
 
-        this.btnLoadGC.Text = "  GC IP";
-        this.btnLoadGC.Location = new Point(650, 110);
-        this.btnLoadGC.Size = new Size(110, 28);
+        this.btnLoadGC = UIBuilder.CreateButton("  GC IP", new Point(650, 110), new Size(110, 28));
         this.btnLoadGC.BackColor = Theme.BgCard;
         this.btnLoadGC.Font = new Font("Segoe UI Semibold", 9F);
         try { this.btnLoadGC.ButtonIcon = Image.FromFile("gc_logo.png"); } catch { }
 
-        this.lblPingResult.Text = "PING: -- ms";
-        this.lblPingResult.Font = new Font("Segoe UI Semibold", 11F);
-        this.lblPingResult.ForeColor = Theme.AccentGreen;
-        this.lblPingResult.Location = new Point(45, 160);
-        this.lblPingResult.AutoSize = true;
+        this.lblPingResult = UIBuilder.CreateLabel("PING: -- ms", new Font("Segoe UI Semibold", 11F), Theme.AccentGreen, new Point(45, 160));
 
-        this.lblJitterResult.Text = "JITTER: -- ms";
-        this.lblJitterResult.Font = new Font("Segoe UI Semibold", 11F);
-        this.lblJitterResult.ForeColor = Theme.AccentBlue;
-        this.lblJitterResult.Location = new Point(220, 160);
-        this.lblJitterResult.AutoSize = true;
+        this.lblJitterResult = UIBuilder.CreateLabel("JITTER: -- ms", new Font("Segoe UI Semibold", 11F), Theme.AccentBlue, new Point(220, 160));
 
-        this.lblLossResult.Text = "LOSS: -- %";
-        this.lblLossResult.Font = new Font("Segoe UI Semibold", 11F);
-        this.lblLossResult.ForeColor = Theme.AccentAmber;
-        this.lblLossResult.Location = new Point(400, 160);
-        this.lblLossResult.AutoSize = true;
+        this.lblLossResult = UIBuilder.CreateLabel("LOSS: -- %", new Font("Segoe UI Semibold", 11F), Theme.AccentAmber, new Point(400, 160));
 
-        this.rtbNetworkLog.Location = new Point(45, 200);
-        this.rtbNetworkLog.Size = new Size(720, 330);
-        this.rtbNetworkLog.BackColor = Theme.BgCard;
-        this.rtbNetworkLog.ForeColor = Theme.TextDim;
-        this.rtbNetworkLog.BorderStyle = BorderStyle.None;
-        this.rtbNetworkLog.Font = new Font("Consolas", 9F);
-        this.rtbNetworkLog.ReadOnly = true;
+        this.rtbNetworkLog = UIBuilder.CreateRichTextBox(new Point(45, 200), new Size(720, 330), Theme.BgCard, Theme.TextDim, new Font("Consolas", 9F));
 
         this.panelNetwork.Controls.Clear();
         this.panelNetwork.Controls.Add(this.lblNetworkTitle);
@@ -368,18 +234,12 @@ partial class MainForm
         this.panelNetwork.Controls.Add(this.lblLossResult);
         this.panelNetwork.Controls.Add(this.rtbNetworkLog);
         // Panel Docs Setup
-        this.panelDocs.Dock = DockStyle.Fill;
-        this.panelDocs.Padding = new Padding(40);
-        this.panelDocs.Visible = false;
-
-        this.lblDocsTitle.Text = "DOCUMENTAÇÃO";
-        this.lblDocsTitle.Font = new Font(Theme.MainFont, 22F, FontStyle.Bold);
-        this.lblDocsTitle.AutoSize = true;
-        this.lblDocsTitle.Location = new Point(40, 40);
-        this.lblDocsTitle.ForeColor = Color.White;
+        this.panelDocs = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40), false);
+        
+        this.lblDocsTitle = UIBuilder.CreateLabel("DOCUMENTAÇÃO", new Font(Theme.MainFont, 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblDocsTitle.Padding = new Padding(0, 15, 0, 0);
 
-        this.rtbDocsContent.Text = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA
+        var docsText = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA
 
 1. Plano de Desempenho Máximo (Ultimate Performance)
    - O que faz: Ativa o esquema de energia 'Desempenho Máximo' via Powercfg.
@@ -401,57 +261,29 @@ partial class MainForm
    - O que faz: Bloqueia IPs de rastreamento no arquivo HOSTS e encerra processos de fundo 'Adobe Genuine Service'.
    - Benefícios: Libera largura de banda da rede e ciclos de CPU que seriam usados para monitoramento em segundo plano.";
 
-        this.rtbDocsContent.ReadOnly = true;
-        this.rtbDocsContent.BackColor = Theme.Background;
-        this.rtbDocsContent.ForeColor = Theme.Text;
-        this.rtbDocsContent.BorderStyle = BorderStyle.None;
-        this.rtbDocsContent.Font = new Font(Theme.MainFont, 11F);
-        this.rtbDocsContent.Location = new Point(45, 120);
-        this.rtbDocsContent.Size = new Size(720, 450);
-        
-        this.panelDocs.Controls.Add(this.rtbDocsContent);
+        this.rtbDocsContent = UIBuilder.CreateRichTextBox(new Point(45, 120), new Size(720, 450), Theme.Background, Theme.Text, new Font(Theme.MainFont, 11F));
+        this.rtbDocsContent.Text = docsText;
+
         this.panelDocs.Controls.Add(this.rtbDocsContent);
         this.panelDocs.Controls.Add(this.lblDocsTitle);
 
         // Panel Downloads Setup
-        this.panelDownloads.Dock = DockStyle.Fill;
-        this.panelDownloads.Padding = new Padding(40);
-        this.panelDownloads.Visible = false;
-
-        this.lblDownloadsTitle.Text = "DOWNLOADS & FEATURES";
-        this.lblDownloadsTitle.Font = new Font(Theme.MainFont, 22F, FontStyle.Bold);
-        this.lblDownloadsTitle.AutoSize = true;
-        this.lblDownloadsTitle.Location = new Point(40, 40);
-        this.lblDownloadsTitle.ForeColor = Color.White;
+        this.panelDownloads = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40), false);
+        
+        this.lblDownloadsTitle = UIBuilder.CreateLabel("DOWNLOADS & FEATURES", new Font(Theme.MainFont, 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblDownloadsTitle.Padding = new Padding(0, 15, 0, 0);
 
-        this.lblDownloadsInfo.Text = "Install additional Windows features and runtimes.";
-        this.lblDownloadsInfo.ForeColor = Theme.TextDim;
-        this.lblDownloadsInfo.Location = new Point(45, 100);
-        this.lblDownloadsInfo.AutoSize = true;
+        this.lblDownloadsInfo = UIBuilder.CreateLabel("Install additional Windows features and runtimes.", null, Theme.TextDim, new Point(45, 100));
 
-        this.chkDotNet.Text = " .NET Framework (2.0, 3.0, 3.5, 4.x)";
-        this.chkDotNet.ForeColor = Theme.Text;
-        this.chkDotNet.Font = new Font("Segoe UI", 11F);
-        this.chkDotNet.Location = new Point(50, 140);
-        this.chkDotNet.AutoSize = true;
-        this.chkDotNet.Cursor = Cursors.Hand;
+        this.chkDotNet = UIBuilder.CreateCheckbox(" .NET Framework (2.0, 3.0, 3.5, 4.x)", new Point(50, 140));
 
-        this.btnInstallFeatures.Text = "  INSTALL SELECTED";
-        this.btnInstallFeatures.Location = new Point(45, 200);
-        this.btnInstallFeatures.Size = new Size(220, 40);
-        this.btnInstallFeatures.Font = new Font("Segoe UI Semibold", 10F);
+        this.btnInstallFeatures = UIBuilder.CreateButton("  INSTALL SELECTED", new Point(45, 200), new Size(220, 40));
+        
+        this.btnInstallVisualCpp = UIBuilder.CreateButton("  INSTALL VISUAL C++ RUNTIMES", new Point(300, 200), new Size(240, 40));
 
         this.panelDownloads.Controls.Add(this.btnInstallFeatures);
-        this.panelDownloads.Controls.Add(this.chkDotNet);
-        
-        this.btnInstallVisualCpp = new ModernButton();
-        this.btnInstallVisualCpp.Text = "  INSTALL VISUAL C++ RUNTIMES";
-        this.btnInstallVisualCpp.Location = new Point(300, 200);
-        this.btnInstallVisualCpp.Size = new Size(240, 40);
-        this.btnInstallVisualCpp.Font = new Font("Segoe UI Semibold", 10F);
         this.panelDownloads.Controls.Add(this.btnInstallVisualCpp);
-
+        this.panelDownloads.Controls.Add(this.chkDotNet);
         this.panelDownloads.Controls.Add(this.lblDownloadsInfo);
         this.panelDownloads.Controls.Add(this.lblDownloadsTitle);
 

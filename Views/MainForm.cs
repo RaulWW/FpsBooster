@@ -369,7 +369,7 @@ r_dynamic 0";
             lblDownloadsInfo.Text = originalInfo;
         }
     }
-    }
+
 
     private void AddNetworkLog(string message)
     {

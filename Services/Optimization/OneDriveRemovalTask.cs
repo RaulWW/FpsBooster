@@ -1,4 +1,4 @@
-vusing System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace FpsBooster.Services.Optimization
 {
