@@ -3,18 +3,18 @@
 
 [Setup]
 ; App Metadata
-AppName=FPS Booster
-AppVersion=2.0
+AppName=FBooster
+AppVersion=2.1
 AppPublisher=RaulW
 AppCopyright=Copyright (C) 2026 RaulWW
 AppPublisherURL=https://github.com/RaulWW/FpsBooster
 
 ; Default Install Settings
-DefaultDirName={autopf}\FPS Booster
+DefaultDirName={autopf}\FBooster
 DefaultGroupName=FPS Booster
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=FBooster_v2
+OutputBaseFilename=Setup_FBoosterV2
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -22,9 +22,9 @@ WizardStyle=modern
 ; Execution Level (Required for system tweaks)
 PrivilegesRequired=admin
 
-; Icon Configuration (Using minimalist icon generated)
-; SetupIconFile=minimalist_bolt.ico
-; UninstallDisplayIcon={app}\FpsBooster.exe
+; Icon Configuration
+SetupIconFile=c:\Users\Raul\Desktop\Github\FpsBooster\imgs\IcoLogo512px.ico
+UninstallDisplayIcon={app}\FpsBooster.exe
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

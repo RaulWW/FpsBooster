@@ -147,5 +147,28 @@ namespace FpsBooster.Views.Factories
                 Height = 8
             };
         }
+
+        public static FlowLayoutPanel CreateFlowLayoutPanel(DockStyle dock = DockStyle.None, FlowDirection direction = FlowDirection.LeftToRight, bool wrapContents = true, bool autoSize = true)
+        {
+            return new FlowLayoutPanel
+            {
+                Dock = dock,
+                FlowDirection = direction,
+                WrapContents = wrapContents,
+                AutoSize = autoSize,
+                BackColor = Color.Transparent
+            };
+        }
+
+        public static Panel CreateContainer(DockStyle dock = DockStyle.None, Padding? padding = null, bool autoSize = false)
+        {
+            return new BufferedPanel
+            {
+                Dock = dock,
+                Padding = padding ?? Padding.Empty,
+                AutoSize = autoSize,
+                BackColor = Color.Transparent
+            };
+        }
     }
 }

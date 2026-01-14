@@ -34,31 +34,45 @@ namespace FpsBooster.Services.Optimization
 
                 Write-Host 'Limpando Recent Files...'
                 $recentPath = Join-Path $env:APPDATA 'Microsoft\Windows\Recent'
-                if (Test-Path $recentPath) {
-                    Get-ChildItem -Path $recentPath -Recurse | Remove-Item -Force -Recurse
-                }
+                if (Test-Path $recentPath) { Get-ChildItem -Path $recentPath -Recurse | Remove-Item -Force -Recurse }
 
-                Write-Host 'Limpando System Logs...'
+                Write-Host 'Limpando System Logs & Delivery Optimization...'
                 $logPaths = @(
-                    'C:\Windows\Logs\CBS\*.log',
-                    'C:\Windows\Logs\MoSetup\*.log',
-                    'C:\Windows\Panther\*.log',
-                    'C:\Windows\SoftwareDistribution\*.log',
-                    'C:\Windows\Microsoft.NET\*.log'
+                    'C:\Windows\Logs\CBS\*.log', 'C:\Windows\Logs\MoSetup\*.log',
+                    'C:\Windows\Panther\*.log', 'C:\Windows\SoftwareDistribution\*.log',
+                    'C:\Windows\Microsoft.NET\*.log', 'C:\Windows\System32\Winevt\Logs\*.evtx',
+                    'C:\ProgramData\Microsoft\Windows\WER\*.run', 'C:\ProgramData\Microsoft\Windows\WER\*.dmp',
+                    'C:\Windows\ServiceProfiles\NetworkService\AppData\Local\Microsoft\Windows\DeliveryOptimization\Cache\*'
                 )
-                foreach ($path in $logPaths) {
-                    Get-ChildItem -Path $path -Recurse | Remove-Item -Force -Recurse
-                }
+                foreach ($path in $logPaths) { Get-Item $path -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse }
 
-                Write-Host 'Limpando User Caches & Logs...'
+                Write-Host 'Limpando User Caches & Thumbnails...'
                 $userLogPaths = @(
                     (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\WebCache\*.log'),
                     (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\SettingSync\*.log'),
-                    (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Explorer\ThumbCacheToDelete\*.tmp')
+                    (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Explorer\thumbcache_*.db'),
+                    (Join-Path $env:LOCALAPPDATA 'Microsoft\Windows\Explorer\iconcache_*.db')
                 )
-                foreach ($path in $userLogPaths) {
-                    Get-ChildItem -Path $path -Recurse | Remove-Item -Force -Recurse
-                }
+                foreach ($path in $userLogPaths) { Get-Item $path -ErrorAction SilentlyContinue | Remove-Item -Force }
+
+                Write-Host 'Limpando Application Caches (Spotify, Discord, Steam, VS Code)...'
+                $appPaths = @(
+                    (Join-Path $env:LOCALAPPDATA 'Spotify\Storage\*'),
+                    (Join-Path $env:APPDATA 'discord\Cache\*'),
+                    (Join-Path $env:APPDATA 'discord\Code Cache\*'),
+                    (Join-Path $env:LOCALAPPDATA 'Google\Chrome\User Data\Default\Cache\*'),
+                    (Join-Path $env:LOCALAPPDATA 'Microsoft\Edge\User Data\Default\Cache\*'),
+                    (Join-Path $env:APPDATA 'Code\Cache\*'),
+                    (Join-Path $env:APPDATA 'Code\CachedData\*'),
+                    'C:\Program Files (x86)\Steam\appcache\*',
+                    'C:\Program Files (x86)\Steam\depotcache\*',
+                    'C:\ProgramData\NVIDIA Corporation\NV_Cache\*'
+                )
+                foreach ($path in $appPaths) { Get-Item $path -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse }
+
+                Write-Host 'Limpando Windows Defender Logs...'
+                $defenderPath = 'C:\ProgramData\Microsoft\Windows Defender\Scans\History\Service\DetectionHistory\*'
+                Get-Item $defenderPath -ErrorAction SilentlyContinue | Remove-Item -Force -Recurse
             ";
             await psService.ExecuteCommandAsync(cleanupScript);
         }

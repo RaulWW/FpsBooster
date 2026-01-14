@@ -101,15 +101,17 @@ partial class MainForm
         this.mainContent = UIBuilder.CreatePanel(DockStyle.Fill, Theme.Background);
         
         // Sidebar Content
-        this.lblIcon = UIBuilder.CreateIconLabel(Theme.IconRocket, 32, Theme.Accent, DockStyle.Top);
-        this.lblIcon.Height = 120; // Optimized height
-        this.lblIcon.Padding = new Padding(0, 30, 0, 10); // Better top and bottom spacing
-        
-        this.btnMenuNetwork = UIBuilder.CreateMenuButton("   NETWORK TEST", Theme.IconNetwork);
-        this.btnMenuCS2 = UIBuilder.CreateMenuButton("   CONFIG CS2", Theme.IconGame);
-        
         this.btnMenuBoost = UIBuilder.CreateMenuButton("   ULTIMATE BOOST", Theme.IconRocket);
         this.btnMenuBoost.IsActive = true;
+
+        this.sidebarLogo = new PictureBox
+        {
+            SizeMode = PictureBoxSizeMode.Zoom,
+            Height = 80,
+            Dock = DockStyle.Top,
+            Padding = new Padding(20, 30, 20, 10)
+        };
+        try { this.sidebarLogo.Image = Image.FromFile(@"imgs\IcoLogo512px.ico"); } catch { }
 
         this.btnMenuDocs = UIBuilder.CreateMenuButton("   DOCUMENTAÇÃO", Theme.IconDocs);
 
@@ -119,12 +121,9 @@ partial class MainForm
         this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
         this.sidebar.Controls.Add(this.btnMenuDocs);
-        this.sidebar.Controls.Add(this.btnMenuNetwork);
-        this.sidebar.Controls.Add(this.btnMenuCS2);
         this.sidebar.Controls.Add(this.btnMenuDownloads);
-        this.sidebar.Controls.Add(this.btnMenuDocs);
         this.sidebar.Controls.Add(this.btnMenuBoost);
-        this.sidebar.Controls.Add(this.lblIcon);
+        this.sidebar.Controls.Add(this.sidebarLogo);
         this.sidebar.Controls.Add(this.footer);
 
         // Footer Setup
@@ -205,14 +204,15 @@ partial class MainForm
         this.btnStartNetworkTest.Font = new Font("Segoe UI Semibold", 9F);
 
         this.btnLoadFaceit = UIBuilder.CreateButton("  FACEIT", new Point(530, 110), new Size(110, 28));
-        this.btnLoadFaceit.BackColor = Color.FromArgb(255, 85, 0);
+        this.btnLoadFaceit.BackColor = Color.Black; 
+        this.btnLoadFaceit.ForeColor = Color.FromArgb(255, 85, 0); // Orange text
         this.btnLoadFaceit.Font = new Font("Segoe UI Semibold", 9F);
-        try { this.btnLoadFaceit.ButtonIcon = Image.FromFile("faceit_logo.png"); } catch { }
+        try { this.btnLoadFaceit.ButtonIcon = Image.FromFile(@"imgs\faceit_logo.png"); } catch { }
 
         this.btnLoadGC = UIBuilder.CreateButton("  GC IP", new Point(650, 110), new Size(110, 28));
         this.btnLoadGC.BackColor = Theme.BgCard;
         this.btnLoadGC.Font = new Font("Segoe UI Semibold", 9F);
-        try { this.btnLoadGC.ButtonIcon = Image.FromFile("gc_logo.png"); } catch { }
+        try { this.btnLoadGC.ButtonIcon = Image.FromFile(@"imgs\GC.png"); } catch { }
 
         this.lblPingResult = UIBuilder.CreateLabel("PING: -- ms", new Font("Segoe UI Semibold", 11F), Theme.AccentGreen, new Point(45, 160));
 
@@ -277,12 +277,27 @@ partial class MainForm
 
         this.chkDotNet = UIBuilder.CreateCheckbox(" .NET Framework (2.0, 3.0, 3.5, 4.x)", new Point(50, 140));
 
-        this.btnInstallFeatures = UIBuilder.CreateButton("  INSTALL SELECTED", new Point(45, 200), new Size(220, 40));
-        
-        this.btnInstallVisualCpp = UIBuilder.CreateButton("  INSTALL VISUAL C++ RUNTIMES", new Point(300, 200), new Size(240, 40));
+        // Center Buttons using FlowLayoutPanel
+        this.downloadButtonsPanel = UIBuilder.CreateFlowLayoutPanel(DockStyle.Top);
+        this.downloadButtonsPanel.Padding = new Padding(0, 20, 0, 0);
+        this.downloadButtonsPanel.Height = 100;
 
-        this.panelDownloads.Controls.Add(this.btnInstallFeatures);
-        this.panelDownloads.Controls.Add(this.btnInstallVisualCpp);
+        // Container to help centering
+        var centerContainer = UIBuilder.CreateFlowLayoutPanel(DockStyle.Fill, FlowDirection.LeftToRight, false, true);
+        centerContainer.WrapContents = false;
+        centerContainer.Height = 60;
+        
+        this.btnInstallFeatures = UIBuilder.CreateButton("  INSTALL SELECTED", new Point(0, 0), new Size(220, 40));
+        this.btnInstallVisualCpp = UIBuilder.CreateButton("  INSTALL VISUAL C++", new Point(0, 0), new Size(220, 40));
+        
+        centerContainer.Controls.Add(this.btnInstallFeatures);
+        centerContainer.Controls.Add(this.btnInstallVisualCpp);
+        
+        // Manual centering hack for WinForms Flow
+        this.downloadButtonsPanel.Controls.Add(new Panel { Width = 45, Height = 1, BackColor = Color.Transparent }); // Left margin
+        this.downloadButtonsPanel.Controls.Add(centerContainer);
+
+        this.panelDownloads.Controls.Add(this.downloadButtonsPanel);
         this.panelDownloads.Controls.Add(this.chkDotNet);
         this.panelDownloads.Controls.Add(this.lblDownloadsInfo);
         this.panelDownloads.Controls.Add(this.lblDownloadsTitle);
@@ -351,8 +366,10 @@ partial class MainForm
     private Label lblDownloadsTitle;
     private Label lblDownloadsInfo;
     private CheckBox chkDotNet;
+    private FlowLayoutPanel downloadButtonsPanel;
     private ModernButton btnInstallFeatures;
     private ModernButton btnInstallVisualCpp;
+    private PictureBox sidebarLogo;
 
 
     #endregion
