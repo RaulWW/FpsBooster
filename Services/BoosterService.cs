@@ -25,6 +25,7 @@ namespace FpsBooster.Services
                 new SystemCleanupTask(),
                 new RegistryTweaksTask(),
                 new ServiceOptimizationTask(),
+                new TelemetryOptimizationTask(),
                 new AdobeBlockTask()
             };
         }

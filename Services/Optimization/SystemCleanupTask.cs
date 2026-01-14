@@ -14,9 +14,9 @@ namespace FpsBooster.Services.Optimization
             const string cleanupScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 Write-Host 'Limpando Windows Temp...'
-                Get-ChildItem -Path 'C:\Windows\Temp' -Recurse | Remove-Item -Force -Recurse
+                Get-ChildItem -Path 'C:\Windows\Temp' *.* -Recurse | Remove-Item -Force -Recurse
                 Write-Host 'Limpando User Temp...'
-                Get-ChildItem -Path $env:TEMP -Recurse | Remove-Item -Force -Recurse
+                Get-ChildItem -Path $env:TEMP *.* -Recurse | Remove-Item -Force -Recurse
                 Write-Host 'Limpando Prefetch...'
                 Get-ChildItem -Path 'C:\Windows\Prefetch' -Recurse | Remove-Item -Force -Recurse
             ";

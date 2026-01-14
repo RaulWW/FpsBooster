@@ -44,6 +44,7 @@ partial class MainForm
         this.btnMenuBoost = new MenuButton();
         this.btnMenuCS2 = new MenuButton();
         this.btnMenuNetwork = new MenuButton();
+        this.btnMenuDownloads = new MenuButton();
         
         // Boost tab controls
         this.lblTitle = new Label();
@@ -80,7 +81,18 @@ partial class MainForm
         this.panelDocs = new Panel();
         this.btnMenuDocs = new MenuButton();
         this.lblDocsTitle = new Label();
+        // Documentation Tab
+        this.panelDocs = new Panel();
+        this.btnMenuDocs = new MenuButton();
+        this.lblDocsTitle = new Label();
         this.rtbDocsContent = new RichTextBox();
+
+        // Downloads Tab
+        this.panelDownloads = new Panel();
+        this.lblDownloadsTitle = new Label();
+        this.lblDownloadsInfo = new Label();
+        this.chkDotNet = new CheckBox();
+        this.btnInstallFeatures = new ModernButton();
         
         // Form Configuration
         this.FormBorderStyle = FormBorderStyle.None;
@@ -159,10 +171,21 @@ partial class MainForm
 
         this.btnMenuDocs.Text = "   DOCUMENTAÇÃO";
         this.btnMenuDocs.Icon = Theme.IconDocs;
+        this.btnMenuDocs.Text = "   DOCUMENTAÇÃO";
+        this.btnMenuDocs.Icon = Theme.IconDocs;
         this.btnMenuDocs.Dock = DockStyle.Top;
+
+        this.btnMenuDownloads.Text = "   DOWNLOADS";
+        this.btnMenuDownloads.Icon = Theme.IconSettings; // Using Settings icon or similar if available, else default
+        try { this.btnMenuDownloads.Icon = ""; } catch {} // Segoe MDL2 Assets 'Download' icon or similar
+        this.btnMenuDownloads.Dock = DockStyle.Top;
 
         this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
+        this.sidebar.Controls.Add(this.btnMenuDocs);
+        this.sidebar.Controls.Add(this.btnMenuNetwork);
+        this.sidebar.Controls.Add(this.btnMenuCS2);
+        this.sidebar.Controls.Add(this.btnMenuDownloads);
         this.sidebar.Controls.Add(this.btnMenuDocs);
         this.sidebar.Controls.Add(this.btnMenuBoost);
         this.sidebar.Controls.Add(this.lblIcon);
@@ -387,11 +410,47 @@ partial class MainForm
         this.rtbDocsContent.Size = new Size(720, 450);
         
         this.panelDocs.Controls.Add(this.rtbDocsContent);
+        this.panelDocs.Controls.Add(this.rtbDocsContent);
         this.panelDocs.Controls.Add(this.lblDocsTitle);
+
+        // Panel Downloads Setup
+        this.panelDownloads.Dock = DockStyle.Fill;
+        this.panelDownloads.Padding = new Padding(40);
+        this.panelDownloads.Visible = false;
+
+        this.lblDownloadsTitle.Text = "DOWNLOADS & FEATURES";
+        this.lblDownloadsTitle.Font = new Font(Theme.MainFont, 22F, FontStyle.Bold);
+        this.lblDownloadsTitle.AutoSize = true;
+        this.lblDownloadsTitle.Location = new Point(40, 40);
+        this.lblDownloadsTitle.ForeColor = Color.White;
+        this.lblDownloadsTitle.Padding = new Padding(0, 15, 0, 0);
+
+        this.lblDownloadsInfo.Text = "Install additional Windows features and runtimes.";
+        this.lblDownloadsInfo.ForeColor = Theme.TextDim;
+        this.lblDownloadsInfo.Location = new Point(45, 100);
+        this.lblDownloadsInfo.AutoSize = true;
+
+        this.chkDotNet.Text = " .NET Framework (2.0, 3.0, 3.5, 4.x)";
+        this.chkDotNet.ForeColor = Theme.Text;
+        this.chkDotNet.Font = new Font("Segoe UI", 11F);
+        this.chkDotNet.Location = new Point(50, 140);
+        this.chkDotNet.AutoSize = true;
+        this.chkDotNet.Cursor = Cursors.Hand;
+
+        this.btnInstallFeatures.Text = "  INSTALL SELECTED";
+        this.btnInstallFeatures.Location = new Point(45, 200);
+        this.btnInstallFeatures.Size = new Size(220, 40);
+        this.btnInstallFeatures.Font = new Font("Segoe UI Semibold", 10F);
+
+        this.panelDownloads.Controls.Add(this.btnInstallFeatures);
+        this.panelDownloads.Controls.Add(this.chkDotNet);
+        this.panelDownloads.Controls.Add(this.lblDownloadsInfo);
+        this.panelDownloads.Controls.Add(this.lblDownloadsTitle);
 
         this.mainContent.Controls.Add(this.panelBoost);
         this.mainContent.Controls.Add(this.panelCS2);
         this.mainContent.Controls.Add(this.panelNetwork);
+        this.mainContent.Controls.Add(this.panelDownloads);
         this.mainContent.Controls.Add(this.panelDocs);
         
         this.Controls.Add(this.mainContent);
@@ -445,6 +504,15 @@ partial class MainForm
     private MenuButton btnMenuDocs;
     private Label lblDocsTitle;
     private RichTextBox rtbDocsContent;
+
+    // Downloads/Custom Controls
+    private Panel panelDownloads;
+    private MenuButton btnMenuDownloads;
+    private Label lblDownloadsTitle;
+    private Label lblDownloadsInfo;
+    private CheckBox chkDotNet;
+    private ModernButton btnInstallFeatures;
+
 
     #endregion
 }

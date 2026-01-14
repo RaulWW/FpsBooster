@@ -29,6 +29,9 @@ namespace FpsBooster.Services.Optimization
                 if (Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Edge') {
                     Remove-Item -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Edge' -Recurse -Force
                 }
+
+                # Disable Teredo
+                netsh interface teredo set state disabled
             ";
             await psService.ExecuteCommandAsync(memoryServicesScript);
         }

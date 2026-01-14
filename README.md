@@ -11,8 +11,10 @@
 ### 🛠️ One-Click Ultimate Boost
 
 - **Ultimate Performance Plan**: Automatically unlocks and activates the hidden Windows "Ultimate Performance" power scheme.
-- **Deep System Cleanup**: Silent removal of Temp, User Temp, and Prefetch files to reclaim resources and reduce stutter.
-- **Registry & BCD Optimization**: Fine-tuned boot parameters and registry settings for lower system latency.
+- **Deep System Cleanup**: Silent removal of Temp files, Prefetch, and potentially unwanted cached data (`%TEMP%`, `C:\Windows\Temp`).
+- **Telemetry Disabling**: Comprehensive blocking of Windows Telemetry, Data Collection, and User Activity tracking via Registry and Scheduled Tasks.
+- **Registry & BCD Optimization**: Fine-tuned settings for lower system latency, including disabling "Fullscreen Optimizations" and "GameDVR".
+- **Network Tweaks**: Disables Teredo tunneling to improve connectivity stability.
 
 ### 🎮 Game Specific Tweaks (CS2)
 
@@ -30,6 +32,30 @@
 - **Roboto Typography**: Modern and professional global font for enhanced readability.
 - **Borderless Window**: Custom-built title bar for a sleek, modern desktop presence.
 - **Informative Logging**: Real-time feedback with colored tags (`[INFO]`, `[WARNING]`, `[ERROR]`).
+
+### 📥 Downloads & Extras
+
+- **Feature Installer**: Integrated tab to easily install essentials like **.NET Framework (2.0, 3.0, 3.5)**.
+
+## ✅ Verification & Tests
+
+To verify the optimizations applied by this tool:
+
+1. **Telemetry**:
+
+   - Check Registry: `HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection` -> `AllowTelemetry` should be `0`.
+   - Check Task Scheduler: `\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser` should be **Disabled**.
+
+2. **Network**:
+
+   - Run `netsh interface teredo show state` in PowerShell. Status should be **disabled**.
+
+3. **Registry**:
+
+   - Verify `HKCU:\System\GameConfigStore` -> `GameDVR_DXGIHonorFSEWindowsCompatible` is `1` (Fullscreen Optimizations Disabled).
+
+4. **Temp Files**:
+   - Check `%TEMP%` and `C:\Windows\Temp` folders; they should be cleared of safe-to-delete files.
 
 ## 📖 How It Works
 

@@ -49,7 +49,10 @@ public partial class MainForm : Form
             LoadCS2Config();
         };
         btnMenuNetwork.Click += (s, e) => SwitchTab(panelNetwork, btnMenuNetwork);
+        btnMenuDownloads.Click += (s, e) => SwitchTab(panelDownloads, btnMenuDownloads);
         btnMenuDocs.Click += (s, e) => SwitchTab(panelDocs, btnMenuDocs);
+        
+        btnInstallFeatures.Click += async (s, e) => await InstallSelectedFeatures();
     }
 
     private void InitializeCustomTitleBar()
@@ -64,11 +67,13 @@ public partial class MainForm : Form
         panelBoost.Visible = (activePanel == panelBoost);
         panelCS2.Visible = (activePanel == panelCS2);
         panelNetwork.Visible = (activePanel == panelNetwork);
+        panelDownloads.Visible = (activePanel == panelDownloads);
         panelDocs.Visible = (activePanel == panelDocs);
         
         btnMenuBoost.IsActive = (activeButton == btnMenuBoost);
         btnMenuCS2.IsActive = (activeButton == btnMenuCS2);
         btnMenuNetwork.IsActive = (activeButton == btnMenuNetwork);
+        btnMenuDownloads.IsActive = (activeButton == btnMenuDownloads);
         btnMenuDocs.IsActive = (activeButton == btnMenuDocs);
         
         sidebar.Invalidate(); // Redraw sidebar for activity indicator
@@ -299,6 +304,37 @@ r_dynamic 0";
         lblPingResult.ForeColor = result.Ping < 50 ? Theme.Success : (result.Ping < 100 ? Color.Yellow : Color.Red);
         lblJitterResult.ForeColor = result.Jitter < 5 ? Theme.Success : (result.Jitter < 15 ? Color.Yellow : Color.Red);
         lblLossResult.ForeColor = result.PacketLoss == 0 ? Theme.Success : Color.Red;
+    }
+
+    private async Task InstallSelectedFeatures()
+    {
+        if (!chkDotNet.Checked)
+        {
+            MessageBox.Show("Please select at least one feature to install.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        btnInstallFeatures.Enabled = false;
+        btnInstallFeatures.Text = "  INSTALLING...";
+        
+        try 
+        {
+            var installer = new WindowsFeaturesInstaller();
+            if (chkDotNet.Checked)
+            {
+                await installer.InstallDotNetFrameworkAsync();
+            }
+            MessageBox.Show("Installation completed! A restart may be required alongside Windows Update.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error during installation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+            btnInstallFeatures.Enabled = true;
+            btnInstallFeatures.Text = "  INSTALL SELECTED";
+        }
     }
 
     private void AddNetworkLog(string message)

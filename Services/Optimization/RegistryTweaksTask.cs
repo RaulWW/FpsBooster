@@ -24,6 +24,11 @@ namespace FpsBooster.Services.Optimization
 
                 # Remove Explorer 3D Objects/User items
                 Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}' -Recurse -Force
+
+                 # Disable Fullscreen Optimizations
+                $gameConfigPath = 'HKCU:\System\GameConfigStore'
+                if (!(Test-Path $gameConfigPath)) { New-Item -Path $gameConfigPath -Force | Out-Null }
+                Set-ItemProperty -Path $gameConfigPath -Name 'GameDVR_DXGIHonorFSEWindowsCompatible' -Value 1 -Type DWord -Force
             ";
             await psService.ExecuteCommandAsync(bcdRegistryScript);
         }
