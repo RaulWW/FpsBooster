@@ -9,7 +9,7 @@
 ![Licença](https://img.shields.io/badge/LICENÇA-MIT-blue?style=for-the-badge)
 
 ![GitHub Stars](https://img.shields.io/github/stars/RaulWW/FpsBooster?style=for-the-badge&logo=github&label=STARS&color=FFD700)
-![Visualizações](https://hits.dwyl.com/RaulWW/FpsBooster.svg?style=for-the-badge&show=unique)
+![Visualizações](https://komarev.com/ghpvc/?username=RaulWW&repo=FpsBooster&style=for-the-badge&label=VISUALIZAÇÕES&color=blueviolet)
 ![Plataforma](https://img.shields.io/badge/PLATAFORMA-WINDOWS%2010%2F11-0078D6?style=for-the-badge&logo=windows)
 
 [![DOCUMENTAÇÃO](https://img.shields.io/badge/📖_DOCUMENTAÇÃO-LER_AGORA-4FC3F7?style=for-the-badge)](#-o-que-é-otimizado)
@@ -173,9 +173,9 @@ Este projeto é **open-source** sob a licença MIT. Contribuições são bem-vin
 
 <div align="center">
 
-**Desenvolvido por [Raul W.](https://github.com/RaulWW)**
+**Desenvolvido ⚡ por [Raul W.](https://github.com/RaulWW)**
 
-_Focado em Performance.
+_Focado em Performance. Feito para Gamers._
 
 [![GitHub](https://img.shields.io/badge/GitHub-RaulWW-181717?style=for-the-badge&logo=github)](https://github.com/RaulWW)
 
