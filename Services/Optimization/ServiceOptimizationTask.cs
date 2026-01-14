@@ -32,6 +32,13 @@ namespace FpsBooster.Services.Optimization
 
                 # Disable Teredo
                 netsh interface teredo set state disabled
+
+                # Disable Heavy Services
+                Stop-Service -Name 'SysMain' -Force
+                Set-Service -Name 'SysMain' -StartupType Disabled
+                
+                Stop-Service -Name 'WSearch' -Force
+                Set-Service -Name 'WSearch' -StartupType Disabled
             ";
             await psService.ExecuteCommandAsync(memoryServicesScript);
         }
