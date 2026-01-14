@@ -241,27 +241,181 @@ partial class MainForm
         this.lblDocsTitle = UIBuilder.CreateLabel("DOCUMENTAÇÃO", new Font(Theme.MainFont, 22F, FontStyle.Bold), Color.White, new Point(40, 40));
         this.lblDocsTitle.Padding = new Padding(0, 15, 0, 0);
 
-        var docsText = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA
+        var docsText = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA COMPLETA
 
-1. Plano de Desempenho Máximo (Ultimate Performance)
-   - O que faz: Ativa o esquema de energia 'Desempenho Máximo' via Powercfg.
-   - Benefícios: Desativa o core parking, mantém o clock do processador alto e reduz a latência de troca de estado de energia (C-States).
+═══════════════════════════════════════════════════════════════
+⚡ MODO: ULTIMATE BOOST (Aba Principal)
+═══════════════════════════════════════════════════════════════
 
-2. Limpeza Profunda do Sistema
-   - O que faz: Remove arquivos das pastas %TEMP%, Prefetch e Windows/Temp.
-   - Benefícios: Reduz o stutter causado por buscas em diretórios superlotados e libera espaço no sistema para o arquivo de paginação (pagefile).
+O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automáticas. Veja o que acontece:
 
-3. Otimizações de Registro & BCD
-   - O que faz: Ajusta o timer de precisão do Windows (HPET), desativa 'dynamic tick' e otimiza o registro para prioridade de jogos.
-   - Benefícios: Garante que os frames sejam processados com o menor atraso possível entre o hardware e o software.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ PLANO DE ENERGIA: DESEMPENHO MÁXIMO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Ativa o 'Ultimate Performance Power Plan' oculto do Windows
+   - Se não existir, duplica e ativa automaticamente
+   
+   Benefícios Técnicos:
+   • Desativa C-States (estados de economia de energia da CPU)
+   • Elimina Core Parking (núcleos inativos são mantidos sempre ativos)
+   • Remove throttling de CPU em jogos (clock sempre no máximo)
+   • Reduz micro-stutters causados por mudanças de frequência
 
-4. Gerenciamento de Serviços (svchost)
-   - O que faz: Isola serviços essenciais em processos próprios e desativa serviços de telemetria e coleta de dados (DiagTrack).
-   - Benefícios: Evita que picos de uso de CPU por serviços secundários causem queda de frames (FPS Drops).
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2️⃣ LIMPEZA PROFUNDA DO SISTEMA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Limpa TODOS os arquivos temporários (%TEMP%, C:\Windows\Temp)
+   - Remove Prefetch (índices de inicialização rápida obsoletos)
+   - Limpa Event Logs e Logs do Windows Defender
+   - Remove cache de browsers, Discord, Spotify, Steam, VS Code
+   - Esvazia Delivery Optimization Cache da Microsoft
+   - Limpa thumbnails e ícones cacheados do Explorer
+   
+   Benefícios:
+   • Libera GB de espaço no SSD/HDD
+   • Reduz tempo de busca em diretórios superlotados (menos I/O)
+   • Melhora responsividade do sistema
+   • Reduz stuttering causado por buscas em disco
 
-5. Bloqueio de Telemetria & Adobe
-   - O que faz: Bloqueia IPs de rastreamento no arquivo HOSTS e encerra processos de fundo 'Adobe Genuine Service'.
-   - Benefícios: Libera largura de banda da rede e ciclos de CPU que seriam usados para monitoramento em segundo plano.";
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3️⃣ OTIMIZAÇÕES DE REGISTRO & BCD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Desativa 'Fullscreen Optimizations' (GameDVR fix)
+   - Remove objetos 3D do Windows Explorer (menos overhead de UI)
+   - Ativa 'End Task' direto do taskbar (facilita fechar apps travados)
+   - Configura bcdedit bootmenupolicy Legacy (mais controle avançado)
+   
+   Benefícios:
+   • Elimina o DVR do Xbox Game Bar (reduz latência de renderização)
+   • Melhora compatibilidade com jogos antigos e modernos
+   • Acesso mais rápido a controles avançados do sistema
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4️⃣ DESATIVAÇÃO AGRESSIVA DE TELEMETRIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Define AllowTelemetry = 0 (desativa coleta de dados da Microsoft)
+   - Desativa publicação de atividades do usuário (Timeline)
+   - Remove conexões automáticas ao Windows Update
+   - Desativa tarefas agendadas de coleta de dados (11+ tasks)
+   - Bloqueia CloudContent e AdvertisingInfo
+   
+   Tasks Desativadas:
+   • Microsoft Compatibility Appraiser, Consolidator, UsbCeip
+   • DiskDiagnostic, Siuf/DmClient, QueueReporting, MapsUpdate
+   
+   Benefícios:
+   • Reduz uso de CPU em background (menos threads)
+   • Libera largura de banda da rede (sem uploads de logs)
+   • Aumenta privacidade e controle sobre o sistema
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5️⃣ OTIMIZAÇÃO DE SERVIÇOS & REDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Ajusta SvcHostSplitThreshold (separa serviços em processos próprios)
+   - Desativa SysMain (Superfetch/Prefetch) e WSearch (indexação)
+   - Desativa Teredo (IPv6 Tunneling desnecessário em jogos)
+   - Bloqueia AutoLogger de diagnóstico da Microsoft
+   - Define Windows Defender para não enviar amostras
+   
+   Benefícios:
+   • Evita picos de CPU causados por svchost.exe compartilhado
+   • Elimina lags causados por indexação de arquivos
+   • Melhora estabilidade de conexão (Teredo causa packet loss)
+   • Reduz overhead de rede em jogos competitivos
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6️⃣ BLOQUEIO DE PROCESSOS ADOBE EM SEGUNDO PLANO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   O que faz:
+   - Encerra Adobe Genuine Service (verificação de licenças)
+   - Bloqueia IPs da Adobe no arquivo HOSTS
+   
+   Benefícios:
+   • Reduz uso de CPU e RAM por processos desnecessários
+   • Libera largura de banda de rede
+
+═══════════════════════════════════════════════════════════════
+🎮 CONFIG CS2 (Aba CONFIG CS2)
+═══════════════════════════════════════════════════════════════
+
+Editor integrado com syntax highlighting para editar seu autoexec.cfg.
+   - Salva direto em: C:\Program Files (x86)\Steam\steamapps\
+     common\Counter-Strike Global Offensive\game\csgo\cfg\
+   - Use launch options: +exec autoexec.cfg -refresh 240
+
+═══════════════════════════════════════════════════════════════
+🌐 NETWORK DIAGNOSTICS (Aba REDE / DIAG.)
+═══════════════════════════════════════════════════════════════
+
+Teste em tempo real de qualidade de conexão:
+   - Ping, Jitter e Packet Loss para qualquer IP/hostname
+   - Presets pré-configurados: Faceit e Gamers Club
+   - Atualização a cada 2s com cores dinâmicas:
+     • Verde: qualidade excelente
+     • Amarelo: qualidade média
+     • Vermelho: problemas sérios de rede
+
+═══════════════════════════════════════════════════════════════
+📥 DOWNLOADS (Aba DOWNLOADS)
+═══════════════════════════════════════════════════════════════
+
+Instaladores de dependências essenciais para jogos:
+   - .NET Framework (2.0, 3.0, 3.5, 4.x): necessário para muitos jogos
+   - Visual C++ Redistributables All-in-One: pacote completo de runtimes
+   - Log em tempo real (opcional): veja o progresso da instalação
+
+═══════════════════════════════════════════════════════════════
+✅ VERIFICAÇÃO DAS OTIMIZAÇÕES
+═══════════════════════════════════════════════════════════════
+
+Para confirmar que as otimizações foram aplicadas:
+
+1. Verifique o Plano de Energia:
+   powercfg /list
+   → Deve mostrar 'Ultimate Performance' como ativo (*)
+
+2. Verifique Telemetria:
+   → Abra Registry Editor e vá em:
+     HKLM\SOFTWARE\Policies\Microsoft\Windows\DataCollection
+     → AllowTelemetry deve ser 0
+
+3. Verifique Teredo:
+   netsh interface teredo show state
+   → Status deve ser 'disabled'
+
+4. Verifique GameDVR:
+   → Registry: HKCU\System\GameConfigStore
+     → GameDVR_DXGIHonorFSEWindowsCompatible = 1
+
+5. Verifique Serviços Desativados:
+   → Task Manager → Services
+     → SysMain e WSearch devem estar Stopped
+
+═══════════════════════════════════════════════════════════════
+⚠️ AVISOS IMPORTANTES
+═══════════════════════════════════════════════════════════════
+
+• Execute o app COMO ADMINISTRADOR para garantir permissões
+• Algumas mudanças requerem reinicialização do Windows
+• Em caso de problemas, crie um ponto de restauração antes
+• Estas otimizações são seguras mas agressivas (foco em PERFORMANCE)
+
+═══════════════════════════════════════════════════════════════
+📚 TECNOLOGIAS UTILIZADAS
+═══════════════════════════════════════════════════════════════
+
+• C# / .NET 10.0 (última geração)
+• WinForms customizado (controles premium)
+• PowerShell Engine integrado (otimizações nativas do Windows)
+• RichTextBox com syntax highlighting (editor de código)
+
+Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
+";
 
         this.rtbDocsContent = UIBuilder.CreateRichTextBox(new Point(45, 120), new Size(720, 450), Theme.Background, Theme.Text, new Font(Theme.MainFont, 11F));
         this.rtbDocsContent.Text = docsText;
