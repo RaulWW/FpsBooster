@@ -43,6 +43,7 @@ namespace FpsBooster.Views
         public static readonly string IconDocs = "\uE8A5";    // Documentation/Book
         public static readonly string IconClose = "\uE8BB";   // Chrome Close
         public static readonly string IconMinimize = "\uE921"; // Chrome Minimize
+        public static readonly string IconDonate = "\uEB51";  // Heart / Support
 
         // Fonts
         public const string MainFont = "Roboto";
@@ -51,5 +52,9 @@ namespace FpsBooster.Views
         // Metadata
         public const string AppVersion = "v2.1";
         public const string Developer = "⚡ Developed by Raul W.";
+        
+        // Monetization URLs
+        public const string UrlDonate = "https://ko-fi.com/raulw"; 
+        public const string UrlAffiliate = "https://www.exitlag.com/refer/10255724";
     }
 }

@@ -39,6 +39,10 @@ public partial class MainForm : Form
         btnLoadGC.Click += (s, e) => txtTargetIp.Text = "203.159.80.100:27027";
 
         rtbCS2Config.TextChanged += (s, e) => RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
+        
+        // Monetization Events
+        lblDonate.LinkClicked += (s, e) => OpenUrl(Theme.UrlDonate);
+        btnAffiliate.Click += (s, e) => OpenUrl(Theme.UrlAffiliate);
     }
 
     private void InitializeNavigation()
@@ -410,5 +414,23 @@ r_dynamic 0";
         rtbNetworkLog.AppendText($"{message}{Environment.NewLine}");
         rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
         rtbNetworkLog.ScrollToCaret();
+        rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
+        rtbNetworkLog.ScrollToCaret();
+    }
+
+    private void OpenUrl(string url)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Could not open link: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

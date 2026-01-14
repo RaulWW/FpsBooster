@@ -107,13 +107,13 @@ partial class MainForm
 
         this.btnMenuDocs = UIBuilder.CreateMenuButton("   DOCUMENTAÇÃO", Theme.IconDocs);
         this.btnMenuCS2 = UIBuilder.CreateMenuButton("   CONFIG CS2", Theme.IconGame);
-        this.btnMenuNetwork = UIBuilder.CreateMenuButton("   REDE / DIAG.", Theme.IconNetwork);
-
         this.btnMenuDownloads = UIBuilder.CreateMenuButton("   DOWNLOADS", Theme.IconSettings);
+        this.btnMenuNetwork = UIBuilder.CreateMenuButton("   REDE / DIAG.", Theme.IconNetwork);
 
         // Footer Setup (must be created BEFORE adding to sidebar)
         this.footer = UIBuilder.CreatePanel(DockStyle.Bottom);
-        this.footer.Height = 40;
+        this.footer = UIBuilder.CreatePanel(DockStyle.Bottom);
+        this.footer.Height = 60; // Increased height to stack items
         
         this.lblLinkFooter = new LinkLabel();
         this.lblLinkFooter.Dock = DockStyle.Fill;
@@ -124,7 +124,8 @@ partial class MainForm
         this.lblLinkFooter.LinkBehavior = LinkBehavior.HoverUnderline;
         this.lblLinkFooter.Font = new Font("Segoe UI", 8F);
         this.lblLinkFooter.Text = $"{Theme.Developer} | {Theme.AppVersion}";
-        this.lblLinkFooter.TextAlign = ContentAlignment.MiddleCenter;
+        this.lblLinkFooter.TextAlign = ContentAlignment.MiddleLeft;
+        this.lblLinkFooter.Padding = new Padding(10, 0, 0, 0);
         this.lblLinkFooter.LinkClicked += (s, e) => {
             try {
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
@@ -134,7 +135,25 @@ partial class MainForm
             } catch { }
         };
         
+        // Minimalist Donate Link in Footer
+        this.lblDonate = new LinkLabel();
+        this.lblDonate.Dock = DockStyle.Top;
+        this.lblDonate.Height = 25;
+        this.lblDonate.Text = "❤ Donate";
+        this.lblDonate.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+        this.lblDonate.LinkColor = Theme.Accent; 
+        this.lblDonate.ActiveLinkColor = Theme.AccentHover;
+        this.lblDonate.VisitedLinkColor = Theme.Accent;
+        this.lblDonate.LinkBehavior = LinkBehavior.HoverUnderline;
+        this.lblDonate.TextAlign = ContentAlignment.BottomLeft;
+        this.lblDonate.Padding = new Padding(10, 0, 0, 0);
+        this.lblDonate.Cursor = Cursors.Hand;
+
+        this.lblLinkFooter.Dock = DockStyle.Fill;
+        this.lblLinkFooter.TextAlign = ContentAlignment.TopLeft;
+
         this.footer.Controls.Add(this.lblLinkFooter);
+        this.footer.Controls.Add(this.lblDonate);
 
         this.sidebar.Controls.Add(this.btnMenuNetwork);
         this.sidebar.Controls.Add(this.btnMenuCS2);
@@ -215,6 +234,11 @@ partial class MainForm
 
         this.rtbNetworkLog = UIBuilder.CreateRichTextBox(new Point(45, 200), new Size(720, 330), Theme.BgCard, Theme.TextDim, new Font("Consolas", 9F));
 
+        // Affiliate Button
+        this.btnAffiliate = UIBuilder.CreateButton("  PING ALTO? TESTE EXITLAG (GRÁTIS)", new Point(45, 545), new Size(320, 35));
+        this.btnAffiliate.BackColor = Theme.AccentGlow;
+        this.btnAffiliate.ForeColor = Color.White;
+        
         this.panelNetwork.Controls.Clear();
         this.panelNetwork.Controls.Add(this.lblNetworkTitle);
         this.panelNetwork.Controls.Add(this.lblNetworkInfo);
@@ -226,6 +250,8 @@ partial class MainForm
         this.panelNetwork.Controls.Add(this.lblJitterResult);
         this.panelNetwork.Controls.Add(this.lblLossResult);
         this.panelNetwork.Controls.Add(this.rtbNetworkLog);
+        this.panelNetwork.Controls.Add(this.btnAffiliate); // Ensure this is added!
+        this.panelNetwork.Controls.Add(this.btnAffiliate);
         // Panel Docs Setup
         this.panelDocs = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40), false);
         
@@ -476,6 +502,7 @@ Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
     private Panel sidebar;
     private Panel footer;
     private LinkLabel lblLinkFooter;
+    private LinkLabel lblDonate; // New footer donate link
     private Panel mainContent;
     private Panel panelBoost;
     private Panel panelCS2;
@@ -483,6 +510,7 @@ Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
     private MenuButton btnMenuBoost;
     private MenuButton btnMenuCS2;
     private MenuButton btnMenuNetwork;
+    // Removed btnMenuDonate
     private Label lblTitle;
     private Label lblIcon;
     private ModernButton btnBoost;
@@ -508,6 +536,7 @@ Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
     private Label lblJitterResult;
     private Label lblLossResult;
     private RichTextBox rtbNetworkLog;
+    private ModernButton btnAffiliate; // New Affiliate Button
 
     // Custom Title Bar Controls
     private Panel panelTitleBar;
