@@ -17,6 +17,16 @@
 
 ---
 
+## 📸 Visualização
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/RaulWW/FpsBooster/master/logo.png" width="200" alt="Logo">
+  <br>
+  <em>(Dica: Substitua esta imagem por um screenshot real da interface do seu app para impressionar novos usuários!)</em>
+</div>
+
+---
+
 **ULTRA FPS BOOSTER** é uma ferramenta de otimização de sistema de alto desempenho projetada especificamente para **gamers** e **power users**. Simplifica ajustes complexos do sistema em uma experiência de um clique, garantindo que seu ambiente Windows esteja pronto para máxima performance em jogos.
 
 Especialmente otimizado para **Counter-Strike 2 (CS2)** e jogos competitivos.
