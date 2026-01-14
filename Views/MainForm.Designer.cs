@@ -185,7 +185,7 @@ partial class MainForm
         this.lblLinkFooter.LinkClicked += (s, e) => {
             try {
                 System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo {
-                    FileName = "https://github.com/RaulW",
+                    FileName = "https://github.com/RaulWW",
                     UseShellExecute = true
                 });
             } catch { }

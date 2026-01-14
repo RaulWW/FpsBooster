@@ -6,8 +6,8 @@
 AppName=FPS Booster
 AppVersion=2.0
 AppPublisher=RaulW
-AppCopyright=Copyright (C) 2026 RaulW
-AppPublisherURL=https://github.com/RaulW/FpsBooster
+AppCopyright=Copyright (C) 2026 RaulWW
+AppPublisherURL=https://github.com/RaulWW/FpsBooster
 
 ; Default Install Settings
 DefaultDirName={autopf}\FPS Booster
