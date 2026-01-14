@@ -96,6 +96,7 @@ partial class MainForm
         // Sidebar Setup
         this.sidebar = UIBuilder.CreatePanel(DockStyle.Left, Theme.Sidebar);
         this.sidebar.Width = 240;
+        this.sidebar.Padding = new Padding(0, 40, 0, 0);
         
         // Main Content Setup
         this.mainContent = UIBuilder.CreatePanel(DockStyle.Fill, Theme.Background);
@@ -104,34 +105,15 @@ partial class MainForm
         this.btnMenuBoost = UIBuilder.CreateMenuButton("   ULTIMATE BOOST", Theme.IconRocket);
         this.btnMenuBoost.IsActive = true;
 
-        this.sidebarLogo = new PictureBox
-        {
-            SizeMode = PictureBoxSizeMode.Zoom,
-            Height = 80,
-            Dock = DockStyle.Top,
-            Padding = new Padding(20, 30, 20, 10)
-        };
-        try { this.sidebarLogo.Image = Image.FromFile(@"imgs\IcoLogo512px.ico"); } catch { }
-
         this.btnMenuDocs = UIBuilder.CreateMenuButton("   DOCUMENTAÇÃO", Theme.IconDocs);
         this.btnMenuCS2 = UIBuilder.CreateMenuButton("   CONFIG CS2", Theme.IconGame);
         this.btnMenuNetwork = UIBuilder.CreateMenuButton("   REDE / DIAG.", Theme.IconNetwork);
 
         this.btnMenuDownloads = UIBuilder.CreateMenuButton("   DOWNLOADS", Theme.IconSettings);
-        try { this.btnMenuDownloads.Icon = ""; } catch {}
 
-        this.sidebar.Controls.Add(this.btnMenuNetwork);
-        this.sidebar.Controls.Add(this.btnMenuCS2);
-        this.sidebar.Controls.Add(this.btnMenuDocs);
-        this.sidebar.Controls.Add(this.btnMenuDownloads);
-        this.sidebar.Controls.Add(this.btnMenuBoost);
-        this.sidebar.Controls.Add(this.sidebarLogo);
-        this.sidebar.Controls.Add(this.footer);
-
-        // Footer Setup
+        // Footer Setup (must be created BEFORE adding to sidebar)
         this.footer = UIBuilder.CreatePanel(DockStyle.Bottom);
         this.footer.Height = 40;
-        this.footer.Controls.Add(this.lblLinkFooter);
         
         this.lblLinkFooter = new LinkLabel();
         this.lblLinkFooter.Dock = DockStyle.Fill;
@@ -151,6 +133,15 @@ partial class MainForm
                 });
             } catch { }
         };
+        
+        this.footer.Controls.Add(this.lblLinkFooter);
+
+        this.sidebar.Controls.Add(this.btnMenuNetwork);
+        this.sidebar.Controls.Add(this.btnMenuCS2);
+        this.sidebar.Controls.Add(this.btnMenuDocs);
+        this.sidebar.Controls.Add(this.btnMenuDownloads);
+        this.sidebar.Controls.Add(this.btnMenuBoost);
+        this.sidebar.Controls.Add(this.footer);
 
         // Main Content Setup
         this.mainContent.Dock = DockStyle.Fill;
@@ -244,13 +235,13 @@ partial class MainForm
         var docsText = @"🚀 ULTRA FPS BOOSTER - DOCUMENTAÇÃO TÉCNICA COMPLETA
 
 ═══════════════════════════════════════════════════════════════
-⚡ MODO: ULTIMATE BOOST (Aba Principal)
+MODO: ULTIMATE BOOST (Aba Principal)
 ═══════════════════════════════════════════════════════════════
 
 O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automáticas. Veja o que acontece:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1️⃣ PLANO DE ENERGIA: DESEMPENHO MÁXIMO
+PLANO DE ENERGIA: DESEMPENHO MÁXIMO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Ativa o 'Ultimate Performance Power Plan' oculto do Windows
@@ -263,7 +254,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Reduz micro-stutters causados por mudanças de frequência
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-2️⃣ LIMPEZA PROFUNDA DO SISTEMA
+LIMPEZA PROFUNDA DO SISTEMA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Limpa TODOS os arquivos temporários (%TEMP%, C:\Windows\Temp)
@@ -280,7 +271,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Reduz stuttering causado por buscas em disco
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-3️⃣ OTIMIZAÇÕES DE REGISTRO & BCD
+OTIMIZAÇÕES DE REGISTRO & BCD
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Desativa 'Fullscreen Optimizations' (GameDVR fix)
@@ -294,7 +285,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Acesso mais rápido a controles avançados do sistema
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-4️⃣ DESATIVAÇÃO AGRESSIVA DE TELEMETRIA
+DESATIVAÇÃO AGRESSIVA DE TELEMETRIA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Define AllowTelemetry = 0 (desativa coleta de dados da Microsoft)
@@ -313,7 +304,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Aumenta privacidade e controle sobre o sistema
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-5️⃣ OTIMIZAÇÃO DE SERVIÇOS & REDE
+OTIMIZAÇÃO DE SERVIÇOS & REDE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Ajusta SvcHostSplitThreshold (separa serviços em processos próprios)
@@ -329,7 +320,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Reduz overhead de rede em jogos competitivos
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-6️⃣ BLOQUEIO DE PROCESSOS ADOBE EM SEGUNDO PLANO
+BLOQUEIO DE PROCESSOS ADOBE EM SEGUNDO PLANO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    O que faz:
    - Encerra Adobe Genuine Service (verificação de licenças)
@@ -340,7 +331,7 @@ O botão 'APPLY PERFORMANCE CFG' executa uma série de otimizações automática
    • Libera largura de banda de rede
 
 ═══════════════════════════════════════════════════════════════
-🎮 CONFIG CS2 (Aba CONFIG CS2)
+CONFIG CS2 (Aba CONFIG CS2)
 ═══════════════════════════════════════════════════════════════
 
 Editor integrado com syntax highlighting para editar seu autoexec.cfg.
@@ -349,7 +340,7 @@ Editor integrado com syntax highlighting para editar seu autoexec.cfg.
    - Use launch options: +exec autoexec.cfg -refresh 240
 
 ═══════════════════════════════════════════════════════════════
-🌐 NETWORK DIAGNOSTICS (Aba REDE / DIAG.)
+NETWORK DIAGNOSTICS (Aba REDE / DIAG.)
 ═══════════════════════════════════════════════════════════════
 
 Teste em tempo real de qualidade de conexão:
@@ -361,7 +352,7 @@ Teste em tempo real de qualidade de conexão:
      • Vermelho: problemas sérios de rede
 
 ═══════════════════════════════════════════════════════════════
-📥 DOWNLOADS (Aba DOWNLOADS)
+DOWNLOADS (Aba DOWNLOADS)
 ═══════════════════════════════════════════════════════════════
 
 Instaladores de dependências essenciais para jogos:
@@ -370,7 +361,7 @@ Instaladores de dependências essenciais para jogos:
    - Log em tempo real (opcional): veja o progresso da instalação
 
 ═══════════════════════════════════════════════════════════════
-✅ VERIFICAÇÃO DAS OTIMIZAÇÕES
+VERIFICAÇÃO DAS OTIMIZAÇÕES
 ═══════════════════════════════════════════════════════════════
 
 Para confirmar que as otimizações foram aplicadas:
@@ -397,7 +388,7 @@ Para confirmar que as otimizações foram aplicadas:
      → SysMain e WSearch devem estar Stopped
 
 ═══════════════════════════════════════════════════════════════
-⚠️ AVISOS IMPORTANTES
+AVISOS IMPORTANTES
 ═══════════════════════════════════════════════════════════════
 
 • Execute o app COMO ADMINISTRADOR para garantir permissões
@@ -406,7 +397,7 @@ Para confirmar que as otimizações foram aplicadas:
 • Estas otimizações são seguras mas agressivas (foco em PERFORMANCE)
 
 ═══════════════════════════════════════════════════════════════
-📚 TECNOLOGIAS UTILIZADAS
+TECNOLOGIAS UTILIZADAS
 ═══════════════════════════════════════════════════════════════
 
 • C# / .NET 10.0 (última geração)
@@ -542,8 +533,6 @@ Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
     private ModernButton btnInstallFeatures;
     private ModernButton btnInstallVisualCpp;
     private RichTextBox rtbDownloadsLog;
-    private PictureBox sidebarLogo;
-
 
     #endregion
 }

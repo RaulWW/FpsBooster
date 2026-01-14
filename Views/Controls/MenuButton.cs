@@ -48,10 +48,6 @@ namespace FpsBooster.Views.Controls
                     pevent.Graphics.FillRectangle(activeBrush, ClientRectangle);
                 }
 
-                using (var accentBrush = new SolidBrush(Theme.Accent))
-                {
-                    pevent.Graphics.FillRectangle(accentBrush, 0, 10, 4, Height - 20);
-                }
                 ForeColor = Color.White;
             }
             else if (_isHovered)
@@ -71,9 +67,13 @@ namespace FpsBooster.Views.Controls
             if (!string.IsNullOrEmpty(Icon))
             {
                 using (var font = new Font("Segoe MDL2 Assets", 14F))
-                using (var iconBrush = new SolidBrush(ForeColor))
                 {
-                    pevent.Graphics.DrawString(Icon, font, iconBrush, 15, (Height - 18) / 2);
+                    // Use distinct colors for icon visibility
+                    Color iconColor = IsActive ? Theme.Accent : (_isHovered ? Color.White : Color.FromArgb(148, 163, 184));
+                    using (var iconBrush = new SolidBrush(iconColor))
+                    {
+                        pevent.Graphics.DrawString(Icon, font, iconBrush, 15, (Height - 18) / 2);
+                    }
                 }
             }
 
