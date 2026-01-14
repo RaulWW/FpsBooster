@@ -49,7 +49,7 @@ namespace FpsBooster.Views
         public const string FallbackFont = "Segoe UI";
         
         // Metadata
-        public const string AppVersion = "v2.0";
+        public const string AppVersion = "v2.1";
         public const string Developer = "⚡ Developed by Raul W.";
     }
 }

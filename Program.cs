@@ -12,7 +12,15 @@ static class Program
     [STAThread]
     static void Main()
     {
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
+        try
+        {
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm());
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Erro ao iniciar aplicação:\n\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}", 
+                "Erro Fatal", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

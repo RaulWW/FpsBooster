@@ -7,6 +7,7 @@ namespace FpsBooster.Views.Controls
     public class ModernButton : Button
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
         public Image? ButtonIcon { get; set; }
 
         public ModernButton()

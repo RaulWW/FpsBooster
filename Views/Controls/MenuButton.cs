@@ -6,9 +6,11 @@ namespace FpsBooster.Views.Controls
     public class MenuButton : Button
     {
         [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [System.ComponentModel.Browsable(false)]
         public bool IsActive { get; set; }
 
         [System.ComponentModel.DesignerSerializationVisibility(System.ComponentModel.DesignerSerializationVisibility.Hidden)]
+        [System.ComponentModel.Browsable(false)]
         public string Icon { get; set; } = "";
 
         private bool _isHovered;

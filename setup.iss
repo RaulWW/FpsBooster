@@ -14,7 +14,7 @@ DefaultDirName={autopf}\FBooster
 DefaultGroupName=FPS Booster
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=Setup_FBoosterV2
+OutputBaseFilename=Setup_FBooster
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -35,18 +35,17 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-; The main executable (Self-contained, includes all dependencies)
-Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FBooster.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FBooster.exe"; DestDir: "{app}"; DestName: "FBooster.exe"; Flags: ignoreversion
 
 ; Optional PDB if you wants to include it (usually not needed for end-users)
 ; Source: "c:\Users\Raul\Desktop\Github\FpsBooster\publish\FBooster.pdb"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\FPS Booster"; Filename: "{app}\FBooster.exe"
-Name: "{autodesktop}\FPS Booster"; Filename: "{app}\FBooster.exe"; Tasks: desktopicon
+Name: "{group}\FBooster"; Filename: "{app}\FBooster.exe"
+Name: "{autodesktop}\FBooster"; Filename: "{app}\FBooster.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\FBooster.exe"; Description: "{cm:LaunchProgram,FPS Booster}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\FBooster.exe"; Description: "{cm:LaunchProgram,FBooster}"; Flags: nowait postinstall skipifsilent shellexec; WorkingDir: "{app}"
 
 [Code]
 procedure InitializeWizard;

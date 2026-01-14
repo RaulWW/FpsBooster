@@ -114,6 +114,8 @@ partial class MainForm
         try { this.sidebarLogo.Image = Image.FromFile(@"imgs\IcoLogo512px.ico"); } catch { }
 
         this.btnMenuDocs = UIBuilder.CreateMenuButton("   DOCUMENTAÇÃO", Theme.IconDocs);
+        this.btnMenuCS2 = UIBuilder.CreateMenuButton("   CONFIG CS2", Theme.IconGame);
+        this.btnMenuNetwork = UIBuilder.CreateMenuButton("   REDE / DIAG.", Theme.IconNetwork);
 
         this.btnMenuDownloads = UIBuilder.CreateMenuButton("   DOWNLOADS", Theme.IconSettings);
         try { this.btnMenuDownloads.Icon = ""; } catch {}
