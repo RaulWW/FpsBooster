@@ -54,6 +54,7 @@ public partial class MainForm : Form
         
         btnInstallFeatures.Click += async (s, e) => await InstallSelectedFeatures();
         btnInstallVisualCpp.Click += async (s, e) => await InstallVisualCppRedistributables();
+        chkLog.CheckedChanged += (s, e) => rtbDownloadsLog.Visible = chkLog.Checked;
     }
 
     private void InitializeCustomTitleBar()
@@ -309,7 +310,7 @@ r_dynamic 0";
 
     private async Task InstallSelectedFeatures()
     {
-        if (!chkDotNet.Checked)
+        if (!chkDotNet.Checked && !chkVisualCpp.Checked)
         {
             MessageBox.Show("Please select at least one feature to install.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
@@ -321,22 +322,49 @@ r_dynamic 0";
         try 
         {
             var installer = new WindowsFeaturesInstaller();
+            var progress = new Progress<string>(status => AddDownloadLog(status));
+
             if (chkDotNet.Checked)
             {
+                AddDownloadLog("Starting .NET Framework installation...");
                 await installer.InstallDotNetFrameworkAsync();
+                AddDownloadLog(".NET Framework installation command sent.");
             }
-            MessageBox.Show("Installation completed! A restart may be required alongside Windows Update.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if (chkVisualCpp.Checked)
+            {
+                AddDownloadLog("Starting Visual C++ Redistributables installation...");
+                await installer.InstallVisualCppRuntimesAsync(progress);
+            }
+
+            MessageBox.Show("Installation process finished!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
+            AddDownloadLog($"FATAL ERROR: {ex.Message}");
             MessageBox.Show($"Error during installation: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         finally
         {
             btnInstallFeatures.Enabled = true;
             btnInstallFeatures.Text = "  INSTALL SELECTED";
-
         }
+    }
+
+    private void AddDownloadLog(string message)
+    {
+        if (!chkLog.Checked) return;
+
+        if (rtbDownloadsLog.InvokeRequired)
+        {
+            rtbDownloadsLog.Invoke(new Action(() => AddDownloadLog(message)));
+            return;
+        }
+
+        string timestamp = DateTime.Now.ToString("HH:mm:ss");
+        rtbDownloadsLog.AppendText($"[{timestamp}] {message}{Environment.NewLine}");
+        rtbDownloadsLog.SelectionStart = rtbDownloadsLog.TextLength;
+        rtbDownloadsLog.ScrollToCaret();
     }
 
     private async Task InstallVisualCppRedistributables()
@@ -349,7 +377,7 @@ r_dynamic 0";
         {
             var progress = new Progress<string>(status => {
                 lblDownloadsInfo.Text = status;
-                // Optional: Force refresh to ensure text updates immediately
+                AddDownloadLog(status);
                 lblDownloadsInfo.Refresh();
             });
 

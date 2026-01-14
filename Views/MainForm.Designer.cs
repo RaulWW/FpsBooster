@@ -277,17 +277,27 @@ partial class MainForm
 
         this.lblDownloadsInfo = UIBuilder.CreateLabel("Install additional Windows features and runtimes.", null, Theme.TextDim, new Point(45, 100));
 
-        this.chkDotNet = UIBuilder.CreateCheckbox(" .NET Framework (2.0, 3.0, 3.5, 4.x)", new Point(50, 140));
+        // Options Container
+        var optionsPanel = UIBuilder.CreateFlowLayoutPanel(DockStyle.Top, FlowDirection.TopDown, false, true);
+        optionsPanel.Padding = new Padding(45, 140, 0, 0);
+        
+        this.chkDotNet = UIBuilder.CreateCheckbox(" .NET Framework (2.0, 3.0, 3.5, 4.x)", null);
+        this.chkVisualCpp = UIBuilder.CreateCheckbox(" Visual C++ Redistributables (All-in-One)", null);
+        this.chkLog = UIBuilder.CreateCheckbox(" Show Installation Log", null);
+        
+        optionsPanel.Controls.Add(this.chkDotNet);
+        optionsPanel.Controls.Add(this.chkVisualCpp);
+        optionsPanel.Controls.Add(this.chkLog);
 
         // Center Buttons using FlowLayoutPanel
         this.downloadButtonsPanel = UIBuilder.CreateFlowLayoutPanel(DockStyle.Top);
         this.downloadButtonsPanel.Padding = new Padding(0, 20, 0, 0);
-        this.downloadButtonsPanel.Height = 100;
+        this.downloadButtonsPanel.Height = 80;
 
         // Container to help centering
         var centerContainer = UIBuilder.CreateFlowLayoutPanel(DockStyle.Fill, FlowDirection.LeftToRight, false, true);
         centerContainer.WrapContents = false;
-        centerContainer.Height = 60;
+        centerContainer.Height = 45;
         
         this.btnInstallFeatures = UIBuilder.CreateButton("  INSTALL SELECTED", new Point(0, 0), new Size(220, 40));
         this.btnInstallVisualCpp = UIBuilder.CreateButton("  INSTALL VISUAL C++", new Point(0, 0), new Size(220, 40));
@@ -299,8 +309,12 @@ partial class MainForm
         this.downloadButtonsPanel.Controls.Add(new Panel { Width = 45, Height = 1, BackColor = Color.Transparent }); // Left margin
         this.downloadButtonsPanel.Controls.Add(centerContainer);
 
+        this.rtbDownloadsLog = UIBuilder.CreateRichTextBox(new Point(45, 420), new Size(720, 200), Theme.BgCard, Theme.TextDim, new Font("Consolas", 9F));
+        this.rtbDownloadsLog.Visible = false;
+
+        this.panelDownloads.Controls.Add(this.rtbDownloadsLog);
         this.panelDownloads.Controls.Add(this.downloadButtonsPanel);
-        this.panelDownloads.Controls.Add(this.chkDotNet);
+        this.panelDownloads.Controls.Add(optionsPanel);
         this.panelDownloads.Controls.Add(this.lblDownloadsInfo);
         this.panelDownloads.Controls.Add(this.lblDownloadsTitle);
 
@@ -368,9 +382,12 @@ partial class MainForm
     private Label lblDownloadsTitle;
     private Label lblDownloadsInfo;
     private CheckBox chkDotNet;
+    private CheckBox chkVisualCpp;
+    private CheckBox chkLog;
     private FlowLayoutPanel downloadButtonsPanel;
     private ModernButton btnInstallFeatures;
     private ModernButton btnInstallVisualCpp;
+    private RichTextBox rtbDownloadsLog;
     private PictureBox sidebarLogo;
 
 
