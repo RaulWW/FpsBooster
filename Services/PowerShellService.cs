@@ -19,9 +19,9 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                StandardInputEncoding = Encoding.Default,
-                StandardOutputEncoding = Encoding.Default,
-                StandardErrorEncoding = Encoding.Default,
+                StandardInputEncoding = Encoding.UTF8,
+                StandardOutputEncoding = Encoding.UTF8,
+                StandardErrorEncoding = Encoding.UTF8,
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
@@ -48,7 +48,8 @@ namespace FpsBooster.Services
                 {
                     if (sw.BaseStream.CanWrite)
                     {
-                        // chcp 65001 is not needed if the stream encoding is handled correctly without BOM
+                        // Force UTF8 code page in PowerShell session
+                        await sw.WriteLineAsync("$OutputEncoding = [System.Text.Encoding]::UTF8; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;");
                         await sw.WriteLineAsync(script);
                     }
                 }

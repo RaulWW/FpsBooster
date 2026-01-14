@@ -30,19 +30,31 @@ namespace FpsBooster.Services.Optimization
             await psService.ExecuteCommandAsync(adobeScript);
 
             const string hostsScript = @"
+                $ErrorActionPreference = 'SilentlyContinue'
                 $remoteHostsUrl = 'https://raw.githubusercontent.com/Ruddernation-Designs/Adobe-URL-Block-List/master/hosts'
                 $localHostsPath = 'C:\Windows\System32\drivers\etc\hosts'
                 $tempHostsPath = 'C:\Windows\System32\drivers\etc\temp_hosts'
+                
                 try {
-                    Invoke-WebRequest -Uri $remoteHostsUrl -OutFile $tempHostsPath -ErrorAction Stop
-                    $localHostsContent = Get-Content $localHostsPath
-                    if ($localHostsContent -notlike '*#AdobeNetBlock-start*') {
-                        $newBlockContent = Get-Content $tempHostsPath | Where-Object { $_ -notmatch '^\s*#' -and $_ -ne '' }
-                        $combinedContent = $localHostsContent + '#AdobeNetBlock-start' + $newBlockContent + '#AdobeNetBlock-end'
-                        $combinedContent | Set-Content $localHostsPath -Encoding ASCII
+                    if (Test-Path $localHostsPath) {
+                        $localHostsContent = Get-Content $localHostsPath -Raw
+                        if ($localHostsContent -notlike '*#AdobeNetBlock-start*') {
+                            Write-Host '[INFO] Descarregando lista de bloqueio Adobe...'
+                            Invoke-WebRequest -Uri $remoteHostsUrl -OutFile $tempHostsPath -ErrorAction Stop
+                            
+                            $newBlockContent = Get-Content $tempHostsPath | Where-Object { $_ -notmatch '^\s*#' -and $_ -ne '' }
+                            $blockString = ""`n#AdobeNetBlock-start`n"" + ($newBlockContent -join ""`n"") + ""`n#AdobeNetBlock-end""
+                            
+                            Add-Content -Path $localHostsPath -Value $blockString -Encoding UTF8 -Force
+                            Write-Host '[SUCCESS] Hosts atualizado.'
+                        }
                     }
-                    ipconfig /flushdns
-                } finally { Remove-Item $tempHostsPath -ErrorAction Ignore }
+                    ipconfig /flushdns | Out-Null
+                } catch {
+                    Write-Host ""[WARNING] Falha ao atualizar hosts: $($_.Exception.Message)""
+                } finally { 
+                    if (Test-Path $tempHostsPath) { Remove-Item $tempHostsPath -Force }
+                }
             ";
             await psService.ExecuteCommandAsync(hostsScript);
         }
