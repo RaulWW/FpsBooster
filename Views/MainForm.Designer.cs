@@ -264,15 +264,15 @@ partial class MainForm
 
         // Panel Network Setup
         this.panelNetwork.Dock = DockStyle.Fill;
-        this.panelNetwork.Padding = new Padding(40);
         this.panelNetwork.Visible = false;
 
-        // Panel Network Controls
+        // Panel Network Control
         this.lblNetworkTitle.Text = "NETWORK DIAGNOSTICS";
-        this.lblNetworkTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+        this.lblNetworkTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         this.lblNetworkTitle.AutoSize = true;
-        this.lblNetworkTitle.Location = new Point(40, 30);
+        this.lblNetworkTitle.Location = new Point(40, 40);
         this.lblNetworkTitle.ForeColor = Color.White;
+        this.lblNetworkTitle.Padding = new Padding(0, 15, 0, 0);
 
         this.lblNetworkInfo.Text = "Enter an IP or Hostname to test your connection quality.";
         this.lblNetworkInfo.ForeColor = Theme.TextDim;
@@ -344,7 +344,6 @@ partial class MainForm
         this.panelNetwork.Controls.Add(this.lblJitterResult);
         this.panelNetwork.Controls.Add(this.lblLossResult);
         this.panelNetwork.Controls.Add(this.rtbNetworkLog);
-
         // Panel Docs Setup
         this.panelDocs.Dock = DockStyle.Fill;
         this.panelDocs.Padding = new Padding(40);
