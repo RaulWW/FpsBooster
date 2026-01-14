@@ -193,6 +193,11 @@ r_dynamic 0";
         string fullMessage = $"[{timestamp}] {message}{Environment.NewLine}";
         
         int start = rtbLog.TextLength;
+        
+        rtbLog.SelectionStart = start;
+        rtbLog.SelectionLength = 0;
+        rtbLog.SelectionColor = Theme.TextDim; // Reset color to avoid bleeding
+        
         rtbLog.AppendText(fullMessage);
 
         RichTextEditorHelper.HighlightLogTags(rtbLog, start, fullMessage, Theme.Success);

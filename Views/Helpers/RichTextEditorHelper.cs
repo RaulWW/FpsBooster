@@ -46,18 +46,26 @@ namespace FpsBooster.Views.Helpers
             rtb.ResumeLayout();
         }
 
-        public static void HighlightLogTags(RichTextBox rtb, int startOffset, string text, Color highlightColor)
+        public static void HighlightLogTags(RichTextBox rtb, int startOffset, string text, Color defaultHighlightColor)
         {
-            string[] tags = { "[INFO]", "[WARNING]", "[ERROR]", "SUCCESS", "FATAL" };
-            foreach (var tag in tags)
+            var tagColors = new Dictionary<string, Color>
             {
-                int index = text.IndexOf(tag);
+                { "[INFO]", Color.FromArgb(16, 185, 129) },     // Green
+                { "[WARNING]", Color.FromArgb(245, 158, 11) },  // Amber
+                { "[ERROR]", Color.FromArgb(255, 80, 80) },     // Red
+                { "SUCCESS", Color.FromArgb(16, 185, 129) },    // Green
+                { "FATAL", Color.FromArgb(255, 80, 80) }        // Red
+            };
+
+            foreach (var tag in tagColors)
+            {
+                int index = text.IndexOf(tag.Key);
                 while (index != -1)
                 {
-                    rtb.Select(startOffset + index, tag.Length);
-                    rtb.SelectionColor = highlightColor;
+                    rtb.Select(startOffset + index, tag.Key.Length);
+                    rtb.SelectionColor = tag.Value;
                     rtb.SelectionFont = new Font(rtb.Font, FontStyle.Bold);
-                    index = text.IndexOf(tag, index + tag.Length);
+                    index = text.IndexOf(tag.Key, index + tag.Key.Length);
                 }
             }
         }

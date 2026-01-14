@@ -25,8 +25,7 @@ namespace FpsBooster.Services
                 new SystemCleanupTask(),
                 new RegistryTweaksTask(),
                 new ServiceOptimizationTask(),
-                new AdobeBlockTask(),
-                new OneDriveRemovalTask()
+                new AdobeBlockTask()
             };
         }
 

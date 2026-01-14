@@ -7,8 +7,12 @@ namespace FpsBooster.Services.Optimization
         public string Description => "Removendo OneDrive e restaurando pastas do sistema";
         public int ProgressWeight => 10;
 
-        public async Task ExecuteAsync(IPowerShellService psService)
+        public Task ExecuteAsync(IPowerShellService psService)
         {
+            // BYPASS: Task disabled by user request.
+            return Task.CompletedTask;
+
+            /* ORIGINAL CODE PRESERVED BELOW
             const string oneDriveScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 $regPath = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe'
@@ -40,10 +44,15 @@ namespace FpsBooster.Services.Optimization
                 Set-ItemProperty -Path $ssf -Name 'My Pictures' -Value ""$user\Pictures"" -Type ExpandString
                 Set-ItemProperty -Path $ssf -Name '{374DE290-123F-4565-9164-39C4925E467B}' -Value ""$user\Downloads"" -Type ExpandString
                 
+                # RESTART EXPLORER SAFELY
                 taskkill.exe /F /IM ""explorer.exe""
-                Start-Process ""explorer.exe""
+                Start-Sleep -Seconds 2
+                if (-not (Get-Process explorer -ErrorAction SilentlyContinue)) {
+                    Start-Process ""explorer.exe""
+                }
             ";
             await psService.ExecuteCommandAsync(oneDriveScript);
+            */
         }
     }
 }

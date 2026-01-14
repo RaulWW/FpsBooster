@@ -19,9 +19,9 @@ namespace FpsBooster.Services
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                StandardInputEncoding = Encoding.UTF8,
-                StandardOutputEncoding = Encoding.UTF8,
-                StandardErrorEncoding = Encoding.UTF8,
+                StandardInputEncoding = new UTF8Encoding(false),
+                StandardOutputEncoding = new UTF8Encoding(false),
+                StandardErrorEncoding = new UTF8Encoding(false),
                 UseShellExecute = false,
                 CreateNoWindow = true,
             };
@@ -48,8 +48,11 @@ namespace FpsBooster.Services
                 {
                     if (sw.BaseStream.CanWrite)
                     {
-                        // Force UTF8 code page in PowerShell session
-                        await sw.WriteLineAsync("$OutputEncoding = [System.Text.Encoding]::UTF8; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;");
+                        // Standard streams are already set to UTF8 in the ProcessStartInfo.
+                        // Force PowerShell to use UTF8 for Console Output to match our stream encoding
+                        await sw.WriteLineAsync("[Console]::OutputEncoding = [System.Text.Encoding]::UTF8");
+                        await sw.WriteLineAsync("$OutputEncoding = [System.Text.Encoding]::UTF8");
+                        
                         await sw.WriteLineAsync(script);
                     }
                 }

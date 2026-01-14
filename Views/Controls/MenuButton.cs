@@ -32,39 +32,53 @@ namespace FpsBooster.Views.Controls
 
         protected override void OnPaint(PaintEventArgs pevent)
         {
-            if (_isHovered && !IsActive)
+            // Fill background with Sidebar color to prevent white flash/selection
+            using (var bgBrush = new SolidBrush(Theme.Sidebar))
             {
-                // Use a subtle blue tint that matches the theme better than plain white
-                using (var brush = new SolidBrush(Color.FromArgb(30, 59, 130, 246)))
-                {
-                    pevent.Graphics.FillRectangle(brush, ClientRectangle);
-                }
+                pevent.Graphics.FillRectangle(bgBrush, ClientRectangle);
             }
 
-            base.OnPaint(pevent);
-            
             if (IsActive)
             {
-                using (var brush = new SolidBrush(Theme.Accent))
+                // Subtle blue background for active state to match theme
+                using (var activeBrush = new SolidBrush(Color.FromArgb(40, 59, 130, 246)))
                 {
-                    pevent.Graphics.FillRectangle(brush, 0, 10, 4, Height - 20);
+                    pevent.Graphics.FillRectangle(activeBrush, ClientRectangle);
                 }
-                ForeColor = Theme.Text;
+
+                using (var accentBrush = new SolidBrush(Theme.Accent))
+                {
+                    pevent.Graphics.FillRectangle(accentBrush, 0, 10, 4, Height - 20);
+                }
+                ForeColor = Color.White;
+            }
+            else if (_isHovered)
+            {
+                // Subtle blue tint for hover
+                using (var hoverBrush = new SolidBrush(Color.FromArgb(30, 59, 130, 246)))
+                {
+                    pevent.Graphics.FillRectangle(hoverBrush, ClientRectangle);
+                }
+                ForeColor = Color.White;
             }
             else
             {
-                ForeColor = _isHovered ? Color.White : Theme.TextDim;
+                ForeColor = Theme.TextDim;
             }
 
             if (!string.IsNullOrEmpty(Icon))
             {
                 using (var font = new Font("Segoe MDL2 Assets", 14F))
-                using (var brush = new SolidBrush(ForeColor))
+                using (var iconBrush = new SolidBrush(ForeColor))
                 {
-                    // Draw icon
-                    pevent.Graphics.DrawString(Icon, font, brush, 15, (Height - 18) / 2);
+                    pevent.Graphics.DrawString(Icon, font, iconBrush, 15, (Height - 18) / 2);
                 }
             }
+
+            // Draw text manually to better control appearance and avoid base button artifacts
+            TextRenderer.DrawText(pevent.Graphics, Text, Font, 
+                new Rectangle(50, 0, Width - 50, Height), ForeColor, 
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
         }
     }
 }
