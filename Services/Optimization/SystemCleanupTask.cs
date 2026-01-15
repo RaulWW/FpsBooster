@@ -14,9 +14,6 @@ namespace FpsBooster.Services.Optimization
             const string cleanupScript = @"
                 $ErrorActionPreference = 'SilentlyContinue'
                 
-                # Close potential locking processes (optional, use with care)
-                # Stop-Process -Name 'ccleaner64','ccleaner' -Force -ErrorAction SilentlyContinue
-
                 Write-Host 'Limpando Windows Temp...'
                 Get-ChildItem -Path 'C:\Windows\Temp' *.* -Recurse | Remove-Item -Force -Recurse
                 

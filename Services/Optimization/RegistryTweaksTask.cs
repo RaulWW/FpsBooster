@@ -23,7 +23,7 @@ namespace FpsBooster.Services.Optimization
                 New-ItemProperty -Path $tbPath -Name 'TaskbarEndTask' -PropertyType Dword -Value 1 -Force | Out-Null
 
                 # Remove Explorer 3D Objects/User items
-                Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}' -Recurse -Force
+                Remove-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}' -Recurse -Force | Out-Null
 
                  # Disable Fullscreen Optimizations
                 $gameConfigPath = 'HKCU:\System\GameConfigStore'

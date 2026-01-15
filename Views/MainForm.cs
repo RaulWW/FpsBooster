@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using FpsBooster.Configuration;
 using FpsBooster.Services;
 using FpsBooster.Services.Network;
 using FpsBooster.Views.Controls;
@@ -25,7 +26,6 @@ public partial class MainForm : Form
         InitializeNavigation();
         InitializeCustomTitleBar();
         
-        // Check for updates asynchronously after load
         this.Load += async (s, e) => await CheckForUpdatesAsync();
     }
 
@@ -45,7 +45,6 @@ public partial class MainForm : Form
 
         rtbCS2Config.TextChanged += (s, e) => RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
         
-        // Monetization Events
         lblDonate.LinkClicked += (s, e) => ShowDonateForm();
         btnAffiliate.Click += (s, e) => OpenUrl(Theme.UrlAffiliate);
     }
@@ -87,10 +86,9 @@ public partial class MainForm : Form
         btnMenuDownloads.IsActive = (activeButton == btnMenuDownloads);
         btnMenuDocs.IsActive = (activeButton == btnMenuDocs);
         
-        sidebar.Invalidate(); // Redraw sidebar for activity indicator
+        sidebar.Invalidate();
     }
 
-    // Window Dragging
     [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
     private extern static void ReleaseCapture();
     [DllImport("user32.DLL", EntryPoint = "SendMessage")]
@@ -173,22 +171,19 @@ viewmodel_presetpos ""0""
 r_dynamic 0";
     }
 
-    // Syntax highlighting logic removed as it's now in RichTextEditorHelper
-
     private void SaveCS2Config()
     {
-        string path = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\game\csgo\cfg\autoexec.cfg";
+        string configPath = GamePaths.GetCounterStrike2ConfigPath();
         try
         {
-            // Ensure directory exists (might not on all machines, but user provided this specific path)
-            string? directory = Path.GetDirectoryName(path);
+            string? directory = Path.GetDirectoryName(configPath);
             if (string.IsNullOrEmpty(directory) || !Directory.Exists(directory))
             {
                 MessageBox.Show($"Directory not found or invalid: {directory}\nDefaulting to local save (autoexec.cfg)", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                path = "autoexec.cfg";
+                configPath = GamePaths.GetFallbackConfigPath();
             }
             
-            File.WriteAllText(path, rtbCS2Config.Text);
+            File.WriteAllText(configPath, rtbCS2Config.Text);
             MessageBox.Show("CS2 autoexec.cfg saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
@@ -199,39 +194,17 @@ r_dynamic 0";
 
     private void AddLog(string message)
     {
-        if (rtbLog.InvokeRequired)
-        {
-            rtbLog.Invoke(new Action(() => AddLog(message)));
-            return;
-        }
-
-        string timestamp = DateTime.Now.ToString("HH:mm:ss");
-        string fullMessage = $"[{timestamp}] {message}{Environment.NewLine}";
-        
-        int start = rtbLog.TextLength;
-        
-        rtbLog.SelectionStart = start;
-        rtbLog.SelectionLength = 0;
-        rtbLog.SelectionColor = Theme.TextDim; // Reset color to avoid bleeding
-        
-        rtbLog.AppendText(fullMessage);
-
-        RichTextEditorHelper.HighlightLogTags(rtbLog, start, fullMessage, Theme.Success);
-
-        rtbLog.SelectionStart = rtbLog.Text.Length;
-        rtbLog.ScrollToCaret();
+        LoggingHelper.AppendToRichTextBox(
+            rtbLog,
+            message,
+            includeTimestamp: true,
+            applyHighlighting: true,
+            highlightColor: Theme.Success);
     }
-
-    // HighlightLogTags removed as it's now in RichTextEditorHelper
 
     private void UpdateProgress(int value)
     {
-        if (progressBar.InvokeRequired)
-        {
-            progressBar.Invoke(new Action(() => UpdateProgress(value)));
-            return;
-        }
-        progressBar.Value = value;
+        ThreadingHelper.SafeInvoke(progressBar, () => progressBar.Value = value);
     }
 
     private async Task RunBoost()
@@ -301,20 +274,16 @@ r_dynamic 0";
 
     private void UpdateNetworkResults(NetworkDiagnosticResult result)
     {
-        if (this.InvokeRequired)
+        ThreadingHelper.SafeInvoke(this, () =>
         {
-            this.Invoke(new Action(() => UpdateNetworkResults(result)));
-            return;
-        }
-
-        lblPingResult.Text = $"PING: {result.Ping} ms";
-        lblJitterResult.Text = $"JITTER: {result.Jitter:F1} ms";
-        lblLossResult.Text = $"LOSS: {result.PacketLoss:F1} %";
-        
-        // Dynamic colors based on quality
-        lblPingResult.ForeColor = result.Ping < 50 ? Theme.Success : (result.Ping < 100 ? Color.Yellow : Color.Red);
-        lblJitterResult.ForeColor = result.Jitter < 5 ? Theme.Success : (result.Jitter < 15 ? Color.Yellow : Color.Red);
-        lblLossResult.ForeColor = result.PacketLoss == 0 ? Theme.Success : Color.Red;
+            lblPingResult.Text = $"PING: {result.Ping} ms";
+            lblJitterResult.Text = $"JITTER: {result.Jitter:F1} ms";
+            lblLossResult.Text = $"LOSS: {result.PacketLoss:F1} %";
+            
+            lblPingResult.ForeColor = result.Ping < 50 ? Theme.Success : (result.Ping < 100 ? Color.Yellow : Color.Red);
+            lblJitterResult.ForeColor = result.Jitter < 5 ? Theme.Success : (result.Jitter < 15 ? Color.Yellow : Color.Red);
+            lblLossResult.ForeColor = result.PacketLoss == 0 ? Theme.Success : Color.Red;
+        });
     }
 
     private async Task InstallSelectedFeatures()
@@ -364,16 +333,11 @@ r_dynamic 0";
     {
         if (!chkLog.Checked) return;
 
-        if (rtbDownloadsLog.InvokeRequired)
-        {
-            rtbDownloadsLog.Invoke(new Action(() => AddDownloadLog(message)));
-            return;
-        }
-
-        string timestamp = DateTime.Now.ToString("HH:mm:ss");
-        rtbDownloadsLog.AppendText($"[{timestamp}] {message}{Environment.NewLine}");
-        rtbDownloadsLog.SelectionStart = rtbDownloadsLog.TextLength;
-        rtbDownloadsLog.ScrollToCaret();
+        LoggingHelper.AppendToRichTextBox(
+            rtbDownloadsLog,
+            message,
+            includeTimestamp: true,
+            applyHighlighting: false);
     }
 
     private async Task InstallVisualCppRedistributables()
@@ -410,17 +374,11 @@ r_dynamic 0";
 
     private void AddNetworkLog(string message)
     {
-        if (rtbNetworkLog.InvokeRequired)
-        {
-            rtbNetworkLog.Invoke(new Action(() => AddNetworkLog(message)));
-            return;
-        }
-
-        rtbNetworkLog.AppendText($"{message}{Environment.NewLine}");
-        rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
-        rtbNetworkLog.ScrollToCaret();
-        rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
-        rtbNetworkLog.ScrollToCaret();
+        LoggingHelper.AppendToRichTextBox(
+            rtbNetworkLog,
+            message,
+            includeTimestamp: false,
+            applyHighlighting: false);
     }
 
     private async Task CheckForUpdatesAsync()
@@ -431,61 +389,56 @@ r_dynamic 0";
 
             if (result.IsSuccess && result.IsNewVersionAvailable)
             {
-                // Show update notification in the title bar or footer
-                var updateMessage = $"🔔 Nova versão disponível: v{result.LatestVersion} (Você está usando: v{result.CurrentVersion})";
-                
-                // Create a notification link in footer
-                var lblUpdate = new LinkLabel
-                {
-                    Text = $"🔔 Atualização disponível: v{result.LatestVersion}",
-                    Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                    LinkColor = Color.LightGreen,
-                    ActiveLinkColor = Color.White,
-                    VisitedLinkColor = Color.LightGreen,
-                    LinkBehavior = LinkBehavior.HoverUnderline,
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    Padding = new Padding(10, 0, 0, 5),
-                    Cursor = Cursors.Hand,
-                    Dock = DockStyle.Top,
-                    Height = 25
-                };
+                var lblUpdate = CreateUpdateNotificationLabel(result);
 
-                lblUpdate.LinkClicked += (s, e) =>
-                {
-                    var dialogResult = MessageBox.Show(
-                        $"Uma nova versão está disponível!\n\n" +
-                        $"Versão Atual: v{result.CurrentVersion}\n" +
-                        $"Última Versão: v{result.LatestVersion}\n\n" +
-                        $"Deseja abrir a página de download?",
-                        "Atualização Disponível",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Information
-                    );
-
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        OpenUrl(result.DownloadUrl);
-                    }
-                };
-
-                // Add to footer at the top (above donate link)
-                if (footer.InvokeRequired)
-                {
-                    footer.Invoke(() => footer.Controls.Add(lblUpdate));
-                }
-                else
+                ThreadingHelper.SafeInvoke(footer, () =>
                 {
                     footer.Controls.Add(lblUpdate);
-                }
-
-                // Resize footer to accommodate update notification
-                footer.Height = 85;
+                    footer.Height = 85;
+                });
             }
         }
         catch (Exception)
         {
-            // Silently fail - don't bother user with update check errors
         }
+    }
+
+    private LinkLabel CreateUpdateNotificationLabel(VersionCheckResult result)
+    {
+        var lblUpdate = new LinkLabel
+        {
+            Text = $"🔔 Atualização disponível: v{result.LatestVersion}",
+            Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+            LinkColor = Color.LightGreen,
+            ActiveLinkColor = Color.White,
+            VisitedLinkColor = Color.LightGreen,
+            LinkBehavior = LinkBehavior.HoverUnderline,
+            TextAlign = ContentAlignment.MiddleLeft,
+            Padding = new Padding(10, 0, 0, 5),
+            Cursor = Cursors.Hand,
+            Dock = DockStyle.Top,
+            Height = 25
+        };
+
+        lblUpdate.LinkClicked += (s, e) =>
+        {
+            var dialogResult = MessageBox.Show(
+                $"Uma nova versão está disponível!\n\n" +
+                $"Versão Atual: v{result.CurrentVersion}\n" +
+                $"Última Versão: v{result.LatestVersion}\n\n" +
+                $"Deseja abrir a página de download?",
+                "Atualização Disponível",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information
+            );
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                OpenUrl(result.DownloadUrl);
+            }
+        };
+
+        return lblUpdate;
     }
 
     private void ShowDonateForm()
