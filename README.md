@@ -15,18 +15,6 @@
 [![DOCUMENTAÇÃO](https://img.shields.io/badge/📖_DOCUMENTAÇÃO-LER_AGORA-4FC3F7?style=for-the-badge)](#-o-que-é-otimizado)
 [![BAIXAR AGORA](https://img.shields.io/badge/📥_BAIXAR-ÚLTIMA_VERSÃO-FF6B35?style=for-the-badge)](https://github.com/RaulWW/FpsBooster/releases/latest)
 
----
-
-## 📸 Visualização
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/RaulWW/FpsBooster/master/logo.png" width="200" alt="Logo">
-  <br>
-  <em>(Dica: Substitua esta imagem por um screenshot real da interface do seu app para impressionar novos usuários!)</em>
-</div>
-
----
-
 **ULTRA FPS BOOSTER** é uma ferramenta de otimização de sistema de alto desempenho projetada especificamente para **gamers** e **power users**. Simplifica ajustes complexos do sistema em uma experiência de um clique, garantindo que seu ambiente Windows esteja pronto para máxima performance em jogos.
 
 Especialmente otimizado para **Counter-Strike 2 (CS2)** e jogos competitivos.
@@ -183,7 +171,7 @@ Este projeto é **open-source** sob a licença MIT. Contribuições são bem-vin
 
 <div align="center">
 
-**Desenvolvido com ⚡ por [Raul W.](https://github.com/RaulWW)**
+**Desenvolvido ⚡ por [Raul W.](https://github.com/RaulWW)**
 
 _Focado em Performance. Feito para Gamers._
 
