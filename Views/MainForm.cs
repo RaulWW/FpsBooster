@@ -10,6 +10,7 @@ public partial class MainForm : Form
 {
     private readonly BoosterService _boosterService;
     private readonly NetworkService _networkService;
+    private readonly VersionCheckService _versionCheckService;
     private CancellationTokenSource? _networkCts;
 
     public MainForm()
@@ -18,10 +19,14 @@ public partial class MainForm : Form
         
         _boosterService = new BoosterService();
         _networkService = new NetworkService();
+        _versionCheckService = new VersionCheckService("RaulWW", "FpsBooster", Theme.AppVersion);
 
         InitializeEvents();
         InitializeNavigation();
         InitializeCustomTitleBar();
+        
+        // Check for updates asynchronously after load
+        this.Load += async (s, e) => await CheckForUpdatesAsync();
     }
 
     private void InitializeEvents()
@@ -41,7 +46,7 @@ public partial class MainForm : Form
         rtbCS2Config.TextChanged += (s, e) => RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
         
         // Monetization Events
-        lblDonate.LinkClicked += (s, e) => OpenUrl(Theme.UrlDonate);
+        lblDonate.LinkClicked += (s, e) => ShowDonateForm();
         btnAffiliate.Click += (s, e) => OpenUrl(Theme.UrlAffiliate);
     }
 
@@ -416,6 +421,77 @@ r_dynamic 0";
         rtbNetworkLog.ScrollToCaret();
         rtbNetworkLog.SelectionStart = rtbNetworkLog.Text.Length;
         rtbNetworkLog.ScrollToCaret();
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            var result = await _versionCheckService.CheckForUpdatesAsync();
+
+            if (result.IsSuccess && result.IsNewVersionAvailable)
+            {
+                // Show update notification in the title bar or footer
+                var updateMessage = $"🔔 Nova versão disponível: v{result.LatestVersion} (Você está usando: v{result.CurrentVersion})";
+                
+                // Create a notification link in footer
+                var lblUpdate = new LinkLabel
+                {
+                    Text = $"🔔 Atualização disponível: v{result.LatestVersion}",
+                    Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                    LinkColor = Color.LightGreen,
+                    ActiveLinkColor = Color.White,
+                    VisitedLinkColor = Color.LightGreen,
+                    LinkBehavior = LinkBehavior.HoverUnderline,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Padding = new Padding(10, 0, 0, 5),
+                    Cursor = Cursors.Hand,
+                    Dock = DockStyle.Top,
+                    Height = 25
+                };
+
+                lblUpdate.LinkClicked += (s, e) =>
+                {
+                    var dialogResult = MessageBox.Show(
+                        $"Uma nova versão está disponível!\n\n" +
+                        $"Versão Atual: v{result.CurrentVersion}\n" +
+                        $"Última Versão: v{result.LatestVersion}\n\n" +
+                        $"Deseja abrir a página de download?",
+                        "Atualização Disponível",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information
+                    );
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        OpenUrl(result.DownloadUrl);
+                    }
+                };
+
+                // Add to footer at the top (above donate link)
+                if (footer.InvokeRequired)
+                {
+                    footer.Invoke(() => footer.Controls.Add(lblUpdate));
+                }
+                else
+                {
+                    footer.Controls.Add(lblUpdate);
+                }
+
+                // Resize footer to accommodate update notification
+                footer.Height = 85;
+            }
+        }
+        catch (Exception)
+        {
+            // Silently fail - don't bother user with update check errors
+        }
+    }
+
+    private void ShowDonateForm()
+    {
+        using var donateForm = new DonateForm();
+        donateForm.ShowDialog(this);
     }
 
     private void OpenUrl(string url)

@@ -251,7 +251,6 @@ partial class MainForm
         this.panelNetwork.Controls.Add(this.lblLossResult);
         this.panelNetwork.Controls.Add(this.rtbNetworkLog);
         this.panelNetwork.Controls.Add(this.btnAffiliate); // Ensure this is added!
-        this.panelNetwork.Controls.Add(this.btnAffiliate);
         // Panel Docs Setup
         this.panelDocs = UIBuilder.CreatePanel(DockStyle.Fill, null, new Padding(40), false);
         
