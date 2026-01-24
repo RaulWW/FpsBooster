@@ -43,7 +43,7 @@ namespace FpsBooster.Views
         public const string MainFont = "Roboto";
         public const string FallbackFont = "Segoe UI";
         
-        public const string AppVersion = "v2.3";
+        public const string AppVersion = "v2.4";
         public const string Developer = "⚡ Developed by Raul W.";
         
         public const string UrlDonate = "https://ko-fi.com/raulw"; 

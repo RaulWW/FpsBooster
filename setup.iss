@@ -4,7 +4,7 @@
 [Setup]
 ; App Metadata
 AppName=FBooster
-AppVersion=2.3
+AppVersion=2.4
 AppPublisher=RaulW
 AppCopyright=Copyright (C) 2026 RaulWW
 AppPublisherURL=https://github.com/RaulWW/FpsBooster

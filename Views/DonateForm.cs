@@ -131,14 +131,29 @@ public class DonateForm : Form
 
     private void LoadPixQrCode()
     {
-        // Path to PIX QR Code image in the application directory
-        string qrCodePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "pix_qrcode.png");
+        // Try multiple paths to find the QR code
+        string[] possiblePaths = {
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "pix_qrcode.png"),
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "pix_qrcode.png"),
+            // Fallback for development (checking parent directories)
+            Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.Parent?.Parent?.FullName ?? "", "Assets", "pix_qrcode.png")
+        };
 
         try
         {
-            if (File.Exists(qrCodePath) && pictureBox != null)
+            string foundPath = "";
+            foreach (var path in possiblePaths)
             {
-                pictureBox.Image = Image.FromFile(qrCodePath);
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                {
+                    foundPath = path;
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(foundPath) && pictureBox != null)
+            {
+                pictureBox.Image = Image.FromFile(foundPath);
             }
             else if (pictureBox != null)
             {

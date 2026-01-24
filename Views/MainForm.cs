@@ -22,6 +22,8 @@ public partial class MainForm : Form
         _networkService = new NetworkService();
         _versionCheckService = new VersionCheckService("RaulWW", "FpsBooster", Theme.AppVersion);
 
+        SettingsManager.InitializeDefaultSettings();
+
         InitializeEvents();
         InitializeNavigation();
         InitializeCustomTitleBar();
@@ -105,9 +107,31 @@ public partial class MainForm : Form
 
     private void LoadCS2Config()
     {
-        if (string.IsNullOrEmpty(rtbCS2Config.Text))
+        bool hasSavedBefore = SettingsManager.GetSetting("CS2", "Saved", "False") == "True";
+        
+        // If it's the first time and the text box is empty, load default.
+        // Otherwise, if it has been saved before, ALWAYS reload from disk to stay in sync.
+        if (string.IsNullOrEmpty(rtbCS2Config.Text) || hasSavedBefore)
         {
-            rtbCS2Config.Text = GetDefaultCs2Config();
+            string configPath = GamePaths.GetCounterStrike2ConfigPath();
+            string localPath = GamePaths.GetFallbackConfigPath();
+            string configContent = "";
+
+            if (hasSavedBefore)
+            {
+                if (File.Exists(configPath))
+                    configContent = File.ReadAllText(configPath);
+                else if (File.Exists(localPath))
+                    configContent = File.ReadAllText(localPath);
+                else
+                    configContent = GetDefaultCs2Config();
+            }
+            else
+            {
+                configContent = GetDefaultCs2Config();
+            }
+
+            rtbCS2Config.Text = configContent;
             RichTextEditorHelper.ApplyCs2SyntaxHighlighting(rtbCS2Config, Theme.Text);
         }
     }
@@ -184,6 +208,7 @@ r_dynamic 0";
             }
             
             File.WriteAllText(configPath, rtbCS2Config.Text);
+            SettingsManager.SaveSetting("CS2", "Saved", "True");
             MessageBox.Show("CS2 autoexec.cfg saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)

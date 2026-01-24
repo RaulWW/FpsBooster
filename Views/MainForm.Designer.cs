@@ -511,7 +511,6 @@ Desenvolvido com ⚡ por Raul W. | github.com/RaulWW
     private MenuButton btnMenuNetwork;
     // Removed btnMenuDonate
     private Label lblTitle;
-    private Label lblIcon;
     private ModernButton btnBoost;
     private ModernProgressBar progressBar;
     private RichTextBox rtbLog;
