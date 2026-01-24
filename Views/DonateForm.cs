@@ -160,7 +160,7 @@ public class DonateForm : Form
                 // Display placeholder message if image not found
                 Label lblPlaceholder = new Label
                 {
-                    Text = "Por favor, adicione a imagem do QR Code PIX em:\n" + qrCodePath,
+                    Text = "Por favor, adicione a imagem do QR Code PIX em:\n" + string.Join("\nou\n", possiblePaths),
                     ForeColor = Theme.TextPrimary,
                     Font = new Font("Segoe UI", 9F),
                     AutoSize = false,

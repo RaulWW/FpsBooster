@@ -1,5 +1,5 @@
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [string]$Version
 )
 
@@ -35,7 +35,7 @@ function Update-VersionRC {
     $content = $content -replace 'VALUE "ProductVersion", "[\d\.]+"', "VALUE `"ProductVersion`", `"$fileVersionDot`""
     
     Set-Content $VersionRcPath -Value $content -NoNewline
-    Write-Host "  ✓ VERSION.RC updated to $fileVersion" -ForegroundColor Green
+    Write-Host "  [OK] VERSION.RC updated to $fileVersion" -ForegroundColor Green
 }
 
 function Update-ThemeVersion {
@@ -47,7 +47,7 @@ function Update-ThemeVersion {
     $content = $content -replace 'public const string AppVersion = "v[\d\.]+";', "public const string AppVersion = `"v$NewVersion`";"
     
     Set-Content $ThemePath -Value $content -NoNewline
-    Write-Host "  ✓ Theme.cs updated to v$NewVersion" -ForegroundColor Green
+    Write-Host "  [OK] Theme.cs updated to v$NewVersion" -ForegroundColor Green
 }
 
 function Update-InnoSetup {
@@ -59,7 +59,7 @@ function Update-InnoSetup {
     $content = $content -replace 'AppVersion=[\d\.]+', "AppVersion=$NewVersion"
     
     Set-Content $IssPath -Value $content -NoNewline
-    Write-Host "  ✓ setup.iss updated to $NewVersion" -ForegroundColor Green
+    Write-Host "  [OK] setup.iss updated to $NewVersion" -ForegroundColor Green
 }
 
 Update-VersionRC -NewVersion $Version
@@ -74,7 +74,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "Build failed!"
     exit 1
 }
-Write-Host "  ✓ Build completed successfully" -ForegroundColor Green
+Write-Host "  [OK] Build completed successfully" -ForegroundColor Green
 
 Write-Host "`n[5/7] Compiling installer..." -ForegroundColor Yellow
 $InstallerName = "FBooster_v$Version"
@@ -84,7 +84,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "Installer compilation failed!"
     exit 1
 }
-Write-Host "  ✓ Installer created: $InstallerName.exe" -ForegroundColor Green
+Write-Host "  [OK] Installer created: $InstallerName.exe" -ForegroundColor Green
 
 Write-Host "`n[6/7] Committing to Git..." -ForegroundColor Yellow
 git add .
@@ -92,7 +92,7 @@ git commit -m "Release: v$Version"
 git tag -f "v$Version" -m "Release version $Version"
 git push origin main
 git push origin --tags -f
-Write-Host "  ✓ Changes pushed to GitHub" -ForegroundColor Green
+Write-Host "  [OK] Changes pushed to GitHub" -ForegroundColor Green
 
 Write-Host "`n[7/7] Creating GitHub Release..." -ForegroundColor Yellow
 $InstallerPath = "$ProjectRoot\$InstallerName.exe"
@@ -125,8 +125,9 @@ if ($ghInstalled) {
         --notes "$releaseNotes" `
         --repo RaulWW/FpsBooster
     
-    Write-Host "  ✓ GitHub Release created with installer uploaded!" -ForegroundColor Green
-} else {
+    Write-Host "  [OK] GitHub Release created with installer uploaded!" -ForegroundColor Green
+}
+else {
     Write-Host "  ⚠ GitHub CLI (gh) not found. Please install it:" -ForegroundColor Yellow
     Write-Host "    winget install GitHub.cli" -ForegroundColor Gray
     Write-Host "`n  Manual upload required:" -ForegroundColor Yellow
@@ -136,7 +137,7 @@ if ($ghInstalled) {
 }
 
 Write-Host "`n========================================" -ForegroundColor Green
-Write-Host "   ✓ DEPLOYMENT COMPLETED!" -ForegroundColor Green
+Write-Host "   [OK] DEPLOYMENT COMPLETED!" -ForegroundColor Green
 Write-Host "   Version $Version released successfully" -ForegroundColor Green
 Write-Host "========================================`n" -ForegroundColor Green
 

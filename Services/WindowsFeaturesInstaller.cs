@@ -53,9 +53,16 @@ namespace FpsBooster.Services
 
                     using (var process = Process.Start(psi))
                     {
-                        await process.WaitForExitAsync();
+                        if (process != null)
+                        {
+                            await process.WaitForExitAsync();
+                            progress.Report("Installation Completed!");
+                        }
+                        else
+                        {
+                            progress.Report("Error: Could not start the installation process.");
+                        }
                     }
-                    progress.Report("Installation Completed!");
                 }
                 else
                 {
